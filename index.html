@@ -32,15 +32,10 @@
     import { DRACOLoader } from 'DRACOLoader';
     import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/EffectComposer.js';
     import { RenderPass }     from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/RenderPass.js';
-    import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/ShaderPass.js'; // damit kann man auch easy webgl shader  hier reinschreiben
-    import { UnrealBloomPass }  from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/UnrealBloomPass.js'; // EPICCC ..
-    import { BrightnessContrastShader } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/BrightnessContrastShader.js';
-    import { GammaCorrectionShader } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/GammaCorrectionShader.js';
-    import { SSAOPass } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/SSAOPass.js';
-
-    import { FilmPass } from "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/FilmPass.js";
-    import { VignetteShader } from "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/VignetteShader.js";
-    import { RGBShiftShader } from "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/RGBShiftShader.js";
+    import { ShaderPass }     from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/ShaderPass.js';
+    import { UnrealBloomPass }from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/UnrealBloomPass.js';
+    import { GammaCorrectionShader }    from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/GammaCorrectionShader.js';
+    import { VignetteShader }           from "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/VignetteShader.js";
 
     // --- Szene / Kamera / Renderer ---
     const scene = new THREE.Scene();
@@ -53,20 +48,18 @@
     const container = document.getElementById('viewer');
     const renderer  = new THREE.WebGLRenderer({ antialias:true });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
-    //Foliage-Shader
+    // Foliage-Shader
     const foliageTexture = new THREE.TextureLoader().load('assets/sprites/foliage.png');
     foliageTexture.colorSpace = THREE.SRGBColorSpace;
-
     const FoliageOverlayShader = {
       uniforms: {
         'tDiffuse':    { value: null },
         'tFoliage':    { value: foliageTexture },
-        'opacity':     { value: 1.0 } // 0 = aus, 1 = voll
+        'opacity':     { value: 1.0 }
       },
       vertexShader: `
         varying vec2 vUv;
@@ -83,81 +76,27 @@
         void main() {
           vec4 base = texture2D(tDiffuse, vUv);
           vec4 foliage = texture2D(tFoliage, vUv);
-          // Normales Overlay: Foliage-Alpha mischt drüber
           gl_FragColor = mix(base, vec4(foliage.rgb, base.a), foliage.a * opacity);
         }
       `
     };
-
     const foliageOverlayPass = new ShaderPass(FoliageOverlayShader);
-    foliageOverlayPass.uniforms['tFoliage'].value = foliageTexture;
-    foliageOverlayPass.uniforms['opacity'].value = 1.0; // ggf. anpassen
 
-
-
-    // post processing stack
+    // Postprocessing
     const composer = new EffectComposer(renderer);
-
-    //SSAO
-    const ssaoPass = new SSAOPass(scene, camera, container.clientWidth, container.clientHeight);
-    ssaoPass.kernelRadius = 16;          // Radius des AO-Effekts (6-16 experimentieren!)
-    ssaoPass.minDistance = 0.05;       // Wie nah am Geometriepunkt AO startet
-    ssaoPass.maxDistance = 0.2;         // Maximalweite (0.1–0.3 sieht am realistischsten aus)
-    ssaoPass.output = SSAOPass.OUTPUT.Default; // Normal/Default
-
-    ssaoPass.bias = 0.05;               // "Füllung" (0.01–0.1)
-    ssaoPass.aoClamp = 0.5;             // Kontrast/Abdunklung (0.1–1.0)
-    ssaoPass.lumInfluence = 1;        // Wie stark das Umgebungslicht AO beeinflusst
-    ssaoPass.intensity = 1.7;           // Hauptstärke des Effekts (1.0–3.0!)
-
-    //BLOOM
-    const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(container.clientWidth, container.clientHeight),
-      0.8,  // strength (1.0 ist gut, 0.3-2.0 experimentieren!)
-      0.2,  // radius (0.5-1.0)
-      0.4   // threshold (alles, was heller als 0.0 ist, kann blühen)
-    );
-
-    //BRIGHTNESS-CONTRAST
-    const brightnessContrastPass = new ShaderPass(BrightnessContrastShader);
-    brightnessContrastPass.uniforms['brightness'].value = 0.25; // -1 bis +1
-    brightnessContrastPass.uniforms['contrast'].value = 0.51; // -1 bis +1 (0.2-0.7 sieht oft gut aus!)
-
-    //VIGNETTE-PASS
-    const vignettePass = new ShaderPass(VignetteShader);
-    vignettePass.uniforms['offset'].value = 0.3; // 1.0-2.0, experimentieren!
-    vignettePass.uniforms['darkness'].value = 1.35; // 1.0-2.5, je nach Mood
-
-    //RBG SHIFT (Chromatic Aberration)
-    const rgbShiftPass = new ShaderPass(RGBShiftShader);
-    rgbShiftPass.uniforms['amount'].value = 0.001; // Sehr subtil! (0.001–0.003)
-
-    //FILMPASS (Scanlines)
-    const filmPass = new FilmPass(
-      1.15,   // noise intensity
-      0.125,  // scanline intensity
-      600,    // scanline count
-      false   // grayscale
-    );
-
-
-    const gammaPass = new ShaderPass(GammaCorrectionShader);
-
-
     composer.addPass(new RenderPass(scene, camera));
     composer.addPass(foliageOverlayPass);
-    //composer.addPass(ssaoPass);
-    composer.addPass(bloomPass);
-    //composer.addPass(brightnessContrastPass);
+    composer.addPass(new UnrealBloomPass(
+      new THREE.Vector2(container.clientWidth, container.clientHeight),
+      0.8, 0.2, 0.4
+    ));
+    const vignettePass = new ShaderPass(VignetteShader);
+    vignettePass.uniforms['offset'].value = 0.3;
+    vignettePass.uniforms['darkness'].value = 1.35;
     composer.addPass(vignettePass);
-    composer.addPass(rgbShiftPass);
-    //composer.addPass(filmPass);
-    composer.addPass(gammaPass);
+    composer.addPass(new ShaderPass(GammaCorrectionShader));
 
-
-    // end of postprocessing
-
-
+    // Resize-Handler
     function onResize(){
       const W=container.clientWidth, H=container.clientHeight, winA=W/H;
       let vw,vh,vx,vy;
@@ -171,10 +110,9 @@
       renderer.setScissor(vx,vy,vw,vh);
       renderer.setScissorTest(true);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.2; // Belichtung erhöhen/niedriger testen!
+      renderer.toneMappingExposure = 1.2;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       composer.setSize(W, H);
-      if (ssaoPass) ssaoPass.setSize(W, H);
       const dpr = window.devicePixelRatio || 1;
       renderer.setPixelRatio(dpr);
       composer.setPixelRatio(dpr);
@@ -186,7 +124,7 @@
     // --- HDRI Environment ---
     const texLoader = new THREE.TextureLoader();
     const pmremGen  = new THREE.PMREMGenerator(renderer);
-    texLoader.load('assets/hdri/environment.png', tex => {
+    texLoader.load('assets/hdri/environment.jpg', tex => {
       const envRT = pmremGen.fromEquirectangular(tex).texture;
       scene.environment = envRT;
       scene.background  = envRT;
@@ -195,11 +133,8 @@
     });
 
     // --- Schatten-gebendes Licht ---
-    //scene.add(new THREE.AmbientLight(0xFFA230, 0.25));
     const sun = new THREE.DirectionalLight(0xFFA230, 2);
     sun.position.set(21, -25, 30);
-    //sun.position.set(10, -10, 20);
-
     sun.castShadow = true;
     sun.shadow.mapSize.width  = 2048;
     sun.shadow.mapSize.height = 2048;
@@ -229,7 +164,7 @@
         .map(name=>`assets/models/spirits/${name}`);
     }
 
-    // --- GLBs laden (kein Axis Swap) ---
+    // --- GLBs laden ---
     async function loadGLB(path, pos, rotDeg, {receiveShadow=false, castShadow=false, emissive=null, visible=true, shadowOnly=false} = {}) {
       const { scene: obj } = await gltfLoader.loadAsync(path);
       obj.position.set(pos[0], pos[1], pos[2]);
@@ -239,7 +174,7 @@
         THREE.MathUtils.degToRad(rotDeg[2])
       );
       obj.traverse(c => {
-        c.visible = visible; // MUSS true sein, sonst kein Schatten!
+        c.visible = visible;
         if (c.isMesh) {
           c.castShadow = castShadow;
           c.receiveShadow = receiveShadow;
@@ -254,8 +189,16 @@
       return obj;
     }
 
+    // --- Shadow-Only-Material ---
+    const shadowOnlyMaterial = new THREE.MeshBasicMaterial({
+      color: 0x000000,
+      opacity: 0.01,
+      transparent: true,
+      depthWrite: false
+    });
+
     // --- Variablen für Animation ---
-    let spinnerRed, spinnerBlue, torigate, environment, shadowTree;
+    let spinnerRed, spinnerBlue, torigate, landscape, shadowTree;
     const clock     = new THREE.Clock();
     let   lastSpawn = 0;
     const SPAWN_INT = 5;
@@ -266,217 +209,77 @@
     const rotatingLights = [];
     const counterRotatingLights = [];
     const LIGHT_RADIUS   = 1;
+    for(let i=0;i<3;i++){
+      const L = new THREE.PointLight(0xFFA230, 5, 30);
+      L.castShadow = true;
+      rotatingLights.push(L);
+      scene.add(L);
 
-for(let i=0;i<3;i++){
-  const L = new THREE.PointLight(0xFFA230, 5, 30); // Intensität runter, Reichweite hoch
-  L.castShadow = true;
-  rotatingLights.push(L);
-  scene.add(L);
+      const L2 = new THREE.PointLight(0xFFA230, 5, 30);
+      L2.castShadow = true;
+      counterRotatingLights.push(L2);
+      scene.add(L2);
+    }
 
-  const L2 = new THREE.PointLight(0xFFA230, 5, 30);
-  L2.castShadow = true;
-  counterRotatingLights.push(L2);
-  scene.add(L2);
-}
+    // --- Spirit-Klasse ohne Partikel & Sound ---
+    class Spirit {
+      constructor(position) {
+        this.clock = new THREE.Clock();
+        this.grp = new THREE.Group();
+        this.spiritMeshes = [];
+        this.isFading = true;
+        this.grp.position.copy(position);
+        this.grp.position.z -= 0.6;
+        scene.add(this.grp);
 
-    // Teleport-Flash-Material
-    const flashMaterial = new THREE.MeshBasicMaterial({
-      color: 0xffffcc,
-      transparent: true,
-      opacity: 0.95,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
-    });
+        // Laden Spirit-GLB
+        const path = spiritModels[Math.floor(Math.random()*spiritModels.length)];
+        gltfLoader.load(path, ({ scene: s }) => {
+          s.traverse(mesh => {
+            if(mesh.isMesh){
+              mesh.castShadow = true;
+              mesh.receiveShadow = true;
+              mesh.userData.originalMaterial = mesh.material.clone();
+              mesh.material = mesh.material.clone();
+              mesh.material.color.set(0xffffcc);
+              mesh.material.opacity = 0.0;
+              mesh.material.emissive?.set(0xffffcc);
+              mesh.material.emissiveIntensity = 2.0;
+              this.spiritMeshes.push(mesh);
+            }
+          });
+          s.rotation.x = -Math.PI;
+          this.grp.add(s);
+        });
+      }
 
-    // Shadow-Only-Material
-    const shadowOnlyMaterial = new THREE.MeshBasicMaterial({
-      color: 0x000000,
-      opacity: 0.01,
-      transparent: true,
-      depthWrite: false
-    });
-
-
-// === Partikel-Textur vorbereiten (einfacher weißer Kreis) ===
-const particleTexture = new THREE.TextureLoader().load('assets/sprites/particle.png');
-particleTexture.colorSpace = THREE.SRGBColorSpace;
-// === Audio vorbereiten ===
-/*
-const listener = new THREE.AudioListener();
-camera.add(listener);
-const soundBufferPromise = fetch('assets/sound/spawn.ogg')
-  .then(r=>r.arrayBuffer())
-  .then(buf=>new Promise(res=>{
-    const audio = new AudioContext();
-    audio.decodeAudioData(buf, res);
-  }));
-*/
-
-// === Neue Spirit-Klasse ===
-class Spirit {
-  constructor(position) {
-    this.clock = new THREE.Clock();
-    this.grp = new THREE.Group();
-    this.spiritMeshes = [];
-    this.isFading = true; // Für den Material-Überblend
-    // Positionieren (auf Boden, dann +1m für Partikeleffekt)
-    this.grp.position.copy(position);
-    this.grp.position.z -= 0.6;
-    scene.add(this.grp);
-
-    // Partikel-Spawn
-    this.particles = this.makeParticles();
-    this.particles.position.y = 1.0; // Mitte Spirit
-    this.grp.add(this.particles);
-
-    // Sound abspielen (async, aber egal)
-    /*
-    soundBufferPromise.then(buffer => {
-      const sfx = new THREE.Audio(listener);
-      sfx.setBuffer(buffer);
-      sfx.setVolume(0.7);
-      sfx.play();
-      // Sound ist "virtuell" an Spirit-Gruppe gebunden, keine Entfernungsmischung
-    });
-    */
-
-    // Laden Spirit-GLB
-    const path = spiritModels[Math.floor(Math.random()*spiritModels.length)];
-    gltfLoader.load(path, ({ scene: s }) => {
-      s.traverse(mesh => {
-        if(mesh.isMesh){
-          mesh.castShadow = true;
-          mesh.receiveShadow = true;
-          // Originalmaterial speichern
-          mesh.userData.originalMaterial = mesh.material.clone();
-          mesh.material = mesh.material.clone();
-          // Direkt auf Flash-Farbe setzen, transparent!
-          mesh.material.color.set(0xffffcc);
-          //mesh.material.transparent = true;
-          mesh.material.opacity = 0.0;
-          mesh.material.emissive?.set(0xffffcc); // Falls vorhanden
-          mesh.material.emissiveIntensity = 2.0;
-          this.spiritMeshes.push(mesh);
+      update(dt) {
+        const t = this.clock.getElapsedTime();
+        if(this.spiritMeshes && this.isFading){
+          for(const mesh of this.spiritMeshes){
+            if(t < 0.5){
+              mesh.material.opacity = 1;
+              mesh.material.color.lerp(mesh.userData.originalMaterial.color, t/0.5);
+              if(mesh.material.emissive)
+                mesh.material.emissive.lerp(mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000), t/0.5);
+              mesh.material.emissiveIntensity = 2.0 * (1-t/0.5) + (mesh.userData.originalMaterial.emissiveIntensity||1.0)*(t/0.5);
+            } else {
+              mesh.material.opacity = mesh.userData.originalMaterial.opacity ?? 1.0;
+              mesh.material.color.copy(mesh.userData.originalMaterial.color);
+              if(mesh.material.emissive)
+                mesh.material.emissive.copy(mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000));
+              mesh.material.emissiveIntensity = mesh.userData.originalMaterial.emissiveIntensity ?? 1.0;
+              this.isFading = false;
+            }
+          }
         }
-      });
-      s.rotation.x = -Math.PI;
-      this.grp.add(s);
-    });
-  }
-
-  // === Partikel-Effekt erstellen ===
-  makeParticles() {
-    const N = 36; // Partikelanzahl
-    const geom = new THREE.BufferGeometry();
-    const positions = [];
-    const velocities = [];
-    for(let i=0; i<N; i++){
-      // Punkte zufällig in Halb-Kugel, random Richtung nach oben
-      const theta = Math.random()*2*Math.PI;
-      const phi   = Math.random()*Math.PI/1.7;
-      const r     = Math.random()*0.2+0.5;
-      const x = Math.sin(phi)*Math.cos(theta)*r;
-      const y = Math.abs(Math.cos(phi))*r; // <-- Y ist nach oben
-      const z = Math.sin(phi)*Math.sin(theta)*r;
-      positions.push(x, y, z);
-      velocities.push(x*2, y*2.5+0.7, z*2);
-    }
-    geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    geom.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
-    const mat = new THREE.PointsMaterial({
-      size: 1.3,
-      color: 0xffffff,
-      map: particleTexture,
-      blending: THREE.AdditiveBlending,
-      alphaTest: 0.15,
-      depthWrite: false,
-      transparent: true,
-      opacity: 1.0
-    });
-    const pts = new THREE.Points(geom, mat);
-    pts.userData.lifetime = 0.7 + Math.random()*0.13;
-    pts.userData.age = 0;
-    return pts;
-  }
-
-  update(dt) {
-    const t = this.clock.getElapsedTime();
-
-    // === Partikel animieren und ggf. entfernen ===
-    if(this.particles){
-      this.particles.userData.age += dt;
-      const pos = this.particles.geometry.attributes.position;
-      const vel = this.particles.geometry.attributes.velocity;
-      for(let i=0; i<pos.count; i++){
-        // Linear nach außen
-        pos.array[3*i+0] += vel.array[3*i+0]*dt;
-        pos.array[3*i+1] += vel.array[3*i+1]*dt;
-        pos.array[3*i+2] += vel.array[3*i+2]*dt;
-      }
-      pos.needsUpdate = true;
-      // Transparenz schnell ausfaden
-      this.particles.material.opacity = 0.7 * (1.0 - this.particles.userData.age/this.particles.userData.lifetime);
-      if(this.particles.userData.age > this.particles.userData.lifetime){
-        this.grp.remove(this.particles);
-        this.particles.geometry.dispose();
-        this.particles.material.dispose();
-        this.particles = null;
-      }
-    }
-
-    // === Spirit-Meshes aus dem Licht in Textur/Originalfarbe blenden ===
-    if(this.spiritMeshes && this.isFading){
-      for(const mesh of this.spiritMeshes){
-        if(t < 0.5){
-          mesh.material.opacity = 1;
-          mesh.material.color.lerp(mesh.userData.originalMaterial.color, t/0.5);
-          if(mesh.material.emissive)
-            mesh.material.emissive.lerp(mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000), t/0.5);
-          mesh.material.emissiveIntensity = 2.0 * (1-t/0.5) + (mesh.userData.originalMaterial.emissiveIntensity||1.0)*(t/0.5);
-        } else {
-          mesh.material.opacity = mesh.userData.originalMaterial.opacity ?? 1.0;
-          mesh.material.color.copy(mesh.userData.originalMaterial.color);
-          if(mesh.material.emissive)
-            mesh.material.emissive.copy(mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000));
-          mesh.material.emissiveIntensity = mesh.userData.originalMaterial.emissiveIntensity ?? 1.0;
-          this.isFading = false; // fertig
-        }
-      }
-    }
-
-    // === Bewegung nach unten ===
-    this.grp.position.y -= MOVE_SPEED * dt;
-    if (t > 15) {
-      scene.remove(this.grp);
-      return false;
-    }
-    return true;
-  }
-}
-
-
-
-
-    function spawnPair(){
-      // Spirit
-      const sp = new Spirit(spinnerRed.position.clone().add(new THREE.Vector3(0,-1.5,0)));
-      spawned.push(sp);
-      // Light
-      /*
-      const pl = new THREE.PointLight(0xffe0b3,0,0);
-      pl.position.copy(spinnerRed.position).add(new THREE.Vector3(0,-2,0.5));
-      pl.clock = new THREE.Clock();
-      pl.update = function(dt){
-        this.position.y -= MOVE_SPEED*dt;
-        if(this.clock.getElapsedTime()>20){
-          scene.remove(this);
+        this.grp.position.y -= MOVE_SPEED * dt;
+        if (t > 15) {
+          scene.remove(this.grp);
           return false;
         }
         return true;
-      };
-      scene.add(pl);
-      spawned.push(pl);
-      */
+      }
     }
 
     // --- Spinner (mit Transparenz) ---
@@ -493,10 +296,8 @@ class Spirit {
         if (c.isMesh && c.material && c.material.isMeshStandardMaterial) {
           c.material.transparent = true;
           c.material.opacity = opacity;
-          // <- Das hier ist NEU!
           c.material.emissive = new THREE.Color(color);
-          c.material.emissiveIntensity = 3.0; // experimentier ruhig mit höheren Werten!
-          // <- Optional: VertexColors aktivieren, falls du sie willst
+          c.material.emissiveIntensity = 3.0;
           c.material.vertexColors = true;
           c.castShadow = true;
         }
@@ -508,53 +309,42 @@ class Spirit {
     // --- Haupt-Flow ---
     (async()=>{
       await fetchSpirits();
-
-      // Environment (empfängt Schatten)
-      environment = await loadGLB(
-        'assets/models/environment.glb',
+      landscape = await loadGLB(
+        'assets/models/landscape.glb',
         [0,0,0], [90,0,0],
         {receiveShadow:true, castShadow:true}
       );
-
-      // Tori Gate
       torigate = await loadGLB(
-        'assets/models/torigate.glb',
+        'assets/models/tori.glb',
         [0,6.59,0.375], [90,0,0],
         {receiveShadow:true, castShadow:true}
       );
-
-      // Spinner rot (z.B. models/spinner_red.glb) & Spinner blau (z.B. spinner_blue.glb)
       spinnerRed = await loadSpinner(
         'assets/models/spinner_red.glb', [0,16.55,0.88], [90,0,0], "#ff3333", 0.2
       );
       spinnerBlue = await loadSpinner(
         'assets/models/spinner_blue.glb', [0,16.55,0.88], [90,0,0], "#3380ff", 0.2
       );
-
-      // --- Low Poly Bäume als unsichtbare Schattenobjekte einbauen:
       shadowTree = await loadGLB(
         'assets/models/tree_low.glb',
         [0.0,0.0,0.0], [90,0,0],
         {receiveShadow:false, castShadow:true, shadowOnly: true}
       );
 
-      // --- Animation / Render-Loop ---
       function animate(){
         const dt = clock.getDelta(), t = clock.getElapsedTime();
 
-        // Spinner Animation: Rotation & Schweben
-        const bob = Math.sin(t*1.2)*0.5; // sanftes Schweben
+        // Spinner Animation
+        const bob = Math.sin(t*1.2)*0.5;
         const baseY = 16.55 + bob;
         spinnerRed.position.y = baseY + 0.8;
         spinnerBlue.position.y = baseY;
-
-        spinnerRed.rotation.y  -= 1.2 * dt; // Uhrzeigersinn
-        spinnerBlue.rotation.y += 1.2 * dt; // Gegen-Uhrzeigersinn
+        spinnerRed.rotation.y  -= 1.2 * dt;
+        spinnerBlue.rotation.y += 1.2 * dt;
 
         // Rotierende Lichter
         const center = new THREE.Vector3(0, 16.55, 1.5);
-        const lightZ = center.z; // Fix auf Z wie Spinner
-        // Normale Richtung (wie bisher)
+        const lightZ = center.z;
         for(let i=0; i<rotatingLights.length; i++){
           const ang = t * 0.8 + i * 2 * Math.PI / 3;
           rotatingLights[i].position.set(
@@ -563,8 +353,6 @@ class Spirit {
             lightZ
           );
         }
-
-        // Gegendrehende Lichter:
         for(let i=0; i<counterRotatingLights.length; i++){
           const ang = -t * 0.8 + i * 2 * Math.PI / 3;
           counterRotatingLights[i].position.set(
@@ -573,10 +361,11 @@ class Spirit {
             lightZ
           );
         }
-        // Spawn Spirits/Lichter
+
+        // Spawn Spirits
         if (t - lastSpawn > SPAWN_INT) {
           lastSpawn = t;
-          spawnPair();
+          spawned.push(new Spirit(spinnerRed.position.clone().add(new THREE.Vector3(0,-1.5,0))));
         }
 
         // update & cleanup
