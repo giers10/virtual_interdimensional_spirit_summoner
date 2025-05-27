@@ -23,8 +23,8 @@
     canvas { display:block; }
     body { margin:0; overflow:hidden; background:#000; }
   </style>
-</head>  
-<body> 
+</head>
+<body>
   <div id="viewer"></div>
   <script type="module">
     import * as THREE      from 'three';
@@ -152,43 +152,6 @@
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(draco);
 
-    // --- Spirits automatisch einsammeln ---
-    let spiritModels = [];
-    async function fetchSpirits(){
-      const res = await fetch('assets/models/spirits/');
-      const html = await res.text();
-      const doc  = new DOMParser().parseFromString(html,'text/html');
-      spiritModels = [...doc.querySelectorAll('a')]
-        .map(a => a.getAttribute('href'))
-        .filter(h=>h.endsWith('.glb'))
-        .map(name=>`assets/models/spirits/${name}`);
-    }
-
-    // --- GLBs laden ---
-    async function loadGLB(path, pos, rotDeg, {receiveShadow=false, castShadow=false, emissive=null, visible=true, shadowOnly=false} = {}) {
-      const { scene: obj } = await gltfLoader.loadAsync(path);
-      obj.position.set(pos[0], pos[1], pos[2]);
-      obj.rotation.set(
-        THREE.MathUtils.degToRad(rotDeg[0]),
-        THREE.MathUtils.degToRad(rotDeg[1]),
-        THREE.MathUtils.degToRad(rotDeg[2])
-      );
-      obj.traverse(c => {
-        c.visible = visible;
-        if (c.isMesh) {
-          c.castShadow = castShadow;
-          c.receiveShadow = receiveShadow;
-          if (shadowOnly) c.material = shadowOnlyMaterial;
-          if (emissive && c.material && c.material.isMeshStandardMaterial) {
-            c.material.emissive = new THREE.Color(emissive);
-            c.material.emissiveIntensity = 1.0;
-          }
-        }
-      });
-      scene.add(obj);
-      return obj;
-    }
-
     // --- Shadow-Only-Material ---
     const shadowOnlyMaterial = new THREE.MeshBasicMaterial({
       color: 0x000000,
@@ -221,36 +184,68 @@
       scene.add(L2);
     }
 
-    // --- Spirit-Klasse ohne Partikel & Sound ---
+    // --- Lazy-Loading/Preload Spirit Mechanik ---
+    let spiritModelsList = [];
+    let nextSpiritUrl = null;
+    let nextSpiritGltf = null;
+    let spiritLoadingPromise = null;
+
+    async function fetchSpiritList(){
+      const res = await fetch('assets/models/spirits/');
+      const html = await res.text();
+      const doc  = new DOMParser().parseFromString(html,'text/html');
+      spiritModelsList = [...doc.querySelectorAll('a')]
+        .map(a => a.getAttribute('href'))
+        .filter(h=>h.endsWith('.glb'))
+        .map(name=>`assets/models/spirits/${name}`);
+    }
+
+    function prepareNextSpirit() {
+      nextSpiritUrl = spiritModelsList[Math.floor(Math.random()*spiritModelsList.length)];
+      nextSpiritGltf = null;
+      spiritLoadingPromise = gltfLoader.loadAsync(nextSpiritUrl).then(gltf => {
+        nextSpiritGltf = gltf;
+      }).catch(err => {
+        console.warn('Spirit konnte nicht geladen werden:', nextSpiritUrl, err);
+        prepareNextSpirit();
+      });
+    }
+
+    async function getAndPrepareSpiritInstance(position) {
+      // Warte ggf. aufs Laden!
+      if (!nextSpiritGltf) await spiritLoadingPromise;
+      const s = nextSpiritGltf.scene.clone(true); // mit true: tiefer Clone
+      s.traverse(mesh => {
+        if(mesh.isMesh){
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          mesh.userData.originalMaterial = mesh.material.clone();
+          mesh.material = mesh.material.clone();
+          mesh.material.color.set(0xffffcc);
+          mesh.material.opacity = 0.0;
+          mesh.material.emissive?.set(0xffffcc);
+          mesh.material.emissiveIntensity = 2.0;
+        }
+      });
+      s.rotation.x = -Math.PI;
+      s.position.copy(position).add(new THREE.Vector3(0, 0, -0.6));
+      // Nach dem Spawn gleich das nächste Modell vorbereiten:
+      prepareNextSpirit();
+      return s;
+    }
+
+    // --- Spirit-Klasse nur noch für Animation/State ---
     class Spirit {
-      constructor(position) {
+      constructor(obj3d) {
         this.clock = new THREE.Clock();
         this.grp = new THREE.Group();
         this.spiritMeshes = [];
         this.isFading = true;
-        this.grp.position.copy(position);
-        this.grp.position.z -= 0.6;
-        scene.add(this.grp);
-
-        // Laden Spirit-GLB
-        const path = spiritModels[Math.floor(Math.random()*spiritModels.length)];
-        gltfLoader.load(path, ({ scene: s }) => {
-          s.traverse(mesh => {
-            if(mesh.isMesh){
-              mesh.castShadow = true;
-              mesh.receiveShadow = true;
-              mesh.userData.originalMaterial = mesh.material.clone();
-              mesh.material = mesh.material.clone();
-              mesh.material.color.set(0xffffcc);
-              mesh.material.opacity = 0.0;
-              mesh.material.emissive?.set(0xffffcc);
-              mesh.material.emissiveIntensity = 2.0;
-              this.spiritMeshes.push(mesh);
-            }
-          });
-          s.rotation.x = -Math.PI;
-          this.grp.add(s);
+        this.grp.add(obj3d);
+        obj3d.traverse(mesh=>{
+          if(mesh.isMesh) this.spiritMeshes.push(mesh);
         });
+        scene.add(this.grp);
       }
 
       update(dt) {
@@ -308,7 +303,8 @@
 
     // --- Haupt-Flow ---
     (async()=>{
-      await fetchSpirits();
+      await fetchSpiritList();
+      prepareNextSpirit();
       landscape = await loadGLB(
         'assets/models/landscape.glb',
         [0,0,0], [90,0,0],
@@ -330,6 +326,13 @@
         [0.0,0.0,0.0], [90,0,0],
         {receiveShadow:false, castShadow:true, shadowOnly: true}
       );
+
+      function spawnSpirit(){
+        // Spawn exakt EIN Spirit, Modell ist garantiert geladen:
+        getAndPrepareSpiritInstance(spinnerRed.position.clone().add(new THREE.Vector3(0,-1.5,0))).then(obj=>{
+          spawned.push(new Spirit(obj));
+        });
+      }
 
       function animate(){
         const dt = clock.getDelta(), t = clock.getElapsedTime();
@@ -365,7 +368,7 @@
         // Spawn Spirits
         if (t - lastSpawn > SPAWN_INT) {
           lastSpawn = t;
-          spawned.push(new Spirit(spinnerRed.position.clone().add(new THREE.Vector3(0,-1.5,0))));
+          spawnSpirit();
         }
 
         // update & cleanup
