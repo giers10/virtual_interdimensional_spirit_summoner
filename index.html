@@ -211,6 +211,31 @@
       });
     }
 
+     // --- GLBs laden ---
+    async function loadGLB(path, pos, rotDeg, {receiveShadow=false, castShadow=false, emissive=null, visible=true, shadowOnly=false} = {}) {
+      const { scene: obj } = await gltfLoader.loadAsync(path);
+      obj.position.set(pos[0], pos[1], pos[2]);
+      obj.rotation.set(
+        THREE.MathUtils.degToRad(rotDeg[0]),
+        THREE.MathUtils.degToRad(rotDeg[1]),
+        THREE.MathUtils.degToRad(rotDeg[2])
+      );
+      obj.traverse(c => {
+        c.visible = visible;
+        if (c.isMesh) {
+          c.castShadow = castShadow;
+          c.receiveShadow = receiveShadow;
+          if (shadowOnly) c.material = shadowOnlyMaterial;
+          if (emissive && c.material && c.material.isMeshStandardMaterial) {
+            c.material.emissive = new THREE.Color(emissive);
+            c.material.emissiveIntensity = 1.0;
+          }
+        }
+      });
+      scene.add(obj);
+      return obj;
+    }
+
     async function getAndPrepareSpiritInstance(position) {
       // Warte ggf. aufs Laden!
       if (!nextSpiritGltf) await spiritLoadingPromise;
