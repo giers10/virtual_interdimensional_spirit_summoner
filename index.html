@@ -236,6 +236,31 @@
       return obj;
     }
 
+    // --- Spinner laden ---
+    async function loadSpinner(path, pos, rotDeg, color, opacity) {
+      const { scene: obj } = await gltfLoader.loadAsync(path);
+      obj.position.set(...pos);
+      obj.rotation.set(
+        THREE.MathUtils.degToRad(rotDeg[0]),
+        THREE.MathUtils.degToRad(rotDeg[1]),
+        THREE.MathUtils.degToRad(rotDeg[2])
+      );
+      obj.traverse(c => {
+        c.visible = true;
+        if (c.isMesh && c.material && c.material.isMeshStandardMaterial) {
+          c.material.transparent = true;
+          c.material.opacity = opacity;
+          c.material.emissive = new THREE.Color(color);
+          c.material.emissiveIntensity = 3.0;
+          c.material.vertexColors = true;
+          c.castShadow = true;
+        }
+      });
+      scene.add(obj);
+      return obj;
+    }
+
+    // --- Spirits laden ---
     async function getAndPrepareSpiritInstance(position) {
       // Warte ggf. aufs Laden!
       if (!nextSpiritGltf) await spiritLoadingPromise;
@@ -300,30 +325,6 @@
         }
         return true;
       }
-    }
-
-    // --- Spinner (mit Transparenz) ---
-    async function loadSpinner(path, pos, rotDeg, color, opacity) {
-      const { scene: obj } = await gltfLoader.loadAsync(path);
-      obj.position.set(...pos);
-      obj.rotation.set(
-        THREE.MathUtils.degToRad(rotDeg[0]),
-        THREE.MathUtils.degToRad(rotDeg[1]),
-        THREE.MathUtils.degToRad(rotDeg[2])
-      );
-      obj.traverse(c => {
-        c.visible = true;
-        if (c.isMesh && c.material && c.material.isMeshStandardMaterial) {
-          c.material.transparent = true;
-          c.material.opacity = opacity;
-          c.material.emissive = new THREE.Color(color);
-          c.material.emissiveIntensity = 3.0;
-          c.material.vertexColors = true;
-          c.castShadow = true;
-        }
-      });
-      scene.add(obj);
-      return obj;
     }
 
     // --- Haupt-Flow ---
