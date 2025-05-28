@@ -8,7 +8,7 @@ import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/exam
 import { GammaCorrectionShader } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/GammaCorrectionShader.js';
 import { VignetteShader } from "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/VignetteShader.js";
 
-// ---- Basis Three.js Szene ----
+// ---- BASIS Three.js Szene ----
 const scene = new THREE.Scene();
 const ASPECT = 3/2, SCALE = 15;
 const hw = SCALE/2, hh = (SCALE/ASPECT)/2;
@@ -23,7 +23,7 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 container.appendChild(renderer.domElement);
 
-// ---- Foliage Shader ----
+// ---- POSTPROCESSING
 const foliageTexture = new THREE.TextureLoader().load('assets/sprites/foliage.png');
 foliageTexture.colorSpace = THREE.SRGBColorSpace;
 const FoliageOverlayShader = {
@@ -34,10 +34,7 @@ const FoliageOverlayShader = {
   },
   vertexShader: `
     varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-    }
+    void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }
   `,
   fragmentShader: `
     uniform sampler2D tDiffuse;
@@ -53,7 +50,6 @@ const FoliageOverlayShader = {
 };
 const foliageOverlayPass = new ShaderPass(FoliageOverlayShader);
 
-// ---- Postprocessing Stack ----
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 composer.addPass(foliageOverlayPass);
@@ -67,7 +63,7 @@ vignettePass.uniforms['darkness'].value = 1.35;
 composer.addPass(vignettePass);
 composer.addPass(new ShaderPass(GammaCorrectionShader));
 
-// ---- Resize Handler ----
+// ---- Resize
 function onResize(){
   const W=container.clientWidth, H=container.clientHeight, winA=W/H;
   let vw,vh,vx,vy;
@@ -92,7 +88,7 @@ function onResize(){
 window.addEventListener('resize',onResize);
 onResize();
 
-// ---- Environment Map (HDRI) ----
+// ---- Environment Map
 const texLoader = new THREE.TextureLoader();
 const pmremGen  = new THREE.PMREMGenerator(renderer);
 texLoader.load('assets/hdri/environment.jpg', tex => {
@@ -101,14 +97,6 @@ texLoader.load('assets/hdri/environment.jpg', tex => {
   scene.background  = envRT;
   tex.dispose();
   pmremGen.dispose();
-});
-
-// ---- Shadow-Only-Material ----
-const shadowOnlyMaterial = new THREE.MeshBasicMaterial({
-  color: 0x000000,
-  opacity: 0.01,
-  transparent: true,
-  depthWrite: false
 });
 
 // ---- Directional Sun ----
@@ -131,7 +119,7 @@ draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(draco);
 
-// ---- Utility: GLBs laden ----
+// ---- Utility: GLBs laden (für Grundszene) ----
 async function loadGLB(path, pos, rotDeg, {receiveShadow=false, castShadow=false, emissive=null, visible=true, shadowOnly=false} = {}) {
   const { scene: obj } = await gltfLoader.loadAsync(path);
   obj.position.set(pos[0], pos[1], pos[2]);
@@ -145,7 +133,7 @@ async function loadGLB(path, pos, rotDeg, {receiveShadow=false, castShadow=false
     if (c.isMesh) {
       c.castShadow = castShadow;
       c.receiveShadow = receiveShadow;
-      if (shadowOnly) c.material = shadowOnlyMaterial;
+      if (shadowOnly) c.material = new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.01, transparent: true, depthWrite: false });
       if (emissive && c.material && c.material.isMeshStandardMaterial) {
         c.material.emissive = new THREE.Color(emissive);
         c.material.emissiveIntensity = 1.0;
@@ -156,7 +144,6 @@ async function loadGLB(path, pos, rotDeg, {receiveShadow=false, castShadow=false
   return obj;
 }
 
-// ---- Spinner laden ----
 async function loadSpinner(path, pos, rotDeg, color, opacity) {
   const { scene: obj } = await gltfLoader.loadAsync(path);
   obj.position.set(...pos);
@@ -180,95 +167,12 @@ async function loadSpinner(path, pos, rotDeg, color, opacity) {
   return obj;
 }
 
-// ---- Initialisiere Grundszene (ohne Spirits) ----
+// ---- Grundszene initialisieren
 let spinnerRed, spinnerBlue, torigate, landscape, shadowTree;
 const rotatingLights = [], counterRotatingLights = [];
 const LIGHT_RADIUS = 1;
 const clock = new THREE.Clock();
 
-// ---- Spirit-Klasse ----
-class Spirit {
-  constructor(scene, gltfScene, info) {
-    this.scene = scene;
-    this.grp = new THREE.Group();
-    this.gltf = gltfScene;
-    this.info = info || {};
-    this.clock = new THREE.Clock();
-    this.isFading = true;
-    this.lifeTime = 15; // Sekunden
-    this.spiritMeshes = [];
-    this.grp.add(this.gltf);
-    this.gltf.position.set(0, 0, -0.6);
-
-    this.gltf.traverse((mesh) => {
-      if (mesh.isMesh) {
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        mesh.userData.originalMaterial = mesh.material.clone();
-        mesh.material = mesh.material.clone();
-        mesh.material.color.set(0xffffcc);
-        mesh.material.opacity = 0.0;
-        mesh.material.transparent = true;
-        mesh.material.emissive?.set(0xffffcc);
-        mesh.material.emissiveIntensity = 2.0;
-        this.spiritMeshes.push(mesh);
-      }
-    });
-    this.scene.add(this.grp);
-  }
-
-  update(dt) {
-    const t = this.clock.getElapsedTime();
-    if (this.spiritMeshes && this.isFading) {
-      for (const mesh of this.spiritMeshes) {
-        if (t < 0.5) {
-          mesh.material.opacity = 1;
-          mesh.material.color.lerp(mesh.userData.originalMaterial.color, t / 0.5);
-          if (mesh.material.emissive)
-            mesh.material.emissive.lerp(
-              mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000),
-              t / 0.5
-            );
-          mesh.material.emissiveIntensity =
-            2.0 * (1 - t / 0.5) +
-            (mesh.userData.originalMaterial.emissiveIntensity || 1.0) * (t / 0.5);
-        } else {
-          mesh.material.opacity = mesh.userData.originalMaterial.opacity ?? 1.0;
-          mesh.material.color.copy(mesh.userData.originalMaterial.color);
-          if (mesh.material.emissive)
-            mesh.material.emissive.copy(
-              mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000)
-            );
-          mesh.material.emissiveIntensity =
-            mesh.userData.originalMaterial.emissiveIntensity ?? 1.0;
-          this.isFading = false;
-        }
-      }
-    }
-    // Nach Lebenszeit entfernen
-    if (t > this.lifeTime) {
-      this.dispose();
-      return false;
-    }
-    return true;
-  }
-
-  dispose() {
-    this.scene.remove(this.grp);
-    this.gltf.traverse((mesh) => {
-      if (mesh.isMesh) {
-        mesh.geometry.dispose();
-        if (Array.isArray(mesh.material)) {
-          mesh.material.forEach((m) => m.dispose());
-        } else {
-          mesh.material.dispose();
-        }
-      }
-    });
-  }
-}
-
-// ---- Start der Szene ----
 (async()=>{
   landscape = await loadGLB(
     'assets/models/landscape.glb',
@@ -304,6 +208,81 @@ class Spirit {
   }
   animate();
 })();
+
+// ---- SPIRIT-KLASSE (aus alter Version, leicht adaptiert)
+const MOVE_SPEED = 1; // wie im Original
+class Spirit {
+  constructor(obj3d, info) {
+    this.clock = new THREE.Clock();
+    this.grp = new THREE.Group();
+    this.spiritMeshes = [];
+    this.isFading = true;
+    this.info = info || {};
+    this.grp.add(obj3d);
+
+    // Positionierung + Drehung wie im Original
+    obj3d.rotation.x = -Math.PI;
+    // Setze Position unterhalb Spinner (nutze aktuelle Spinner-Position)
+    let y = spinnerRed ? spinnerRed.position.y - 1.5 : 15;
+    this.grp.position.set(0, y, 0.88 - 0.6);
+
+    obj3d.traverse(mesh => {
+      if (mesh.isMesh) {
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.userData.originalMaterial = mesh.material.clone();
+        mesh.material = mesh.material.clone();
+        mesh.material.color.set(0xffffcc);
+        mesh.material.opacity = 0.0;
+        mesh.material.transparent = true;
+        mesh.material.emissive?.set(0xffffcc);
+        mesh.material.emissiveIntensity = 2.0;
+        this.spiritMeshes.push(mesh);
+      }
+    });
+    scene.add(this.grp);
+  }
+
+  update(dt) {
+    const t = this.clock.getElapsedTime();
+    if(this.spiritMeshes && this.isFading){
+      for(const mesh of this.spiritMeshes){
+        if(t < 0.5){
+          mesh.material.opacity = 1;
+          mesh.material.color.lerp(mesh.userData.originalMaterial.color, t/0.5);
+          if(mesh.material.emissive)
+            mesh.material.emissive.lerp(mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000), t/0.5);
+          mesh.material.emissiveIntensity = 2.0 * (1-t/0.5) + (mesh.userData.originalMaterial.emissiveIntensity||1.0)*(t/0.5);
+        } else {
+          mesh.material.opacity = mesh.userData.originalMaterial.opacity ?? 1.0;
+          mesh.material.color.copy(mesh.userData.originalMaterial.color);
+          if(mesh.material.emissive)
+            mesh.material.emissive.copy(mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000));
+          mesh.material.emissiveIntensity = mesh.userData.originalMaterial.emissiveIntensity ?? 1.0;
+          this.isFading = false;
+        }
+      }
+    }
+    // Bewegung nach unten
+    this.grp.position.y -= MOVE_SPEED * dt;
+    if (t > 15) {
+      scene.remove(this.grp);
+      return false;
+    }
+    return true;
+  }
+
+  dispose() {
+    scene.remove(this.grp);
+    this.grp.traverse((mesh) => {
+      if (mesh.isMesh) {
+        mesh.geometry.dispose();
+        if (Array.isArray(mesh.material)) mesh.material.forEach((m) => m.dispose());
+        else mesh.material.dispose();
+      }
+    });
+  }
+}
 
 // ---- Render-Loop ----
 let currentSpirit = null;
@@ -361,7 +340,6 @@ ws.addEventListener('message', async (event) => {
 });
 
 async function showSpirit(spirit) {
-  // Vorherigen Spirit entfernen
   if (currentSpirit) {
     currentSpirit.dispose();
     currentSpirit = null;
@@ -372,53 +350,10 @@ async function showSpirit(spirit) {
   // Modell laden
   const { scene: spiritObj } = await gltfLoader.loadAsync(spirit.modelUrl);
 
-  // --- MATERIAL / MESH-ANPASSUNGEN ---
-  spiritObj.traverse(mesh => {
-    if (mesh.isMesh) {
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      mesh.userData.originalMaterial = mesh.material.clone();
-      mesh.material = mesh.material.clone();
-      mesh.material.color.set(0xffffcc);
-      mesh.material.opacity = 1.0;
-      mesh.material.transparent = true;
-      mesh.material.emissive?.set(0xffffcc);
-      mesh.material.emissiveIntensity = 2.0;
-    }
-  });
+  // Spirit-Objekt mit Animation/Fading/Motion erzeugen!
+  currentSpirit = new Spirit(spiritObj, spirit);
+  window.currentSpirit = currentSpirit;
 
-  // --- SPIRIT ALS GROUP, ROTATION, POSITION ---
-  // Exakte Platzierung wie im Original
-  const grp = new THREE.Group();
-  spiritObj.rotation.x = -Math.PI;
-  grp.add(spiritObj);
-
-  // Platziere das Group-Objekt wie im Originalcode:
-  // Annäherung: unterhalb von spinnerRed.position, etwas nach hinten (z=-0.6)
-  // (spinnerRed ist verfügbar)
-  let y = spinnerRed ? spinnerRed.position.y - 1.5 : 15;
-  grp.position.set(0, y, 0.88 - 0.6); // Z=spinnerRed.position.z - 0.6
-
-  scene.add(grp);
-
-  // Spirit als Instanz für update/dispose
-  currentSpirit = {
-    grp,
-    dispose() {
-      scene.remove(grp);
-      grp.traverse((mesh) => {
-        if (mesh.isMesh) {
-          mesh.geometry.dispose();
-          if (Array.isArray(mesh.material)) mesh.material.forEach((m) => m.dispose());
-          else mesh.material.dispose();
-        }
-      });
-    },
-    update() { return true; } // Dummy, falls du später noch fade/animation brauchst
-  };
-  window.currentSpirit = currentSpirit; // Debug
-
-  // Overlay mit Spirit-Name/Description
   updateSpiritOverlay(spirit);
 }
 
