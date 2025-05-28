@@ -246,7 +246,8 @@ class SpinnerController {
 
     connectWebSocket() {
         if (this.ws) this.ws.close();
-        this.ws = new WebSocket(`ws://${location.host}`);
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+        this.ws = new WebSocket(`${wsProtocol}://${location.host}`);
         this.ws.addEventListener('open', () => {
             this.connected = true;
             console.log("WebSocket connected!");
