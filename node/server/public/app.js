@@ -390,9 +390,9 @@ async function loadGLB(path, pos, rotDeg, { receiveShadow = false, castShadow = 
 
 // ---- Spirit spawnen ----
 async function spawnSpirit(spiritData) {
-    // Exakte Platzierung wie im Original
-    let spawnPos = { x: 0, y: spinnerController ? (spinnerController.spinnerRed ? spinnerController.spinnerRed.position.y - 1.5 : 15) : 15, z: 0.88 };
-    const { scene: gltfScene } = await gltfLoader.loadAsync(spiritData.modelUrl);
+    let spawnPos = { x: 0, y: spinnerController && spinnerController.spinnerRed ? spinnerController.spinnerRed.position.y - 1.5 : 15, z: 0.88 };
+    const modelUrl = spiritData['Model URL'] || spiritData.modelUrl; // Fallback!
+    const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
     const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
     activeSpirits.push(spirit);
     updateSpiritOverlay(spiritData);
