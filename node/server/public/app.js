@@ -307,7 +307,6 @@ class Spirit {
                 this.spiritMeshes.push(mesh);
             }
         });
-        this._setupPicking();
         this.scene.add(this.grp);
     }
 
@@ -355,15 +354,6 @@ class Spirit {
                 } else {
                     mesh.material.dispose();
                 }
-            }
-        });
-    }
-
-    _setupPicking() {
-        // Hier ein einfacher Ansatz: Mesh mit Info-Objekt merken!
-        this.gltf.traverse(mesh => {
-            if (mesh.isMesh) {
-                mesh.userData._spiritInfo = this.info;
             }
         });
     }
@@ -418,248 +408,32 @@ async function spawnSpirit(spiritData) {
     const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
     const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
     activeSpirits.push(spirit);
-    //updateSpiritOverlay(spiritData);
+    updateSpiritOverlay(spiritData);
 }
 
-// ---- Overlay-Logik ----
-let lastOverlaySpiritData = null;
-
-// Overlay zentriert in der Mitte mit Schließen-X
-function showSpiritOverlay(spirit) {
+// ---- Overlay für Spirit-Infos ----
+function updateSpiritOverlay(spirit) {
     let el = document.getElementById('spirit-info');
     if (!el) {
         el = document.createElement('div');
         el.id = 'spirit-info';
         el.style = `
-            position: fixed;
-            left: 50%; top: 50%;
-            transform: translate(-50%,-50%);
-            color: white;
-            background: rgba(0,0,0,0.87);
-            padding: 24px 32px 20px 32px;
-            border-radius: 16px;
-            font-family: 'Segoe UI', sans-serif;
-            z-index: 9999;
-            max-width: 540px;
-            min-width: 300px;
-            box-shadow: 0 6px 48px #000a;
-            text-align: left;
+          position:absolute; right:40px; bottom:40px; color:white;
+          background:rgba(0,0,0,0.6); padding:10px 18px; border-radius:10px;
+          font-family: sans-serif; z-index:10; max-width: 360px;
         `;
         document.body.appendChild(el);
     }
-
-    // --- Canvas-Container ---
     el.innerHTML = `
-        <button id="spirit-overlay-close" style="
-            position:absolute; right:12px; top:12px; border:none; background:none;
-            color:#fff; font-size:1.5em; cursor:pointer; padding:0; line-height:1;
-        " title="Schließen">&times;</button>
-        <div id="spirit-model-preview" style="
-            width: 270px; height: 210px; margin:0 auto 10px auto; display: flex; align-items: center; justify-content: center;
-            background: #111; border-radius: 10px; box-shadow: 0 2px 16px #0006;">
-            <!-- Canvas wird hier erzeugt -->
-        </div>
-        <h2 style='padding:0; margin:0 0 8px 0; font-weight:700; letter-spacing:0.04em;'>${spirit.Name || 'Spirit'}</h2>
-        <b>${spirit.Kategorie || ''}</b><br><br>
-        <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
-        <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
-        <b>Charakter:</b> ${spirit.Charakter || ''}<br><br>
-        ${spirit.Herkunft ? '<i>' + spirit.Herkunft + '</i>' : ''}
+      <h2 style='padding:0; margin:0;'>${spirit.Name || 'Spirit'}</h2>
+      <b>${spirit.Kategorie || ''}</b><br><br>
+      <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
+      <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
+      <b>Charakter:</b> ${spirit.Charakter || ''}<br><br>
+      ${spirit.Herkunft ? ' <i>' + spirit.Herkunft : ''}</i>
+
     `;
-    el.style.display = "block";
-    lastOverlaySpiritData = spirit;
-
-    el.querySelector("#spirit-overlay-close").onclick = () => {
-        el.style.display = "none";
-        destroySpiritModelPreview();
-    };
-
-    // Lade das Model neu für die Vorschau:
-    setupSpiritModelPreview(spirit);
-
 }
-
-let spiritPreviewRenderer = null, spiritPreviewScene = null, spiritPreviewCamera = null, spiritPreviewObj = null;
-let spiritPreviewDragging = false, spiritPreviewLastX = 0, spiritPreviewRotationY = 0, spiritPreviewRotationX = 0;
-
-function destroySpiritModelPreview() {
-    // Cleanup: Renderer und Scene entsorgen
-    if (spiritPreviewRenderer) {
-        spiritPreviewRenderer.dispose();
-        spiritPreviewRenderer.domElement.remove();
-        spiritPreviewRenderer = null;
-    }
-    spiritPreviewScene = null;
-    spiritPreviewCamera = null;
-    spiritPreviewObj = null;
-    spiritPreviewDragging = false;
-    spiritPreviewLastX = 0;
-    spiritPreviewRotationY = 0;
-    spiritPreviewRotationX = 0;
-}
-
-async function setupSpiritModelPreview(spirit) {
-    destroySpiritModelPreview();
-
-    // Canvas erzeugen
-    const container = document.getElementById('spirit-model-preview');
-    if (!container) return;
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-
-    // Three.js Preview Renderer
-    spiritPreviewRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    spiritPreviewRenderer.setClearColor(0x000000, 0); // transparent
-    spiritPreviewRenderer.setSize(width, height, false);
-    container.appendChild(spiritPreviewRenderer.domElement);
-
-    // Preview Szene und Kamera
-    spiritPreviewScene = new THREE.Scene();
-    spiritPreviewCamera = new THREE.PerspectiveCamera(27, width / height, 0.1, 100);
-    spiritPreviewCamera.position.set(0, 1, 5);
-
-    // Licht
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
-    keyLight.position.set(3, 4, 8);
-    spiritPreviewScene.add(keyLight);
-    const fillLight = new THREE.AmbientLight(0xffffff, 0.85);
-    spiritPreviewScene.add(fillLight);
-
-    // Model laden
-    const modelUrl = spirit['Model URL'] || spirit.modelUrl;
-    try {
-        const { scene: modelObj } = await gltfLoader.loadAsync(modelUrl);
-        // Färbe/Resette ggf. Materialien (optional, nicht zwingend nötig)
-        modelObj.traverse(mesh => {
-            if (mesh.isMesh) {
-                mesh.castShadow = false;
-                mesh.receiveShadow = false;
-                mesh.material = mesh.material.clone();
-                mesh.material.opacity = 1.0;
-                mesh.material.transparent = false;
-                mesh.material.emissiveIntensity = 1.0;
-            }
-        });
-        // Zentriere das Modell (Bounding Box)
-        const bbox = new THREE.Box3().setFromObject(modelObj);
-        const center = bbox.getCenter(new THREE.Vector3());
-        modelObj.position.sub(center);
-        // Größe skalieren
-        const size = bbox.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = 2.1 / maxDim;
-        modelObj.scale.setScalar(scale);
-
-        // Initiale Drehung: leicht nach rechts & von oben
-        spiritPreviewRotationY = Math.PI / 8;
-        spiritPreviewRotationX = -Math.PI / 18;
-        modelObj.rotation.y = spiritPreviewRotationY;
-        modelObj.rotation.x = spiritPreviewRotationX;
-
-        spiritPreviewObj = modelObj;
-        spiritPreviewScene.add(modelObj);
-    } catch (err) {
-        container.innerHTML = `<div style="color:#aaa;padding:16px 0;text-align:center;">Modell konnte nicht geladen werden :(</div>`;
-        return;
-    }
-
-    // Maus-Events für Drehung
-    const canvas = spiritPreviewRenderer.domElement;
-    canvas.style.cursor = "grab";
-    canvas.onpointerdown = (e) => {
-        spiritPreviewDragging = true;
-        spiritPreviewLastX = e.clientX;
-        canvas.setPointerCapture(e.pointerId);
-        canvas.style.cursor = "grabbing";
-    };
-    canvas.onpointermove = (e) => {
-        if (spiritPreviewDragging && spiritPreviewObj) {
-            let delta = (e.clientX - spiritPreviewLastX) / width * Math.PI;
-            spiritPreviewRotationY += delta;
-            spiritPreviewObj.rotation.y = spiritPreviewRotationY;
-            spiritPreviewLastX = e.clientX;
-        }
-    };
-    canvas.onpointerup = (e) => {
-        spiritPreviewDragging = false;
-        canvas.releasePointerCapture(e.pointerId);
-        canvas.style.cursor = "grab";
-    };
-
-    // Vertikales Drag: Optional für X-Rotation
-    let lastY = 0;
-    canvas.onpointerdown = (e) => {
-        spiritPreviewDragging = true;
-        spiritPreviewLastX = e.clientX;
-        lastY = e.clientY;
-        canvas.setPointerCapture(e.pointerId);
-        canvas.style.cursor = "grabbing";
-    };
-    canvas.onpointermove = (e) => {
-        if (spiritPreviewDragging && spiritPreviewObj) {
-            let deltaX = (e.clientX - spiritPreviewLastX) / width * Math.PI;
-            let deltaY = (e.clientY - lastY) / height * Math.PI;
-            spiritPreviewRotationY += deltaX;
-            spiritPreviewRotationX += deltaY;
-            spiritPreviewRotationX = Math.max(-Math.PI / 2.3, Math.min(Math.PI / 2.3, spiritPreviewRotationX)); // Limitiere X
-            spiritPreviewObj.rotation.y = spiritPreviewRotationY;
-            spiritPreviewObj.rotation.x = spiritPreviewRotationX;
-            spiritPreviewLastX = e.clientX;
-            lastY = e.clientY;
-        }
-    };
-    canvas.onpointerup = (e) => {
-        spiritPreviewDragging = false;
-        canvas.releasePointerCapture(e.pointerId);
-        canvas.style.cursor = "grab";
-    };
-
-    // Animation/Rendering starten
-    previewRenderLoop();
-}
-
-function previewRenderLoop() {
-    if (!spiritPreviewRenderer || !spiritPreviewScene || !spiritPreviewCamera) return;
-    spiritPreviewRenderer.render(spiritPreviewScene, spiritPreviewCamera);
-    // Nur weiter machen, wenn das Overlay sichtbar ist!
-    let el = document.getElementById('spirit-info');
-    if (el && el.style.display !== 'none') {
-        requestAnimationFrame(previewRenderLoop);
-    }
-}
-
-// Mouse-Picking (zentral)
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-function onClick(e) {
-    // Normierte Koordinaten im WebGL-Fenster:
-    const rect = renderer.domElement.getBoundingClientRect();
-    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-    // Sammle alle Meshes aus allen aktiven Spirits
-    let allMeshes = [];
-    for (const spirit of activeSpirits) {
-        spirit.gltf.traverse(mesh => {
-            if (mesh.isMesh) allMeshes.push(mesh);
-        });
-    }
-    const intersects = raycaster.intersectObjects(allMeshes, false);
-    if (intersects.length > 0) {
-        const mesh = intersects[0].object;
-        if (mesh.userData._spiritInfo) {
-            showSpiritOverlay(mesh.userData._spiritInfo);
-        }
-    }
-}
-
-// Fügt das Event hinzu:
-renderer.domElement.addEventListener('pointerdown', onClick);
-
-// Kein automatisches Update mehr! Nicht von spawnSpirit aufrufen!
-// (aber Option: „verstecke Overlay“ falls Spirit verschwindet, kann man so machen...)
 
 // ---- Render-Loop ----
 function animate() {
@@ -677,10 +451,3 @@ function animate() {
     composer.render(scene, camera);
     requestAnimationFrame(animate);
 }
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        let el = document.getElementById('spirit-info');
-        if (el) el.style.display = "none";
-    }
-});
