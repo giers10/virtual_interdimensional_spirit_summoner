@@ -279,7 +279,7 @@ class SpinnerController {
     async spawnSpirit(spiritData) {
         let spawnPos = {
             x: 0,
-            y: this.spinnerRed ? this.spinnerRed.position.y - 1.5 : 15,
+            y: 15,
             z: 0.88
         };
         const modelUrl = spiritData['Model URL'] || spiritData.modelUrl;
@@ -290,7 +290,7 @@ class SpinnerController {
     }
 
     async spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
-        let startY = this.spinnerRed ? this.spinnerRed.position.y - 1.5 : 15;
+        let startY = 15;
         let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
         let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
         const despawnSpeed = 0.8;
