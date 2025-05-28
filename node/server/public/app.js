@@ -440,7 +440,7 @@ async function spawnSpirit(spiritData) {
 
 async function spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
     // Standard-Spawnhöhe:
-    let startY = spinnerController && spinnerController.spinnerRed ? spinnerController.spinnerRed.position.y - 0.5 : 15;
+    let startY = spinnerController && spinnerController.spinnerRed ? spinnerController.spinnerRed.position.y - 0.5 : 15; //changed from -1.5 offset to compensate for lag
     // Offset in Sekunden:
     let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
     // Die Lebenszeit des Spirits:
