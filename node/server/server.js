@@ -9,6 +9,10 @@ const app = express();
 const server = http.createServer(app);
 const wss = new ws.Server({ server });
 
+let spiritPos = 0;
+const SPIRIT_INTERVAL_MS = 20000; // 20 Sekunden
+let lastSpiritSpawn = Date.now();
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const SPIRITS_PATH = path.join(__dirname, '.', 'spirits', 'spirit_list.json');
@@ -28,10 +32,6 @@ try {
   console.error('Fehler beim Laden der Spirits:', e);
   process.exit(1);
 }
-
-let spiritPos = 0;
-const SPIRIT_INTERVAL_MS = 20000; // 20 Sekunden
-let lastSpiritSpawn = Date.now();
 
 // --- Helper ---
 function nextSpirit() {
