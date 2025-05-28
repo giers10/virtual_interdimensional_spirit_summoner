@@ -289,7 +289,7 @@ class SpinnerController {
         activeSpirits.push(spirit);
     }
 
-    async spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
+    async spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 18000) {
         let startY = 17.35;
         let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
         let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 18000) / 1000;
