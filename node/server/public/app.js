@@ -8,6 +8,14 @@ import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/exam
 import { GammaCorrectionShader } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/GammaCorrectionShader.js';
 import { VignetteShader } from "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/VignetteShader.js";
 
+// -------- Adaptive Settings --------
+function isMobileDevice() {
+    return /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|BlackBerry|webOS/i.test(navigator.userAgent);
+}
+const IS_MOBILE = isMobileDevice();
+
+const container = document.getElementById('viewer');
+
 // ---- Basis Three.js Szene ----
 const scene = new THREE.Scene();
 const ASPECT = 3 / 2, SCALE = 15;
@@ -16,7 +24,8 @@ const camera = new THREE.OrthographicCamera(-hw, hw, hh, -hh, 0.1, 1000);
 camera.position.set(0, -14.424, 20);
 camera.rotation.set(THREE.MathUtils.degToRad(55), 0, 0);
 
-const container = document.getElementById('viewer');
+// --- Renderer ---
+
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.shadowMap.enabled = true;
