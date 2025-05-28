@@ -8,7 +8,7 @@ import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/exam
 import { GammaCorrectionShader } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/GammaCorrectionShader.js';
 import { VignetteShader } from "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/VignetteShader.js";
 
-// ---- BASIS Three.js Szene ----
+// ---- Basis Three.js Szene ----
 const scene = new THREE.Scene();
 const ASPECT = 3/2, SCALE = 15;
 const hw = SCALE/2, hh = (SCALE/ASPECT)/2;
@@ -23,7 +23,7 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 container.appendChild(renderer.domElement);
 
-// ---- POSTPROCESSING
+// ---- Postprocessing ----
 const foliageTexture = new THREE.TextureLoader().load('assets/sprites/foliage.png');
 foliageTexture.colorSpace = THREE.SRGBColorSpace;
 const FoliageOverlayShader = {
@@ -63,7 +63,7 @@ vignettePass.uniforms['darkness'].value = 1.35;
 composer.addPass(vignettePass);
 composer.addPass(new ShaderPass(GammaCorrectionShader));
 
-// ---- Resize
+// ---- Resize Handler ----
 function onResize(){
   const W=container.clientWidth, H=container.clientHeight, winA=W/H;
   let vw,vh,vx,vy;
@@ -88,7 +88,7 @@ function onResize(){
 window.addEventListener('resize',onResize);
 onResize();
 
-// ---- Environment Map
+// ---- Environment Map ----
 const texLoader = new THREE.TextureLoader();
 const pmremGen  = new THREE.PMREMGenerator(renderer);
 texLoader.load('assets/hdri/environment.jpg', tex => {
@@ -119,7 +119,7 @@ draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(draco);
 
-// ---- Utility: GLBs laden (für Grundszene) ----
+// ---- Utility: GLBs laden ----
 async function loadGLB(path, pos, rotDeg, {receiveShadow=false, castShadow=false, emissive=null, visible=true, shadowOnly=false} = {}) {
   const { scene: obj } = await gltfLoader.loadAsync(path);
   obj.position.set(pos[0], pos[1], pos[2]);
@@ -209,8 +209,11 @@ const clock = new THREE.Clock();
   animate();
 })();
 
-// ---- SPIRIT-KLASSE (aus alter Version, leicht adaptiert)
-const MOVE_SPEED = 1; // wie im Original
+// ---- Spirit-Instanzen-Array (mehrere gleichzeitig!)
+const activeSpirits = [];
+
+// ---- Spirit-Klasse ----
+const MOVE_SPEED = 1;
 class Spirit {
   constructor(obj3d, info) {
     this.clock = new THREE.Clock();
@@ -220,9 +223,8 @@ class Spirit {
     this.info = info || {};
     this.grp.add(obj3d);
 
-    // Positionierung + Drehung wie im Original
+    // Rotation & Position wie im Original
     obj3d.rotation.x = -Math.PI;
-    // Setze Position unterhalb Spinner (nutze aktuelle Spinner-Position)
     let y = spinnerRed ? spinnerRed.position.y - 1.5 : 15;
     this.grp.position.set(0, y, 0.88 - 0.6);
 
@@ -265,8 +267,9 @@ class Spirit {
     }
     // Bewegung nach unten
     this.grp.position.y -= MOVE_SPEED * dt;
-    if (t > 15) {
-      scene.remove(this.grp);
+    // LEBENSDAUER 20 Sekunden
+    if (t > 20) {
+      this.dispose();
       return false;
     }
     return true;
@@ -285,11 +288,9 @@ class Spirit {
 }
 
 // ---- Render-Loop ----
-let currentSpirit = null;
-window.currentSpirit = null;
-
 function animate(){
   const dt = clock.getDelta(), t = clock.getElapsedTime();
+
   // Spinner Animation
   const bob = Math.sin(t*1.2)*0.5;
   const baseY = 16.55 + bob;
@@ -318,42 +319,37 @@ function animate(){
       lightZ
     );
   }
-  // Spirit animieren/entfernen
-  if (currentSpirit && currentSpirit.update) {
-    if (!currentSpirit.update(dt)) {
-      currentSpirit = null;
-      window.currentSpirit = null;
+  // Update & Entfernen aller aktiven Spirits
+  for (let i = activeSpirits.length - 1; i >= 0; i--) {
+    if (!activeSpirits[i].update(dt)) {
+      activeSpirits.splice(i, 1);
     }
   }
   composer.render(scene, camera);
   requestAnimationFrame(animate);
 }
 
-// ---- WebSocket-basierter Spirit Spawn ----
+// ---- WebSocket: Spirit erzeugen, Infobox updaten ----
 const ws = new WebSocket(`ws://${location.host}`);
 
 ws.addEventListener('message', async (event) => {
   const msg = JSON.parse(event.data);
   if (msg.type === 'spirit') {
-    await showSpirit(msg.data);
+    await spawnSpirit(msg.data);
   }
 });
 
-async function showSpirit(spirit) {
-  if (currentSpirit) {
-    currentSpirit.dispose();
-    currentSpirit = null;
-    window.currentSpirit = null;
-  }
+async function spawnSpirit(spirit) {
   console.log("Lade Spirit", spirit.modelUrl);
 
   // Modell laden
   const { scene: spiritObj } = await gltfLoader.loadAsync(spirit.modelUrl);
 
   // Spirit-Objekt mit Animation/Fading/Motion erzeugen!
-  currentSpirit = new Spirit(spiritObj, spirit);
-  window.currentSpirit = currentSpirit;
+  const s = new Spirit(spiritObj, spirit);
+  activeSpirits.push(s);
 
+  // Overlay zeigt immer den aktuellsten
   updateSpiritOverlay(spirit);
 }
 
