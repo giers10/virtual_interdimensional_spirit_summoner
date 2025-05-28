@@ -186,6 +186,89 @@ const rotatingLights = [], counterRotatingLights = [];
 const LIGHT_RADIUS = 1;
 const clock = new THREE.Clock();
 
+// ---- Spirit-Klasse ----
+class Spirit {
+  constructor(scene, gltfScene, info) {
+    this.scene = scene;
+    this.grp = new THREE.Group();
+    this.gltf = gltfScene;
+    this.info = info || {};
+    this.clock = new THREE.Clock();
+    this.isFading = true;
+    this.lifeTime = 15; // Sekunden
+    this.spiritMeshes = [];
+    this.grp.add(this.gltf);
+    this.gltf.position.set(0, 0, -0.6);
+
+    this.gltf.traverse((mesh) => {
+      if (mesh.isMesh) {
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.userData.originalMaterial = mesh.material.clone();
+        mesh.material = mesh.material.clone();
+        mesh.material.color.set(0xffffcc);
+        mesh.material.opacity = 0.0;
+        mesh.material.transparent = true;
+        mesh.material.emissive?.set(0xffffcc);
+        mesh.material.emissiveIntensity = 2.0;
+        this.spiritMeshes.push(mesh);
+      }
+    });
+    this.scene.add(this.grp);
+  }
+
+  update(dt) {
+    const t = this.clock.getElapsedTime();
+    if (this.spiritMeshes && this.isFading) {
+      for (const mesh of this.spiritMeshes) {
+        if (t < 0.5) {
+          mesh.material.opacity = 1;
+          mesh.material.color.lerp(mesh.userData.originalMaterial.color, t / 0.5);
+          if (mesh.material.emissive)
+            mesh.material.emissive.lerp(
+              mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000),
+              t / 0.5
+            );
+          mesh.material.emissiveIntensity =
+            2.0 * (1 - t / 0.5) +
+            (mesh.userData.originalMaterial.emissiveIntensity || 1.0) * (t / 0.5);
+        } else {
+          mesh.material.opacity = mesh.userData.originalMaterial.opacity ?? 1.0;
+          mesh.material.color.copy(mesh.userData.originalMaterial.color);
+          if (mesh.material.emissive)
+            mesh.material.emissive.copy(
+              mesh.userData.originalMaterial.emissive || new THREE.Color(0x000000)
+            );
+          mesh.material.emissiveIntensity =
+            mesh.userData.originalMaterial.emissiveIntensity ?? 1.0;
+          this.isFading = false;
+        }
+      }
+    }
+    // Nach Lebenszeit entfernen
+    if (t > this.lifeTime) {
+      this.dispose();
+      return false;
+    }
+    return true;
+  }
+
+  dispose() {
+    this.scene.remove(this.grp);
+    this.gltf.traverse((mesh) => {
+      if (mesh.isMesh) {
+        mesh.geometry.dispose();
+        if (Array.isArray(mesh.material)) {
+          mesh.material.forEach((m) => m.dispose());
+        } else {
+          mesh.material.dispose();
+        }
+      }
+    });
+  }
+}
+
+// ---- Start der Szene ----
 (async()=>{
   landscape = await loadGLB(
     'assets/models/landscape.glb',
@@ -208,8 +291,6 @@ const clock = new THREE.Clock();
     [0.0,0.0,0.0], [90,0,0],
     {receiveShadow:false, castShadow:true, shadowOnly: true}
   );
-
-  // Rotierende Lichter initialisieren
   for(let i=0;i<3;i++){
     const L = new THREE.PointLight(0xFFA230, 5, 30);
     L.castShadow = true;
@@ -221,11 +302,13 @@ const clock = new THREE.Clock();
     counterRotatingLights.push(L2);
     scene.add(L2);
   }
-
   animate();
 })();
 
 // ---- Render-Loop ----
+let currentSpirit = null;
+window.currentSpirit = null;
+
 function animate(){
   const dt = clock.getDelta(), t = clock.getElapsedTime();
   // Spinner Animation
@@ -256,17 +339,20 @@ function animate(){
       lightZ
     );
   }
+  // Spirit animieren/entfernen
+  if (currentSpirit && currentSpirit.update) {
+    if (!currentSpirit.update(dt)) {
+      currentSpirit = null;
+      window.currentSpirit = null;
+    }
+  }
   composer.render(scene, camera);
   requestAnimationFrame(animate);
 }
 
 // ---- WebSocket-basierter Spirit Spawn ----
-let currentSpiritGroup = null;
-
-// WebSocket verbinden
 const ws = new WebSocket(`ws://${location.host}`);
 
-// Spirit per Server-Anweisung anzeigen
 ws.addEventListener('message', async (event) => {
   const msg = JSON.parse(event.data);
   if (msg.type === 'spirit') {
@@ -275,29 +361,15 @@ ws.addEventListener('message', async (event) => {
 });
 
 async function showSpirit(spirit) {
-  // Vorherigen Spirit entfernen
-  if (currentSpiritGroup) {
-    scene.remove(currentSpiritGroup);
-    // Optional: Materialien etc. dispose() aufrufen
-    currentSpiritGroup = null;
+  if (currentSpirit) {
+    currentSpirit.dispose();
+    currentSpirit = null;
+    window.currentSpirit = null;
   }
   console.log("Lade Spirit", spirit.modelUrl);
-  // Modell laden
   const { scene: spiritObj } = await gltfLoader.loadAsync(spirit.modelUrl);
-  spiritObj.traverse(mesh => {
-    if (mesh.isMesh) {
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      // weitere Material-Anpassungen...
-    }
-  });
-  console.log("Spirit wurde der Szene hinzugefügt!", spiritObj);
-  // Positionierung, z.B. am Boden leicht nach hinten
-  spiritObj.position.set(0, 0, 0);
-  scene.add(spiritObj);
-  currentSpiritGroup = spiritObj;
-
-  // Overlay mit Spirit-Name/Description
+  currentSpirit = new Spirit(scene, spiritObj, spirit);
+  window.currentSpirit = currentSpirit;
   updateSpiritOverlay(spirit);
 }
 
