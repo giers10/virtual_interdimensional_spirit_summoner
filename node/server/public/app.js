@@ -293,8 +293,8 @@ class SpinnerController {
         let startY = 15;
         let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
         let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
-        const despawnSpeed = 0.8;
-        let spawnPos = { x: 0, y: startY - (despawnSpeed * offset), z: 0.88 };
+        const moveSpeed = 0.8;
+        let spawnPos = { x: 0, y: startY - (moveSpeed * offset), z: 0.88 };
 
         const modelUrl = spiritData['Model URL'] || spiritData.modelUrl;
         const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
