@@ -110,7 +110,6 @@ wss.on('connection', (socket) => {
     spiritIntervalMs: SPIRIT_INTERVAL_MS
   }));
 
-  // KEIN nextSpirit() hier!
 
   // Timer starten, falls es der erste Client ist:
   if (wss.clients.size === 1) {
