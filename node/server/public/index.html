@@ -115,6 +115,19 @@
         width: 100%;
         max-width: 100%;
       }
+      #spirit-info .spirit-info-flex {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      @media (min-width: 900px) and (min-aspect-ratio: 5/4) {
+        #spirit-info .spirit-info-flex {
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 32px;
+        }
+      }
     }
 }
   </style>
