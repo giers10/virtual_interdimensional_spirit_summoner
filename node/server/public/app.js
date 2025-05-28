@@ -286,7 +286,6 @@ async function showSpirit(spirit) {
   const { scene: spiritObj } = await gltfLoader.loadAsync(spirit.modelUrl);
   spiritObj.traverse(mesh => {
     if (mesh.isMesh) {
-      console.log("yo");
       mesh.castShadow = true;
       mesh.receiveShadow = true;
       // weitere Material-Anpassungen...
