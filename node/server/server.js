@@ -5,6 +5,9 @@ const path = require('path');
 const fs = require('fs');
 
 // --- Server Setup ---
+const PORT = process.env.PORT || 3000;
+const HOST = '0.0.0.0';
+
 const app = express();
 const server = http.createServer(app);
 const wss = new ws.Server({ server });
@@ -132,7 +135,6 @@ wss.on('connection', (socket) => {
 pushSpiritToAllClients();
 
 // --- Server Start ---
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`[Server] Läuft auf http://localhost:${PORT}`);
+server.listen(PORT, HOST, () => {
+  console.log(`[Server] Läuft auf http://${HOST}:${PORT}`);
 });
