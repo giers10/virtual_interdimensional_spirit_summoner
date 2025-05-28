@@ -418,7 +418,7 @@ async function spawnSpirit(spiritData) {
     const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
     const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
     activeSpirits.push(spirit);
-    updateSpiritOverlay(spiritData);
+    //updateSpiritOverlay(spiritData);
 }
 
 // ---- Overlay-Logik ----
@@ -467,6 +467,36 @@ function showSpiritOverlay(spirit) {
         el.style.display = "none";
     };
 }
+
+// Mouse-Picking (zentral)
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function onClick(e) {
+    // Normierte Koordinaten im WebGL-Fenster:
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    // Sammle alle Meshes aus allen aktiven Spirits
+    let allMeshes = [];
+    for (const spirit of activeSpirits) {
+        spirit.gltf.traverse(mesh => {
+            if (mesh.isMesh) allMeshes.push(mesh);
+        });
+    }
+    const intersects = raycaster.intersectObjects(allMeshes, false);
+    if (intersects.length > 0) {
+        const mesh = intersects[0].object;
+        if (mesh.userData._spiritInfo) {
+            showSpiritOverlay(mesh.userData._spiritInfo);
+        }
+    }
+}
+
+// Fügt das Event hinzu:
+renderer.domElement.addEventListener('pointerdown', onClick);
 
 // Kein automatisches Update mehr! Nicht von spawnSpirit aufrufen!
 // (aber Option: „verstecke Overlay“ falls Spirit verschwindet, kann man so machen...)
