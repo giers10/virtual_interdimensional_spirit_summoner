@@ -34,7 +34,7 @@ const dpr = Math.min(window.devicePixelRatio, IS_MOBILE ? 1.0 : 2.0);
 renderer.setPixelRatio(dpr);
 container.appendChild(renderer.domElement);
 
-// ---- Postprocessing ----
+// ---- Foliage-Shader ----
 const foliageTexture = new THREE.TextureLoader().load('assets/images/sprites/foliage.png');
 foliageTexture.colorSpace = THREE.SRGBColorSpace;
 const FoliageOverlayShader = {
@@ -44,6 +44,9 @@ const FoliageOverlayShader = {
       void main() { vec4 base = texture2D(tDiffuse, vUv); vec4 foliage = texture2D(tFoliage, vUv); gl_FragColor = mix(base, vec4(foliage.rgb, base.a), foliage.a * opacity); }`
 };
 const foliageOverlayPass = new ShaderPass(FoliageOverlayShader);
+
+// --- Post-Processing ---
+
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 composer.addPass(foliageOverlayPass);
