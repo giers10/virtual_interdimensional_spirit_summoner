@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const wss = new ws.Server({ server });
 
 let spiritPos = 0;
-const SPIRIT_INTERVAL_MS = 20000; // 20 Sekunden
+const SPIRIT_INTERVAL_MS = 18000; // 20 Sekunden
 let lastSpiritSpawn = Date.now();
 let spiritTimer = null;
 
