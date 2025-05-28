@@ -368,9 +368,19 @@ async function showSpirit(spirit) {
   }
   console.log("Lade Spirit", spirit.modelUrl);
   const { scene: spiritObj } = await gltfLoader.loadAsync(spirit.modelUrl);
-  console.log("spiritObj children", spiritObj.children)
-  currentSpirit = new Spirit(scene, spiritObj, spirit);
-  window.currentSpirit = currentSpirit;
+  // TESTBLOCK
+  spiritObj.traverse(mesh => {
+    if (mesh.isMesh) {
+      mesh.material.opacity = 1;
+      mesh.material.transparent = false;
+      mesh.material.color.set(0xffffff);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+    }
+  });
+  spiritObj.position.set(0, 0, 0); // GANZ vorne
+  scene.add(spiritObj);
+  window.lastSpiritObj = spiritObj; // Debug
   updateSpiritOverlay(spirit);
 }
 
