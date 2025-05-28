@@ -425,7 +425,7 @@ function updateSpiritOverlay(spirit) {
         document.body.appendChild(el);
     }
     el.innerHTML = `
-      <b>${spirit.Name || 'Spirit'}</b><br>
+      <h2>${spirit.Name || 'Spirit'}</h2><br>
       <i>${spirit.Kategorie || ''}${spirit.Herkunft ? ' – ' + spirit.Herkunft : ''}</i><br>
       <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
       <b>Charakter:</b> ${spirit.Charakter || ''}<br>
