@@ -447,11 +447,18 @@ function showSpiritOverlay(spirit) {
         `;
         document.body.appendChild(el);
     }
+
+    // --- Canvas-Container ---
     el.innerHTML = `
         <button id="spirit-overlay-close" style="
             position:absolute; right:12px; top:12px; border:none; background:none;
             color:#fff; font-size:1.5em; cursor:pointer; padding:0; line-height:1;
         " title="Schließen">&times;</button>
+        <div id="spirit-model-preview" style="
+            width: 270px; height: 210px; margin:0 auto 10px auto; display: flex; align-items: center; justify-content: center;
+            background: #111; border-radius: 10px; box-shadow: 0 2px 16px #0006;">
+            <!-- Canvas wird hier erzeugt -->
+        </div>
         <h2 style='padding:0; margin:0 0 8px 0; font-weight:700; letter-spacing:0.04em;'>${spirit.Name || 'Spirit'}</h2>
         <b>${spirit.Kategorie || ''}</b><br><br>
         <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
@@ -462,10 +469,14 @@ function showSpiritOverlay(spirit) {
     el.style.display = "block";
     lastOverlaySpiritData = spirit;
 
-    // Close-Button Event
     el.querySelector("#spirit-overlay-close").onclick = () => {
         el.style.display = "none";
+        destroySpiritModelPreview();
     };
+
+    // Lade das Model neu für die Vorschau:
+    setupSpiritModelPreview(spirit);
+
 }
 
 // Mouse-Picking (zentral)
