@@ -54,13 +54,11 @@ const foliageOverlayPass = new ShaderPass(FoliageOverlayShader);
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 composer.addPass(foliageOverlayPass);
-if (!IS_MOBILE) {
-    composer.addPass(new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.8, 0.2, 0.4));
-    const vignettePass = new ShaderPass(VignetteShader);
-    vignettePass.uniforms['offset'].value = 0.3;
-    vignettePass.uniforms['darkness'].value = 1.35;
-    composer.addPass(vignettePass);
-}
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.8, 0.2, 0.4));
+const vignettePass = new ShaderPass(VignetteShader);
+vignettePass.uniforms['offset'].value = 0.3;
+vignettePass.uniforms['darkness'].value = 1.35;
+composer.addPass(vignettePass);
 composer.addPass(new ShaderPass(GammaCorrectionShader));
 
 // ---- Resize Handler ----
