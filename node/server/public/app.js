@@ -300,13 +300,12 @@ class Spirit {
         this.grp = new THREE.Group();
         this.gltf = gltfScene;
         this.info = info || {};
-        this.spawnY = spawnPosition.y;
+        this.spawnY = spawnPosition.y; // immer gleiche Start-Y
         this.clock = new THREE.Clock();
         this.isFading = true;
         this.lifeTime = 20; // Sekunden
         this.spiritMeshes = [];
         this.grp.add(this.gltf);
-        // exakt wie im Original: rotate, platzieren, leicht nach hinten
         this.gltf.rotation.x = -Math.PI;
         this.grp.position.set(spawnPosition.x, spawnPosition.y, spawnPosition.z - 0.6);
 
@@ -327,7 +326,7 @@ class Spirit {
         this._setupPicking();
         this.scene.add(this.grp);
     }
-
+    
     update(dt) {
         const t = this.clock.getElapsedTime();
         // Fading
