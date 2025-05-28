@@ -15,6 +15,9 @@ function isMobileDevice() {
 const IS_MOBILE = isMobileDevice();
 const LOW_PERFORMANCE = IS_MOBILE; // ... später aus FPS ableitbar
 
+let targetFps = LOW_PERFORMANCE ? 24 : 60;
+let lastAnim = 0;
+
 const container = document.getElementById('viewer');
 
 // ---- Basis Three.js Szene ----
