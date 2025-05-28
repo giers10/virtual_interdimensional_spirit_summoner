@@ -47,32 +47,28 @@ composer.addPass(new ShaderPass(GammaCorrectionShader));
 function onResize() {
     const winW = window.innerWidth, winH = window.innerHeight;
     const aspect = 3/2;
-    let renderW, renderH;
 
+    let renderW, renderH;
     if (winW / winH > aspect) {
-        // Fenster ist breiter als 3:2 → fülle in Höhe, überstehende Breite
-        renderH = winH;
-        renderW = winH * aspect;
-    } else {
-        // Fenster ist schmaler als 3:2 → fülle in Breite, überstehende Höhe
+        // Fenster ist breiter → passe an Breite an, Höhe reicht nicht aus → Höhe muss „überragen“
         renderW = winW;
         renderH = winW / aspect;
+    } else {
+        // Fenster ist höher/schmaler → passe an Höhe an, Breite reicht nicht aus → Breite muss „überragen“
+        renderH = winH;
+        renderW = winH * aspect;
     }
-    // Setze die Größe des Renderers und Canvas
-    renderer.setSize(renderW, renderH, false); // "false": ändert nicht das Canvas-Element selbst!
+    renderer.setSize(renderW, renderH, false);
     composer.setSize(renderW, renderH);
 
-    // Platziere das Canvas absolut zentriert, setze style.width/height so dass es "überragt"
     renderer.domElement.style.width = `${renderW}px`;
     renderer.domElement.style.height = `${renderH}px`;
     renderer.domElement.style.left = '50%';
     renderer.domElement.style.top = '50%';
     renderer.domElement.style.transform = 'translate(-50%, -50%)';
 
-    // Scissor/Viewport: Zeige die ganze Fläche, kein „Clipping“ nötig
     renderer.setScissorTest(false);
 
-    // Pixel Ratio
     const dpr = window.devicePixelRatio || 1;
     renderer.setPixelRatio(dpr);
     composer.setPixelRatio(dpr);
