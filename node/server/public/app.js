@@ -376,4 +376,5 @@ function animate() {
     }
 
     composer.render(scene, camera);
-    requestAnimation
+    requestAnimationFrame(animate);
+}
