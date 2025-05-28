@@ -380,6 +380,8 @@ async function showSpirit(spirit) {
   });
   spiritObj.position.set(0, 0, 0); // GANZ vorne
   scene.add(spiritObj);
+  const box = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshStandardMaterial({ color: 0xff0000 }));
+  scene.add(box);
   window.lastSpiritObj = spiritObj; // Debug
   updateSpiritOverlay(spirit);
 }
