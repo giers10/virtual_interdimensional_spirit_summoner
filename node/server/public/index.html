@@ -113,12 +113,12 @@ canvas {
 }
 
 /* "Mobile Portrait" (Hochformat und schmal) */
-@media (max-width: 619px), (orientation: portrait) {
+@media (max-width: 619px) and (orientation: portrait) {
   #spirit-info {
-    width: 40vw;
+    width: 90vw;
     max-width: 98vw;
     min-width: 0;
-    max-height: 82dvh; /* dynamic viewport height */
+    max-height: 82dvh;
     padding: 8vw 4vw 4vw 4vw;
   }
   .spirit-info-flex {
