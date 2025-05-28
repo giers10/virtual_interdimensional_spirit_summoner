@@ -152,6 +152,7 @@ class SpinnerController {
         this.counterLights = [];
         this.center = new THREE.Vector3(0, 16.55, 1.5);
         this.LIGHT_RADIUS = 1;
+        this.mobileLight = null;
         this.baseY = 16.55;
         this.clock = new THREE.Clock();
         this.ws = null;
@@ -174,11 +175,20 @@ class SpinnerController {
         this.spinnerRed = await this.loadSpinner('assets/models/spinner_red.glb', [0, 16.55, 0.88], [90, 0, 0], "#ff3333", 0.2);
         this.spinnerBlue = await this.loadSpinner('assets/models/spinner_blue.glb', [0, 16.55, 0.88], [90, 0, 0], "#3380ff", 0.2);
 
-        for (let i = 0; i < 3; i++) {
-            const L = new THREE.PointLight(0xFFA230, 5, 30); L.castShadow = true;
-            this.lights.push(L); this.scene.add(L);
-            const L2 = new THREE.PointLight(0xFFA230, 5, 30); L2.castShadow = true;
-            this.counterLights.push(L2); this.scene.add(L2);
+        if (IS_MOBILE) {
+            // --- Nur ein zentrales Licht auf Mobile
+            this.mobileLight = new THREE.PointLight(0xFFA230, 20, 55); // Viel Heller, größere Reichweite
+            this.mobileLight.position.set(this.center.x, this.center.y, this.center.z);
+            this.mobileLight.castShadow = false; // Für Performance auf Mobile
+            this.scene.add(this.mobileLight);
+        } else {
+            // --- Desktop wie gehabt
+            for (let i = 0; i < 3; i++) {
+                const L = new THREE.PointLight(0xFFA230, 5, 30); L.castShadow = true;
+                this.lights.push(L); this.scene.add(L);
+                const L2 = new THREE.PointLight(0xFFA230, 5, 30); L2.castShadow = true;
+                this.counterLights.push(L2); this.scene.add(L2);
+            }
         }
 
         this.connectWebSocket();
@@ -244,23 +254,34 @@ class SpinnerController {
                     c.material.emissiveIntensity = T.emission;
             });
         }
-        for (let i = 0; i < this.lights.length; i++) {
-            const ang = t * 0.8 + i * 2 * Math.PI / 3;
-            this.lights[i].position.set(
-                this.center.x + Math.cos(ang) * this.LIGHT_RADIUS,
-                this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
-                this.center.z
-            );
-            this.lights[i].intensity = T.lightIntensity;
-        }
-        for (let i = 0; i < this.counterLights.length; i++) {
-            const ang = -t * 0.8 + i * 2 * Math.PI / 3;
-            this.counterLights[i].position.set(
-                this.center.x + Math.cos(ang) * this.LIGHT_RADIUS,
-                this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
-                this.center.z
-            );
-            this.counterLights[i].intensity = T.lightIntensity;
+
+        if (IS_MOBILE) {
+            // Mobile: zentrales Licht direkt an den Spinner-Positionen halten
+            if (this.mobileLight) {
+                // In der Mitte zwischen beiden Spinners
+                this.mobileLight.position.set(this.center.x, baseY + 0.4, this.center.z);
+                this.mobileLight.intensity = T.lightIntensity * 3;  // Noch heller als Desktop
+            }
+        } else {
+            // Desktop: Normale Lichtbewegung
+            for (let i = 0; i < this.lights.length; i++) {
+                const ang = t * 0.8 + i * 2 * Math.PI / 3;
+                this.lights[i].position.set(
+                    this.center.x + Math.cos(ang) * this.LIGHT_RADIUS,
+                    this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
+                    this.center.z
+                );
+                this.lights[i].intensity = T.lightIntensity;
+            }
+            for (let i = 0; i < this.counterLights.length; i++) {
+                const ang = -t * 0.8 + i * 2 * Math.PI / 3;
+                this.counterLights[i].position.set(
+                    this.center.x + Math.cos(ang) * this.LIGHT_RADIUS,
+                    this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
+                    this.center.z
+                );
+                this.counterLights[i].intensity = T.lightIntensity;
+            }
         }
     }
 
