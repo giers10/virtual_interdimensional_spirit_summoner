@@ -11,7 +11,6 @@ const wss = new ws.Server({ server });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 const SPIRITS_PATH = path.join(__dirname, '.', 'spirits', 'spirit_list.json');
 let spirits = [];
 function shuffleArray(arr) {
@@ -47,11 +46,15 @@ function nextSpirit() {
 // --- WebSocket Logik mit Timer-Steuerung ---
 let spiritTimer = null;
 
+// *** NEU: Timer-Spawn ohne Offset ***
 function pushSpiritToAllClients() {
   const spirit = spirits[spiritPos];
-  const now = Date.now();
-  lastSpiritSpawn = now;
-  const payload = JSON.stringify({ type: 'spirit', data: spirit, ts: now });
+  lastSpiritSpawn = Date.now();
+  const payload = JSON.stringify({
+    type: 'spirit',
+    data: spirit
+    // KEIN Offset, kein Interval notwendig
+  });
   wss.clients.forEach(client => {
     if (client.readyState === ws.OPEN) {
       client.send(payload);
@@ -77,7 +80,7 @@ function stopSpiritTimer() {
     clearInterval(spiritTimer);
     spiritTimer = null;
     console.log('[Server] Spirit-Timer gestoppt');
-    nextSpirit();
+    nextSpirit(); // Rotiert für Singleuser wie gewünscht
   }
 }
 
@@ -94,12 +97,12 @@ function hasOpenClients() {
 wss.on('connection', (socket) => {
   console.log('[Server] Neuer Client verbunden');
 
-  // Zeit seit letztem Spirit-Spawn:
+  // Zeit seit letztem Spirit-Spawn berechnen
   const now = Date.now();
   const timeSinceSpawnMs = now - lastSpiritSpawn;
   const spirit = spirits[spiritPos];
 
-  // Sende Spirit, Zeitdifferenz und Intervall an neuen Client
+  // Sende Spirit + Zeit-Offset und Intervall NUR beim Verbindungsaufbau!
   socket.send(JSON.stringify({
     type: 'spirit',
     data: spirit,
@@ -107,7 +110,7 @@ wss.on('connection', (socket) => {
     spiritIntervalMs: SPIRIT_INTERVAL_MS
   }));
 
-  // --- WICHTIG: KEIN nextSpirit() hier! ---
+  // --- KEIN nextSpirit()! ---
 
   // Starte Timer falls das der erste Client ist
   if (wss.clients.size === 1) {
