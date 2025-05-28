@@ -368,6 +368,7 @@ async function showSpirit(spirit) {
   }
   console.log("Lade Spirit", spirit.modelUrl);
   const { scene: spiritObj } = await gltfLoader.loadAsync(spirit.modelUrl);
+  console.log("spiritObj children", spiritObj.children)
   currentSpirit = new Spirit(scene, spiritObj, spirit);
   window.currentSpirit = currentSpirit;
   updateSpiritOverlay(spirit);
