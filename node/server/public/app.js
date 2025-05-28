@@ -50,14 +50,17 @@ function onResize() {
     let renderW, renderH, styleW, styleH;
 
     if (winW / winH > aspect) {
+        // Querformat (breit) → CONTAIN
         renderH = winH;
         renderW = winH * aspect;
         styleW = `${renderW}px`;
         styleH = `${renderH}px`;
     } else {
+        // Hochformat oder quadratisch → COVER
         renderW = winW;
         renderH = winW / aspect;
         if (renderH < winH) {
+            // Ist nach Covern immer noch zu klein? Dann auf volle Höhe und rechts/links abschneiden
             renderH = winH;
             renderW = winH * aspect;
         }
@@ -117,7 +120,8 @@ draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(draco);
 
-// ---- SpinnerController ----
+
+// Virtuelles Interdimensionales Geisterteleportationsgerät
 class SpinnerController {
     constructor(scene) {
         this.scene = scene;
@@ -131,15 +135,16 @@ class SpinnerController {
         this.clock = new THREE.Clock();
         this.ws = null;
         this.reconnectDelay = 2000;
-        this.connected = false;
+        this.connected = false; // Verbindungsstatus
+
+        // Werte für sanften Übergang
         this.transition = {
             emission: 3.0, targetEmission: 3.0,
             bobMult: 0.5, targetBobMult: 0.5,
             rotSpeed: 1.2, targetRotSpeed: 1.2,
             lightIntensity: 5, targetLightIntensity: 5,
-            lerpSpeed: 1/3
+            lerpSpeed: 1/3  // 1/x Sekunden bis Ziel (hier: ca. 3s)
         };
-        this.activeSpirits = [];
 
         this.init();
     }
@@ -186,8 +191,10 @@ class SpinnerController {
         return obj;
     }
 
+    // --- Werte sanft angleichen ---
     smoothTransition(dt) {
         let T = this.transition;
+        // Zielwerte setzen
         if (this.connected) {
             T.targetEmission = 3.0;
             T.targetBobMult = 0.5;
@@ -199,7 +206,8 @@ class SpinnerController {
             T.targetRotSpeed = 0.08;
             T.targetLightIntensity = 0;
         }
-        const s = T.lerpSpeed * dt;
+        // Lerp (sanft angleichen)
+        const s = T.lerpSpeed * dt; // kleiner dt → smooth
         T.emission += (T.targetEmission - T.emission) * s;
         T.bobMult += (T.targetBobMult - T.bobMult) * s;
         T.rotSpeed += (T.targetRotSpeed - T.rotSpeed) * s;
@@ -213,12 +221,14 @@ class SpinnerController {
         const bob = Math.sin(t * 1.2) * T.bobMult;
         const baseY = this.baseY + bob;
 
+        // Spinner
         if (this.spinnerRed && this.spinnerBlue) {
             this.spinnerRed.position.y = baseY + 0.8;
             this.spinnerBlue.position.y = baseY;
             this.spinnerRed.rotation.y -= T.rotSpeed * dt;
             this.spinnerBlue.rotation.y += T.rotSpeed * dt;
 
+            // Emission auf beide Spinner anwenden
             this.spinnerRed.traverse(c => {
                 if (c.isMesh && c.material && c.material.isMeshStandardMaterial)
                     c.material.emissiveIntensity = T.emission;
@@ -229,6 +239,7 @@ class SpinnerController {
             });
         }
 
+        // Rotierende Lichter (jetzt mit smooth intensity und Speed)
         for (let i = 0; i < this.lights.length; i++) {
             const ang = t * 0.8 + i * 2 * Math.PI / 3;
             this.lights[i].position.set(
@@ -260,9 +271,11 @@ class SpinnerController {
             const msg = JSON.parse(event.data);
             if (msg.type === 'spirit') {
                 if (typeof msg.timeSinceSpawnMs === "number" && msg.timeSinceSpawnMs > 0) {
-                    await this.spawnSpiritWithOffset(msg.data, msg.timeSinceSpawnMs, msg.spiritIntervalMs);
+                    // Initiale Verbindung: Mit Offset
+                    spawnSpiritWithOffset(msg.data, msg.timeSinceSpawnMs, msg.spiritIntervalMs);
                 } else {
-                    await this.spawnSpirit(msg.data);
+                    // Normales Timer-Event
+                    spawnSpirit(msg.data);
                 }
             }
         });
@@ -277,39 +290,8 @@ class SpinnerController {
             this.ws.close();
         });
     }
-
-    async spawnSpirit(spiritData) {
-        let spawnPos = { 
-            x: 0, 
-            y: this.spinnerRed ? this.spinnerRed.position.y - 1.5 : 15, 
-            z: 0.88 
-        };
-        const modelUrl = spiritData['Model URL'] || spiritData.modelUrl;
-        const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
-        const spirit = new Spirit(this.scene, gltfScene, spiritData, spawnPos);
-        spirit.clock.start();
-        this.activeSpirits.push(spirit);
-    }
-
-    async spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
-        let startY = this.spinnerRed ? this.spinnerRed.position.y - 1.5 : 15;
-        let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
-        let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
-        const despawnSpeed = 0.8;
-        let spawnPos = { x: 0, y: startY - (despawnSpeed * offset), z: 0.88 };
-
-        const modelUrl = spiritData['Model URL'] || spiritData.modelUrl;
-        const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
-
-        const spirit = new Spirit(this.scene, gltfScene, spiritData, spawnPos);
-        spirit.clock.start();
-        if (offset > 0 && offset < lifeTime) {
-            spirit.clock.elapsedTime = offset;
-        }
-        spirit.lifeTime = lifeTime;
-        this.activeSpirits.push(spirit);
-    }
 }
+
 
 // ---- Spirit-Klasse ----
 class Spirit {
@@ -318,10 +300,10 @@ class Spirit {
         this.grp = new THREE.Group();
         this.gltf = gltfScene;
         this.info = info || {};
-        this.spawnY = spawnPosition.y;
+        this.spawnY = spawnPosition.y; // immer gleiche Start-Y
         this.clock = new THREE.Clock();
         this.isFading = true;
-        this.lifeTime = 20;
+        this.lifeTime = 20; // Sekunden
         this.spiritMeshes = [];
         this.grp.add(this.gltf);
         this.gltf.rotation.x = -Math.PI;
@@ -349,8 +331,10 @@ class Spirit {
         const t = this.clock.getElapsedTime();
         const despawnSpeed = 0.8;
 
+        // **NEU: Y-Position dynamisch berechnen!**
         this.grp.position.y = this.spawnY - despawnSpeed * t;
 
+        // Fading
         if (this.spiritMeshes && this.isFading) {
             for (const mesh of this.spiritMeshes) {
                 if (t < 0.5) {
@@ -394,6 +378,7 @@ class Spirit {
     }
 
     _setupPicking() {
+        // Hier ein einfacher Ansatz: Mesh mit Info-Objekt merken!
         this.gltf.traverse(mesh => {
             if (mesh.isMesh) {
                 mesh.userData._spiritInfo = this.info;
@@ -405,9 +390,11 @@ class Spirit {
 // ---- Szene initialisieren ----
 let spinnerController;
 let landscape, torigate, shadowTree;
+const activeSpirits = [];
 const clock = new THREE.Clock();
 
 (async () => {
+    // Lade statische Models
     landscape = await loadGLB('assets/models/landscape.glb', [0, 0, 0], [90, 0, 0], { receiveShadow: true, castShadow: true });
     torigate = await loadGLB('assets/models/tori.glb', [0, 6.59, 0.375], [90, 0, 0], { receiveShadow: true, castShadow: true });
     shadowTree = await loadGLB('assets/models/tree_low.glb', [0, 0, 0], [90, 0, 0], { receiveShadow: false, castShadow: true, shadowOnly: true });
@@ -442,23 +429,131 @@ async function loadGLB(path, pos, rotDeg, { receiveShadow = false, castShadow = 
     return obj;
 }
 
-// ---- Overlay, Picking, Render-Loop ----
+// ---- Spirit spawnen ----
+async function spawnSpirit(spiritData) {
+    let spawnPos = { x: 0, y: spinnerController && spinnerController.spinnerRed ? spinnerController.spinnerRed.position.y - 1.5 : 15, z: 0.88 };
+    const modelUrl = spiritData['Model URL'] || spiritData.modelUrl; // Fallback!
+    const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
+    const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
+    spirit.clock.start(); // neu!
+    activeSpirits.push(spirit);
+}
+
+async function spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
+    let spawnPos = { x: 0, y: spinnerController && spinnerController.spinnerRed ? spinnerController.spinnerRed.position.y - 1.5 : 15, z: 0.88 };
+    const modelUrl = spiritData['Model URL'] || spiritData.modelUrl;
+    const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
+
+    let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
+    let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
+
+    const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
+    spirit.clock.start();
+    if (offset > 0 && offset < lifeTime) {
+        spirit.clock.elapsedTime = offset;
+    }
+    spirit.lifeTime = lifeTime;
+    activeSpirits.push(spirit);
+}
+
+// ---- Overlay-Logik ----
 let lastOverlaySpiritData = null;
 
-function showSpiritOverlay(spirit) { /* ...deine Overlay-Logik... */ }
-function closeSpiritOverlay() { /* ...deine Close-Logik... */ }
+// Overlay zentriert in der Mitte mit Schließen-X
+function showSpiritOverlay(spirit) {
+    // Entferne evtl. vorherige Overlay-Elemente
+    document.getElementById('spirit-info-backdrop')?.remove();
 
+    // Erzeuge einen semi-transparenten Backdrop
+    const backdrop = document.createElement('div');
+    backdrop.id = 'spirit-info-backdrop';
+    backdrop.style = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.55);
+        z-index: 9998;
+    `;
+    document.body.appendChild(backdrop);
+
+    let el = document.getElementById('spirit-info');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = 'spirit-info';
+        el.style = `
+            position: fixed;
+            left: 50%; top: 50%;
+            transform: translate(-50%,-50%);
+            color: white;
+            background: rgba(0,0,0,0.94);
+            padding: 28px 36px 24px 36px;
+            border-radius: 18px;
+            font-family: 'Segoe UI', sans-serif;
+            z-index: 9999;
+            max-width: 560px;
+            min-width: 320px;
+            box-shadow: 0 12px 64px #000a;
+            text-align: left;
+        `;
+        document.body.appendChild(el);
+    }
+    el.innerHTML = `
+        <button id="spirit-overlay-close" style="
+            position:absolute; right:-16px; top:-16px;
+            width:56px; height:56px;
+            background:none; border:none; border-radius:50%;
+            color:#fff; font-size:2.5em; cursor:pointer;
+            line-height:1; display:flex; align-items:center; justify-content:center;
+            box-shadow: 0 0 16px #0008;
+            transition: background 0.18s;
+        " title="Schließen" tabindex="0"
+        onmouseover="this.style.background='rgba(255,255,255,0.10)'"
+        onmouseout="this.style.background='none'"
+        >&times;</button>
+        ${spirit['Image URL'] ? `<img src="${spirit['Image URL']}" alt="Spirit Image" style="display:block; margin:0 auto 18px auto; max-width:240px; max-height:180px; border-radius:9px; background:#222;">` : ''}
+        <h2 style='padding:0; margin:0 0 8px 0; font-weight:700; letter-spacing:0.04em;'>${spirit.Name || 'Spirit'}</h2>
+        <b>${spirit.Kategorie || ''}</b><br><br>
+        <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
+        <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
+        <b>Charakter:</b> ${spirit.Charakter || ''}<br><br>
+        ${spirit.Herkunft ? '<i>' + spirit.Herkunft + '</i>' : ''}
+    `;
+    el.style.display = "block";
+    lastOverlaySpiritData = spirit;
+
+    // Close-Button Event (X + Fläche)
+    el.querySelector("#spirit-overlay-close").onclick = () => closeSpiritOverlay();
+
+    // Schließen beim Klick auf den Backdrop
+    backdrop.onclick = (e) => {
+        if (e.target === backdrop) closeSpiritOverlay();
+    };
+    // Schließen bei Escape bleibt:
+    document.onkeydown = (e) => {
+        if (e.key === 'Escape') closeSpiritOverlay();
+    };
+}
+
+// Ausgelagerte Close-Logik (zentral, für mehrfaches Schließen)
+function closeSpiritOverlay() {
+    document.getElementById('spirit-info')?.remove();
+    document.getElementById('spirit-info-backdrop')?.remove();
+    document.onkeydown = null;
+}
+
+// Mouse-Picking (zentral)
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 function onClick(e) {
+    // Normierte Koordinaten im WebGL-Fenster:
     const rect = renderer.domElement.getBoundingClientRect();
     mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
+    // Sammle alle Meshes aus allen aktiven Spirits
     let allMeshes = [];
-    for (const spirit of spinnerController.activeSpirits) {
+    for (const spirit of activeSpirits) {
         spirit.gltf.traverse(mesh => {
             if (mesh.isMesh) allMeshes.push(mesh);
         });
@@ -471,15 +566,23 @@ function onClick(e) {
         }
     }
 }
+
+// Fügt das Event hinzu:
 renderer.domElement.addEventListener('pointerdown', onClick);
 
+// Kein automatisches Update mehr! Nicht von spawnSpirit aufrufen!
+// (aber Option: „verstecke Overlay“ falls Spirit verschwindet, kann man so machen...)
+
+// ---- Render-Loop ----
 function animate() {
     const dt = clock.getDelta(), t = clock.getElapsedTime();
+    // Spinner-Animation & Netzwerk
     if (spinnerController) spinnerController.animate(dt, t);
 
-    for (let i = spinnerController.activeSpirits.length - 1; i >= 0; i--) {
-        if (!spinnerController.activeSpirits[i].update(dt)) {
-            spinnerController.activeSpirits.splice(i, 1);
+    // Update & remove expired spirits:
+    for (let i = activeSpirits.length - 1; i >= 0; i--) {
+        if (!activeSpirits[i].update(dt)) {
+            activeSpirits.splice(i, 1);
         }
     }
 
