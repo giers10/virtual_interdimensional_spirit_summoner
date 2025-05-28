@@ -93,12 +93,11 @@ wss.on('connection', (socket) => {
   console.log('[Server] Neuer Client verbunden');
 
   // Sende sofort den aktuellen Spirit an neuen Client
-  socket.send(JSON.stringify({ type: 'spirit', data: spirits[spiritPos] }));
-  nextSpirit(); // <<-- WICHTIG: Auch beim Connect weiterzählen
 
   // Starte Timer falls das der erste Client ist
   if (wss.clients.size === 1) {
     startSpiritTimer();
+    socket.send(JSON.stringify({ type: 'spirit', data: spirits[spiritPos] }));
   }
 
   // Verbindung verloren: Timer ggf. stoppen
