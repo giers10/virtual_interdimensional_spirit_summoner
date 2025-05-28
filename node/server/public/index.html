@@ -40,73 +40,83 @@
     }
     /* Responsive Overlay */
     #spirit-info {
-      box-sizing: border-box !important;
-      position: fixed !important;
-      left: 50% !important;
-      top: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      background: rgba(0,0,0,0.94) !important;
-      color: #fff !important;
-      border-radius: 18px !important;
-      font-family: 'Segoe UI', sans-serif !important;
-      box-shadow: 0 12px 64px #000a !important;
-      padding: 4vw 4vw 4vw 4vw !important;
-      width: 80vw !important;
-      max-width: 600px !important;
-      min-width: 0 !important;
-      max-height: 80vh !important;
-      overflow-y: auto !important;
+      box-sizing: border-box;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.94);
+      color: #fff;
+      border-radius: 18px;
+      font-family: 'Segoe UI', sans-serif;
+      box-shadow: 0 12px 64px #000a;
+      width: 80vw;
+      max-width: 900px;
+      min-width: 0;
+      max-height: 80vh;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      padding: 5vw;
+      gap: 18px;
     }
 
-    /* Mobile: Bild oben, Text darunter, an allen Seiten 10% Abstand */
-    @media (max-width: 900px), (max-aspect-ratio: 4/5) {
+    /* Bild und Content als Grid/Side-by-Side nur auf großen Screens */
+    @media (min-width: 900px) and (min-aspect-ratio: 5/4) {
       #spirit-info {
-        flex-direction: column !important;
-        width: 80vw !important;
-        max-width: 98vw !important;
-        min-width: 0 !important;
-        max-height: 80vh !important;
-        padding: 10vw 4vw !important;
-        gap: 14px !important;
-      }
-      #spirit-info img {
-        display: block !important;
-        margin: 0 auto 18px auto !important;
-        max-width: 80vw !important;
-        max-height: 30vh !important;
-        border-radius: 12px !important;
-        background: #222 !important;
-      }
-    }
-
-    /* Desktop: Bild links, Text rechts */
-    @media (min-width: 901px) and (min-aspect-ratio: 4/5) {
-      #spirit-info {
-        flex-direction: row !important;
+        flex-direction: row;
         align-items: flex-start;
-        gap: 32px !important;
-        width: 80vw !important;
-        max-width: 900px !important;
-        max-height: 80vh !important;
-        padding: 4vw !important;
+        gap: 32px;
+        padding: 3vw 4vw;
+        width: 80vw;
+        max-width: 900px;
+        max-height: 80vh;
       }
       #spirit-info img {
-        display: block !important;
-        margin: 0 !important;
-        max-width: 320px !important;
-        max-height: 60vh !important;
-        border-radius: 12px !important;
-        background: #222 !important;
+        max-width: 320px;
+        max-height: 60vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 12px;
+        background: #222;
+        flex-shrink: 0;
+        margin: 0;
+        display: block;
       }
       #spirit-info .spirit-info-content {
         flex: 1 1 0;
         min-width: 200px;
-        max-width: 500px;
+        max-width: 520px;
       }
     }
+
+    /* Mobile: Bild oben, Text unten */
+    @media (max-width: 899px), (max-aspect-ratio: 5/4) {
+      #spirit-info {
+        flex-direction: column;
+        width: 90vw;
+        max-width: 98vw;
+        padding: 10vw 5vw 5vw 5vw;
+        gap: 14px;
+      }
+      #spirit-info img {
+        display: block;
+        margin: 0 auto 18px auto;
+        max-width: 84vw;
+        max-height: 30vh;
+        border-radius: 12px;
+        background: #222;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+      #spirit-info .spirit-info-content {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+}
   </style>
 </head>
 <body>
