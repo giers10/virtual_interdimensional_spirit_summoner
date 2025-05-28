@@ -584,21 +584,23 @@ renderer.domElement.addEventListener('pointerdown', onClick);
 // (aber Option: „verstecke Overlay“ falls Spirit verschwindet, kann man so machen...)
 
 // ---- Render-Loop ----
-function animate() {
-    const dt = clock.getDelta(), t = clock.getElapsedTime();
-    // Spinner-Animation & Netzwerk
-    if (spinnerController) spinnerController.animate(dt, t);
+function animate(now) {
+    requestAnimationFrame(animate);
+    // FPS-Limitierung
+    if (now - lastAnim < 1000 / targetFps) return;
+    lastAnim = now;
 
-    // Update & remove expired spirits:
+    // ... Rest wie gehabt ...
+    const dt = clock.getDelta(), t = clock.getElapsedTime();
+    if (spinnerController) spinnerController.animate(dt, t);
     for (let i = activeSpirits.length - 1; i >= 0; i--) {
         if (!activeSpirits[i].update(dt)) {
             activeSpirits.splice(i, 1);
         }
     }
-
     composer.render(scene, camera);
-    requestAnimationFrame(animate);
 }
+requestAnimationFrame(animate);
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
