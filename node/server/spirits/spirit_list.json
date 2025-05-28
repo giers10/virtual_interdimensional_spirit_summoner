@@ -1,10 +1,7 @@
 [
   {
-    "type": "spirit",
-    "data": {
-      "modelUrl": "/assets/models/spirits/Yuki_Onna.glb",
-      "name": "Yuki Onna",
-      "desc": "Eine geheimnisvolle Schneefrau aus der japanischen Mythologie."
-    }
+    "name": "Yuki Onna",
+    "desc": "Schneegeist",
+    "modelUrl": "/assets/models/spirits/Yuki_Onna.glb"
   }
 ]
