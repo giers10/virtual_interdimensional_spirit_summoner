@@ -26,10 +26,12 @@ camera.rotation.set(THREE.MathUtils.degToRad(55), 0, 0);
 
 // --- Renderer ---
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: !IS_MOBILE });
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.enabled = !IS_MOBILE;
+renderer.shadowMap.type = IS_MOBILE ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
+const dpr = Math.min(window.devicePixelRatio, IS_MOBILE ? 1.0 : 2.0);
+renderer.setPixelRatio(dpr);
 container.appendChild(renderer.domElement);
 
 // ---- Postprocessing ----
