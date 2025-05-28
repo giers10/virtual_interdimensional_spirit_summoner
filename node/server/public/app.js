@@ -335,7 +335,7 @@ class Spirit {
             }
         }
         // Vertikales Despawn-Movement
-        this.grp.position.y -= 1 * dt;
+        this.grp.position.y -= 0.2 * dt;
         // Nach Lebenszeit entfernen
         if (t > this.lifeTime) {
             this.dispose();
