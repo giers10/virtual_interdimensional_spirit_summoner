@@ -32,7 +32,7 @@ camera.rotation.set(THREE.MathUtils.degToRad(55), 0, 0);
 
 const renderer = new THREE.WebGLRenderer({ antialias: !IS_MOBILE });
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.shadowMap.enabled = !IS_MOBILE;
+renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = IS_MOBILE ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
 const dpr = Math.min(window.devicePixelRatio || 1, IS_MOBILE ? 1 : 2);
 renderer.setPixelRatio(dpr);
