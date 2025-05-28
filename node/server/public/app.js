@@ -61,7 +61,7 @@ if (!IS_MOBILE) {
     vignettePass.uniforms['darkness'].value = 1.35;
     composer.addPass(vignettePass);
 }
-composer.addPass(new ShaderPass(GammaCorrectionShader));
+//composer.addPass(new ShaderPass(GammaCorrectionShader));
 
 // ---- Resize Handler ----
 function onResize() {
