@@ -329,6 +329,11 @@ class Spirit {
     
     update(dt) {
         const t = this.clock.getElapsedTime();
+        const despawnSpeed = 0.8;
+
+        // **NEU: Y-Position dynamisch berechnen!**
+        this.grp.position.y = this.spawnY - despawnSpeed * t;
+
         // Fading
         if (this.spiritMeshes && this.isFading) {
             for (const mesh of this.spiritMeshes) {
@@ -351,12 +356,8 @@ class Spirit {
                 }
             }
         }
-        // Vertikales Despawn-Movement
-        this.grp.position.y -= 0.8 * dt;
-        // Nach Lebenszeit entfernen
         if (t > this.lifeTime) {
             this.dispose();
-            return false;
         }
         return true;
     }
