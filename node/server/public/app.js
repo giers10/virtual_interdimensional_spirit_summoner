@@ -512,7 +512,7 @@ function showSpiritOverlay(spirit) {
     }
     el.innerHTML = `
         <button id="spirit-overlay-close" style="
-            position:absolute; right:0px; top:0px;
+            position:absolute; right:0px; top:-5px;
             width:56px; height:56px;
             background:none; border:none; border-radius:50%;
             color:#fff; font-size:2.5em; cursor:pointer;
