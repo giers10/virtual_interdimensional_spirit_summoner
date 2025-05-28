@@ -1,5 +1,19 @@
-// public/app.js
+import * as THREE from 'three';
+import { GLTFLoader } from 'GLTFLoader';
+import { DRACOLoader } from 'DRACOLoader';
+import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/ShaderPass.js';
+import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { GammaCorrectionShader } from 'https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/GammaCorrectionShader.js';
+import { VignetteShader } from "https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/shaders/VignetteShader.js";
 
+// ---- Deine komplette Three.js Szenen-Logik hier! ----
+// Szene, Kamera, Renderer, Lights, Landscape, Spinner, Trees, usw.
+// Foliage-Shader wie bisher
+// ...
+
+// Ab hier NUR noch das WebSocket-System für die Spirits!
 let currentSpiritGroup = null;
 
 // --- WebSocket verbinden ---
@@ -14,49 +28,27 @@ ws.addEventListener('message', async (event) => {
 });
 
 async function showSpirit(spirit) {
-  // Optional: Entferne bisherigen Spirit aus Szene
   if (currentSpiritGroup) {
     scene.remove(currentSpiritGroup);
     // Dispose-Logik, falls notwendig
   }
 
-  // Spirit-Modell laden (GLTF)
-  const gltfLoader = new THREE.GLTFLoader();
-  // Wenn du DRACO verwendest:
-  // const draco = new THREE.DRACOLoader(); draco.setDecoderPath(...); gltfLoader.setDRACOLoader(draco);
-
+  const gltfLoader = new GLTFLoader();
+  // Draco Loader, falls gebraucht: ...
   const { scene: spiritObj } = await gltfLoader.loadAsync(spirit.modelUrl);
-
-  // Optionale Anpassungen (Schatten, Material etc.)
   spiritObj.traverse(mesh => {
     if (mesh.isMesh) {
       mesh.castShadow = true;
       mesh.receiveShadow = true;
-      // ... weitere Material-Settings wie du möchtest
+      // ... weitere Material-Settings
     }
   });
 
-  // In Szene einfügen
   spiritObj.position.set(0, 0, 0); // ggf. gewünschte Position
   scene.add(spiritObj);
   currentSpiritGroup = spiritObj;
 
-  // Zeige Name/Beschreibung im Overlay
   updateSpiritOverlay(spirit);
 }
 
-// Overlay: Spirit-Infos einblenden (optional)
-function updateSpiritOverlay(spirit) {
-  let el = document.getElementById('spirit-info');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'spirit-info';
-    el.style = `
-      position:absolute; left:20px; top:20px; color:white;
-      background:rgba(0,0,0,0.6); padding:10px 18px; border-radius:10px;
-      font-family: sans-serif; z-index:10; max-width: 320px;
-    `;
-    document.body.appendChild(el);
-  }
-  el.innerHTML = `<b>${spirit.name}</b><br><small>${spirit.desc || ""}</small>`;
-}
+// ... restlicher Code ...
