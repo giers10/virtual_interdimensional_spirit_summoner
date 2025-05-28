@@ -24,7 +24,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 container.appendChild(renderer.domElement);
 
 // ---- Postprocessing ----
-const foliageTexture = new THREE.TextureLoader().load('assets/sprites/foliage.png');
+const foliageTexture = new THREE.TextureLoader().load('assets/images/sprites/foliage.png');
 foliageTexture.colorSpace = THREE.SRGBColorSpace;
 const FoliageOverlayShader = {
     uniforms: { 'tDiffuse': { value: null }, 'tFoliage': { value: foliageTexture }, 'opacity': { value: 1.0 } },
