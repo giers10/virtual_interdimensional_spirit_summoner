@@ -1,6 +1,18 @@
+// --- Spirits laden ---
+const SPIRITS_PATH = path.join(__dirname, '.', 'spirits', 'spirit_list.json');
+let spirits = [];
+try {
+  spirits = JSON.parse(fs.readFileSync(SPIRITS_PATH, 'utf8'));
+  if (!Array.isArray(spirits) || spirits.length === 0) throw 'Spirit-Liste leer oder ungültig!';
+} catch (e) {
+  console.error('Fehler beim Laden der Spirits:', e);
+  process.exit(1);
+}
+
 // --- WebSocket Logik mit Timer-Steuerung ---
 let spiritTimer = null;
 let currentSpiritIndex = Math.floor(Math.random() * spirits.length);
+
 
 function pushSpiritToAllClients() {
   const spirit = spirits[currentSpiritIndex];
