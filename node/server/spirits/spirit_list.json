@@ -1,10 +1,13 @@
 [
   {
-    "type": "spirit",
-    "data": {
-      "modelUrl": "/assets/models/spirits/Yuki_Onna.glb",
-      "name": "Yuki Onna",
-      "desc": "Eine geheimnisvolle Schneefrau aus der japanischen Mythologie."
-    }
+    "name": "Abe No Seimei",
+    "desc": "Legendärer Onmyoji aus der Heian-Zeit.",
+    "modelUrl": "/assets/models/spirits/Abe_No_Seimei.glb"
+  },
+  {
+    "name": "Yuki Onna",
+    "desc": "Die Schnee-Frau aus japanischen Geistergeschichten.",
+    "modelUrl": "/assets/models/spirits/Yuki_Onna.glb"
   }
+  // usw.
 ]
