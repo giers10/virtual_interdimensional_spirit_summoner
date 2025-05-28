@@ -270,8 +270,13 @@ class SpinnerController {
         this.ws.addEventListener('message', async (event) => {
             const msg = JSON.parse(event.data);
             if (msg.type === 'spirit') {
-                // Beachte: Neues Handling mit Lebenszeit-Offset!
-                spawnSpiritWithOffset(msg.data, msg.timeSinceSpawnMs, msg.spiritIntervalMs);
+                if (typeof msg.timeSinceSpawnMs === "number" && msg.timeSinceSpawnMs > 0) {
+                    // Initiale Verbindung: Mit Offset
+                    spawnSpiritWithOffset(msg.data, msg.timeSinceSpawnMs, msg.spiritIntervalMs);
+                } else {
+                    // Normales Timer-Event
+                    spawnSpirit(msg.data);
+                }
             }
         });
         this.ws.addEventListener('close', () => {
