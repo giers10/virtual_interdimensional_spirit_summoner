@@ -10,7 +10,7 @@ function pushSpiritToAllClients() {
       client.send(payload);
     }
   });
-  console.log(`Spirit "${spirit.Name}" wurde an alle Clients gepusht.`);
+  //console.log(`Spirit "${spirit.Name}" wurde an alle Clients gepusht.`);
 }
 
 // Timer starten, falls noch nicht läuft
@@ -20,7 +20,7 @@ function startSpiritTimer() {
       currentSpiritIndex = Math.floor(Math.random() * spirits.length);
       pushSpiritToAllClients();
     }, 20000);
-    console.log('Spirit-Timer gestartet');
+    //console.log('Spirit-Timer gestartet');
   }
 }
 
@@ -29,7 +29,7 @@ function stopSpiritTimer() {
   if (spiritTimer) {
     clearInterval(spiritTimer);
     spiritTimer = null;
-    console.log('Spirit-Timer gestoppt');
+    //console.log('Spirit-Timer gestoppt');
   }
 }
 
@@ -44,7 +44,7 @@ function hasOpenClients() {
 
 // --- WebSocket Logik ---
 wss.on('connection', (socket) => {
-  console.log('Neuer Client verbunden');
+  //console.log('Neuer Client verbunden');
 
   // Sende sofort einen Spirit an den neuen Client
   socket.send(JSON.stringify({ type: 'spirit', data: spirits[currentSpiritIndex] }));
