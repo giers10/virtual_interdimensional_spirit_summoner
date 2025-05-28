@@ -1,14 +1,10 @@
 {
-  "name": "node",
+  "name": "virtual_interdimensional_spirit_summoner",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
     "ws": "^8.18.2"
