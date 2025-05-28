@@ -61,7 +61,7 @@ function pushSpiritToAllClients() {
     }
   });
   console.log(`[Server] Spirit "${spirit.Name}" gesendet (${spiritPos + 1}/${spirits.length})`);
-  nextSpirit();
+  //nextSpirit();
 }
 
 // Timer starten, falls noch nicht läuft
@@ -69,6 +69,7 @@ function startSpiritTimer() {
   if (!spiritTimer) {
     spiritTimer = setInterval(() => {
       pushSpiritToAllClients();
+      nextSpirit();
     }, SPIRIT_INTERVAL_MS);
     console.log('[Server] Spirit-Timer gestartet');
   }
