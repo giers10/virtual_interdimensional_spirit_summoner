@@ -329,16 +329,48 @@ function animate(){
   requestAnimationFrame(animate);
 }
 
-// ---- WebSocket: Spirit erzeugen, Infobox updaten ----
-const ws = new WebSocket(`ws://${location.host}`);
+// --- WebSocket-Client mit Auto-Reconnect ---
+let ws;
+let reconnectTimeout = 1000; // Start: 1s
 
-ws.addEventListener('message', async (event) => {
-  const msg = JSON.parse(event.data);
-  if (msg.type === 'spirit') {
-    await spawnSpirit(msg.data);
-  }
-});
+function connectWebSocket() {
+  ws = new WebSocket(`ws://${location.host}`);
 
+  ws.addEventListener('open', () => {
+    console.log('[WebSocket] Verbunden!');
+    reconnectTimeout = 1000; // Reset
+  });
+
+  ws.addEventListener('message', async (event) => {
+    try {
+      const msg = JSON.parse(event.data);
+      if (msg.type === 'spirit') {
+        await spawnSpirit(msg.data);
+      }
+    } catch (e) {
+      console.warn('WebSocket Message-Fehler:', e);
+    }
+  });
+
+  ws.addEventListener('close', () => {
+    console.warn('[WebSocket] Verbindung geschlossen! Versuche erneut...');
+    retryConnect();
+  });
+
+  ws.addEventListener('error', (e) => {
+    ws.close(); // Fehler → schließen, dann reconnect
+  });
+}
+
+function retryConnect() {
+  setTimeout(() => {
+    reconnectTimeout = Math.min(reconnectTimeout * 2, 12000); // Bis 12s erhöhen
+    connectWebSocket();
+  }, reconnectTimeout + Math.random() * 300);
+}
+
+// Initial verbinden
+connectWebSocket();
 async function spawnSpirit(spirit) {
   console.log("Lade Spirit", spirit.modelUrl);
 
