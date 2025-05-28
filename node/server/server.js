@@ -53,7 +53,7 @@ function pushSpiritToAllClients() {
   console.log(`Spirit "${spirit.Name}" wurde an alle Clients gepusht.`);
 }
 
-// --- Timer: Alle 20 Sekunden neues Spirit ---
+// --- Timer: Alle 30 Sekunden neues Spirit ---
 setInterval(() => {
   currentSpiritIndex = Math.floor(Math.random() * spirits.length);
   pushSpiritToAllClients();
