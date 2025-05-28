@@ -1,5 +1,11 @@
 # Virtuelles Interdimensionales Geisterteleportationsgerät
 
+**Author:** Victor Giers
+
+> ⚠️ **This README.md has been automatically generated using AI and might contain hallucinations or inaccuracies. Please proceed with caution!**
+
+---
+
 Ein experimentelles 3D-Webprojekt, das Figuren der japanischen Mythologie weltweit sichtbar macht.  
 Technisch ist es ein synchronisiertes Lexikon und eine virtuelle Ausstellung im Browser.
 
