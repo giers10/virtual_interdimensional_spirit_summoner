@@ -508,21 +508,6 @@ function showSpiritOverlay(spirit) {
     if (!el) {
         el = document.createElement('div');
         el.id = 'spirit-info';
-        el.style = `
-            position: fixed;
-            left: 50%; top: 50%;
-            transform: translate(-50%,-50%);
-            color: white;
-            background: rgba(0,0,0,0.94);
-            padding: 28px 36px 24px 36px;
-            border-radius: 18px;
-            font-family: 'Segoe UI', sans-serif;
-            z-index: 9999;
-            max-width: 560px;
-            min-width: 320px;
-            box-shadow: 0 12px 64px #000a;
-            text-align: left;
-        `;
         document.body.appendChild(el);
     }
     el.innerHTML = `
