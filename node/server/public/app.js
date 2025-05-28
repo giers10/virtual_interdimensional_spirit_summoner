@@ -290,20 +290,18 @@ class SpinnerController {
     }
 
     async spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
-        const spawnY = 17.35
+        let startY = 17.35;
         let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
         let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
-        const despawnSpeed = 0.8;
-        let spawnPos = { x: 0, y: startY - (despawnSpeed * offset), z: 0.88 };
+        const moveSpeed = 0.8;
+        let spawnPos = { x: 0, y: startY - (moveSpeed * offset), z: 0.88 };
 
         const modelUrl = spiritData['Model URL'] || spiritData.modelUrl;
         const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
 
         const spirit = new Spirit(this.scene, gltfScene, spiritData, spawnPos);
         spirit.clock.start();
-        if (offset > 0 && offset < lifeTime) {
-            spirit.clock.elapsedTime = offset;
-        }
+        spirit.clock.elapsedTime = offset;
         spirit.lifeTime = lifeTime;
         activeSpirits.push(spirit);
     }
