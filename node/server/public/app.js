@@ -292,7 +292,7 @@ async function showSpirit(spirit) {
     }
   });
   // Positionierung, z.B. am Boden leicht nach hinten
-  spiritObj.position.set(0, 0, -0.6);
+  spiritObj.position.set(0, 0, 0);
   scene.add(spiritObj);
   currentSpiritGroup = spiritObj;
 
