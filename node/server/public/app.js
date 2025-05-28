@@ -428,7 +428,7 @@ function updateSpiritOverlay(spirit) {
       <h2 style='padding:0; margin:0;'>${spirit.Name || 'Spirit'}</h2><br>
       <b>${spirit.Kategorie || ''}</b>${spirit.Herkunft ? ' <i>(' + spirit.Herkunft : ''})</i><br><br>
       <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
-      <b>Charakter:</b> ${spirit.Charakter || ''}<br>
+      <b>Charakter:</b> ${spirit.Charakter || ''}<br><br>
       <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br>
     `;
 }
