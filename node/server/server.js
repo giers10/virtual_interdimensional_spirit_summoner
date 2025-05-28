@@ -12,6 +12,7 @@ const wss = new ws.Server({ server });
 let spiritPos = 0;
 const SPIRIT_INTERVAL_MS = 20000; // 20 Sekunden
 let lastSpiritSpawn = Date.now();
+let spiritTimer = null;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
