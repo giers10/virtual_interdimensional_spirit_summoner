@@ -426,10 +426,12 @@ function updateSpiritOverlay(spirit) {
     }
     el.innerHTML = `
       <h2 style='padding:0; margin:0;'>${spirit.Name || 'Spirit'}</h2>
-      <b>${spirit.Kategorie || ''}</b>${spirit.Herkunft ? ' <i>(' + spirit.Herkunft : ''})</i><br><br>
+      <b>${spirit.Kategorie || ''}</b><br><br>
       <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
       <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
-      <b>Charakter:</b> ${spirit.Charakter || ''}<br>
+      <b>Charakter:</b> ${spirit.Charakter || ''}<br><br>
+      ${spirit.Herkunft ? ' <i>' + spirit.Herkunft : ''}</i>
+
     `;
 }
 
