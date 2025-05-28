@@ -113,6 +113,16 @@ class SpinnerController {
         this.ws = null;
         this.reconnectDelay = 2000;
         this.connected = false; // Verbindungsstatus
+
+        // Werte für sanften Übergang
+        this.transition = {
+            emission: 3.0, targetEmission: 3.0,
+            bobMult: 0.5, targetBobMult: 0.5,
+            rotSpeed: 1.2, targetRotSpeed: 1.2,
+            lightIntensity: 5, targetLightIntensity: 5,
+            lerpSpeed: 1/3  // 1/x Sekunden bis Ziel (hier: ca. 3s)
+        };
+
         this.init();
     }
 
@@ -158,37 +168,55 @@ class SpinnerController {
         return obj;
     }
 
-    // Hier die Anpassungen!
+    // --- Werte sanft angleichen ---
+    smoothTransition(dt) {
+        let T = this.transition;
+        // Zielwerte setzen
+        if (this.connected) {
+            T.targetEmission = 3.0;
+            T.targetBobMult = 0.5;
+            T.targetRotSpeed = 1.2;
+            T.targetLightIntensity = 5;
+        } else {
+            T.targetEmission = 0.0;
+            T.targetBobMult = 0.12;
+            T.targetRotSpeed = 0.08;
+            T.targetLightIntensity = 1;
+        }
+        // Lerp (sanft angleichen)
+        const s = T.lerpSpeed * dt; // kleiner dt → smooth
+        T.emission += (T.targetEmission - T.emission) * s;
+        T.bobMult += (T.targetBobMult - T.bobMult) * s;
+        T.rotSpeed += (T.targetRotSpeed - T.rotSpeed) * s;
+        T.lightIntensity += (T.targetLightIntensity - T.lightIntensity) * s;
+    }
+
     animate(dt, t) {
-        // Visuelle Parameter je nach Verbindungsstatus:
-        const connected = this.connected;
+        this.smoothTransition(dt);
 
-        // Langsamer, weniger Bobbing, keine Emission falls disconnected
-        const bobMult = connected ? 0.5 : 0.12;
-        const rotSpeed = connected ? 1.2 : 0.08;
-        const emission = connected ? 3.0 : 0.0;
-
-        const bob = Math.sin(t * 1.2) * bobMult;
+        const T = this.transition;
+        const bob = Math.sin(t * 1.2) * T.bobMult;
         const baseY = this.baseY + bob;
 
         // Spinner
         if (this.spinnerRed && this.spinnerBlue) {
             this.spinnerRed.position.y = baseY + 0.8;
             this.spinnerBlue.position.y = baseY;
-            this.spinnerRed.rotation.y -= rotSpeed * dt;
-            this.spinnerBlue.rotation.y += rotSpeed * dt;
+            this.spinnerRed.rotation.y -= T.rotSpeed * dt;
+            this.spinnerBlue.rotation.y += T.rotSpeed * dt;
 
             // Emission auf beide Spinner anwenden
             this.spinnerRed.traverse(c => {
                 if (c.isMesh && c.material && c.material.isMeshStandardMaterial)
-                    c.material.emissiveIntensity = emission;
+                    c.material.emissiveIntensity = T.emission;
             });
             this.spinnerBlue.traverse(c => {
                 if (c.isMesh && c.material && c.material.isMeshStandardMaterial)
-                    c.material.emissiveIntensity = emission;
+                    c.material.emissiveIntensity = T.emission;
             });
         }
-        // Rotierende Lichter
+
+        // Rotierende Lichter (jetzt mit smooth intensity und Speed)
         for (let i = 0; i < this.lights.length; i++) {
             const ang = t * 0.8 + i * 2 * Math.PI / 3;
             this.lights[i].position.set(
@@ -196,6 +224,7 @@ class SpinnerController {
                 this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
                 this.center.z
             );
+            this.lights[i].intensity = T.lightIntensity;
         }
         for (let i = 0; i < this.counterLights.length; i++) {
             const ang = -t * 0.8 + i * 2 * Math.PI / 3;
@@ -204,6 +233,7 @@ class SpinnerController {
                 this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
                 this.center.z
             );
+            this.counterLights[i].intensity = T.lightIntensity;
         }
     }
 
