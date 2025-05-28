@@ -407,11 +407,17 @@ function updateSpiritOverlay(spirit) {
         el.style = `
           position:absolute; left:20px; top:20px; color:white;
           background:rgba(0,0,0,0.6); padding:10px 18px; border-radius:10px;
-          font-family: sans-serif; z-index:10; max-width: 320px;
+          font-family: sans-serif; z-index:10; max-width: 360px;
         `;
         document.body.appendChild(el);
     }
-    el.innerHTML = `<b>${spirit.name || 'Spirit'}</b><br><small>${spirit.desc || ""}</small>`;
+    el.innerHTML = `
+      <b>${spirit.Name || 'Spirit'}</b><br>
+      <i>${spirit.Kategorie || ''}${spirit.Herkunft ? ' – ' + spirit.Herkunft : ''}</i><br>
+      <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
+      <b>Charakter:</b> ${spirit.Charakter || ''}<br>
+      <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br>
+    `;
 }
 
 // ---- Render-Loop ----
