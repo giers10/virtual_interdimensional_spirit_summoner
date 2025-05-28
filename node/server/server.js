@@ -46,8 +46,6 @@ function startSpiritTimer() {
       pushSpiritToAllClients();
     }, 20000);
     console.log('Spirit-Timer gestartet');
-    // Sende sofort einen Spirit an den neuen Client
-    socket.send(JSON.stringify({ type: 'spirit', data: spirits[currentSpiritIndex] }));
   }
 }
 
@@ -75,6 +73,8 @@ wss.on('connection', (socket) => {
 
   // Starte Timer falls das der erste Client ist
   if (wss.clients.size === 1) {
+    // Sende sofort einen Spirit an den neuen Client
+    socket.send(JSON.stringify({ type: 'spirit', data: spirits[currentSpiritIndex] }));
     startSpiritTimer();
   }
 
