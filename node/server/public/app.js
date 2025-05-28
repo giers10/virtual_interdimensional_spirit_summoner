@@ -290,7 +290,7 @@ class SpinnerController {
     }
 
     async spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
-        let startY = 15.5;
+        let startY = 18.05;
         let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
         let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
         const moveSpeed = 0.8;
