@@ -30,12 +30,13 @@ wss.on('connection', (socket) => {
   console.log('Neuer Client verbunden');
 
   // Sende sofort den aktuellen Spirit
+  /*
   if (typeof currentSpiritIndex === 'number') {
     socket.send(JSON.stringify({
       type: 'spirit',
       data: spirits[currentSpiritIndex]
     }));
-  }
+  }*/
 });
 
 // --- Spirit-Zeitsteuerung ---
