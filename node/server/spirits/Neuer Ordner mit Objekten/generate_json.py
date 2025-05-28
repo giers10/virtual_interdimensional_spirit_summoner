@@ -83,7 +83,7 @@ def levenshtein(a, b):
 
 # ---- Hauptlogik ----
 def main():
-    with open("spirit_list.json", encoding="utf-8") as f:
+    with open("wesen.json", encoding="utf-8") as f:
         spirits = json.load(f)
     for spirit in spirits:
         if "Model URL" in spirit and spirit["Model URL"]:
