@@ -11,7 +11,9 @@ const wss = new ws.Server({ server });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- Spirits laden & shufflen ---
+
+const SPIRITS_PATH = path.join(__dirname, '.', 'spirits', 'spirit_list.json');
+let spirits = [];
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -19,8 +21,6 @@ function shuffleArray(arr) {
   }
 }
 
-const SPIRITS_PATH = path.join(__dirname, '.', 'spirits', 'spirit_list.json');
-let spirits = [];
 try {
   spirits = JSON.parse(fs.readFileSync(SPIRITS_PATH, 'utf8'));
   if (!Array.isArray(spirits) || spirits.length === 0) throw 'Spirit-Liste leer oder ungültig!';
@@ -31,6 +31,8 @@ try {
 }
 
 let spiritPos = 0;
+const SPIRIT_INTERVAL_MS = 20000; // 20 Sekunden
+let lastSpiritSpawn = Date.now();
 
 // --- Helper für die Rotation ---
 function nextSpirit() {
@@ -39,6 +41,7 @@ function nextSpirit() {
     shuffleArray(spirits);
     spiritPos = 0;
   }
+  lastSpiritSpawn = Date.now();
 }
 
 // --- WebSocket Logik mit Timer-Steuerung ---
@@ -46,13 +49,14 @@ let spiritTimer = null;
 
 function pushSpiritToAllClients() {
   const spirit = spirits[spiritPos];
-  const payload = JSON.stringify({ type: 'spirit', data: spirit });
+  const now = Date.now();
+  lastSpiritSpawn = now;
+  const payload = JSON.stringify({ type: 'spirit', data: spirit, ts: now });
   wss.clients.forEach(client => {
     if (client.readyState === ws.OPEN) {
       client.send(payload);
     }
   });
-  // Konsole ruhig etwas ausführlicher
   console.log(`[Server] Spirit "${spirit.Name}" gesendet (${spiritPos + 1}/${spirits.length})`);
   nextSpirit();
 }
@@ -62,7 +66,7 @@ function startSpiritTimer() {
   if (!spiritTimer) {
     spiritTimer = setInterval(() => {
       pushSpiritToAllClients();
-    }, 20000);
+    }, SPIRIT_INTERVAL_MS);
     console.log('[Server] Spirit-Timer gestartet');
   }
 }
@@ -73,8 +77,6 @@ function stopSpiritTimer() {
     clearInterval(spiritTimer);
     spiritTimer = null;
     console.log('[Server] Spirit-Timer gestoppt');
-    // Wenn keine Clients mehr da, trotzdem nächsten Spirit vorwählen,
-    // damit beim nächsten Reload/Join ein anderer kommt!
     nextSpirit();
   }
 }
@@ -92,12 +94,24 @@ function hasOpenClients() {
 wss.on('connection', (socket) => {
   console.log('[Server] Neuer Client verbunden');
 
-  // Sende sofort den aktuellen Spirit an neuen Client
+  // Zeit seit letztem Spirit-Spawn:
+  const now = Date.now();
+  const timeSinceSpawnMs = now - lastSpiritSpawn;
+  const spirit = spirits[spiritPos];
+
+  // Sende Spirit, Zeitdifferenz und Intervall an neuen Client
+  socket.send(JSON.stringify({
+    type: 'spirit',
+    data: spirit,
+    timeSinceSpawnMs,
+    spiritIntervalMs: SPIRIT_INTERVAL_MS
+  }));
+
+  nextSpirit();
 
   // Starte Timer falls das der erste Client ist
   if (wss.clients.size === 1) {
     startSpiritTimer();
-    socket.send(JSON.stringify({ type: 'spirit', data: spirits[spiritPos] }));
   }
 
   // Verbindung verloren: Timer ggf. stoppen
