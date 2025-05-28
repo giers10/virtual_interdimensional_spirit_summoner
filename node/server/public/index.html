@@ -47,7 +47,35 @@ canvas {
   overflow-wrap: normal;
 }
 
-/* === Standard: Mobile/klein - Bild oben, Text unten === */
+.spirit-info-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+#spirit-info {
+  box-sizing: border-box;
+  position: fixed;
+  overflow-x: hidden;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.94);
+  color: #fff;
+  border-radius: 18px;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 12px 64px #000a;
+  width: 90vw;
+  max-width: 98vw;
+  min-width: 0;
+  height: auto;
+  max-height: 82dvh;
+  overflow-y: auto;
+  padding: 8vw 4vw 4vw 4vw;
+  z-index: 9999;
+  margin: 0;
+}
+
+/* Standard: Bild oben, Text unten */
 .spirit-info-flex {
   display: flex;
   flex-direction: column;
@@ -71,8 +99,15 @@ canvas {
   word-break: break-word;
 }
 
-/* === Breiter Desktop ODER Mobile Landscape: Bild links, Text rechts === */
+/* GROSSES DESKTOP-FENSTER ODER BREITES TABLET/PHONE landscape: Bild links, Text rechts */
 @media (min-width: 750px) and (pointer: fine), (pointer: coarse) and (orientation: landscape) and (min-width: 750px) {
+  #spirit-info {
+    width: 600px;
+    max-width: calc(100vw - 64px);
+    min-width: 320px;
+    max-height: calc(100dvh - 64px);
+    padding: 40px 40px 36px 40px;
+  }
   .spirit-info-flex {
     flex-direction: row;
     align-items: flex-start;
@@ -97,24 +132,6 @@ canvas {
     max-width: 450px;
     overflow-wrap: break-word;
     word-break: break-word;
-  }
-}
-
-/* #spirit-info: Größe Desktop vs. Mobile */
-#spirit-info {
-  width: 90vw;
-  max-width: 98vw;
-  min-width: 0;
-  max-height: 82dvh;
-  padding: 8vw 4vw 4vw 4vw;
-}
-@media (min-width: 750px) and (pointer: fine) {
-  #spirit-info {
-    width: 600px;
-    max-width: calc(100vw - 64px);
-    min-width: 320px;
-    max-height: calc(100dvh - 64px);
-    padding: 40px 40px 36px 40px;
   }
 }
   </style>
