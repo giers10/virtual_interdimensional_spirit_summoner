@@ -60,7 +60,6 @@ function pushSpiritToAllClients() {
     }
   });
   console.log(`[Server] Spirit "${spirit.Name}" gesendet (${spiritPos + 1}/${spirits.length})`);
-  // nextSpirit(); <-- NICHT HIER
 }
 
 // --- Timer ---
