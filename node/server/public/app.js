@@ -447,11 +447,19 @@ function showSpiritOverlay(spirit) {
         `;
         document.body.appendChild(el);
     }
+    // Bild-URL (falls vorhanden)
+    let img = "";
+    if (spirit["Image URL"]) {
+        img = `<img src="${spirit["Image URL"]}" 
+                 style="display:block; margin:0 auto 20px auto; max-width:70%; max-height:220px; border-radius:8px; box-shadow: 0 0 16px #0008;" 
+                 alt="Spirit Image">`;
+    }
     el.innerHTML = `
         <button id="spirit-overlay-close" style="
             position:absolute; right:12px; top:12px; border:none; background:none;
             color:#fff; font-size:1.5em; cursor:pointer; padding:0; line-height:1;
         " title="Schließen">&times;</button>
+        ${img}
         <h2 style='padding:0; margin:0 0 8px 0; font-weight:700; letter-spacing:0.04em;'>${spirit.Name || 'Spirit'}</h2>
         <b>${spirit.Kategorie || ''}</b><br><br>
         <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
