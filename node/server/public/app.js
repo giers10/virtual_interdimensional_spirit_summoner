@@ -122,7 +122,7 @@ texLoader.load('assets/images/hdri/environment.jpg', tex => {
 // ---- Licht, Shadow-Only-Material, Loader ----
 const sun = new THREE.DirectionalLight(0xFFA230, 2);
 sun.position.set(21, -25, 30);
-sun.castShadow = true;
+sun.castShadow = !IS_MOBILE;
 sun.shadow.mapSize.width = 2048;
 sun.shadow.mapSize.height = 2048;
 sun.shadow.camera.near = 1;
