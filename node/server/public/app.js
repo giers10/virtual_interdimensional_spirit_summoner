@@ -434,26 +434,17 @@ async function spawnSpirit(spiritData) {
     const modelUrl = spiritData['Model URL'] || spiritData.modelUrl; // Fallback!
     const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
     const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
+    spirit.clock.start(); // neu!
     activeSpirits.push(spirit);
-    //updateSpiritOverlay(spiritData);
 }
 
 async function spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
-    // Standard-Spawnhöhe:
-    let startY = spinnerController && spinnerController.spinnerRed ? spinnerController.spinnerRed.position.y - 1.5 : 15; //changed from -1.5 offset to compensate for lag
-    // Offset in Sekunden:
-    let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
-    // Die Lebenszeit des Spirits:
-    let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
-
-    // Y-Verschiebung pro Sekunde (wie im update!):
-    const despawnSpeed = 0.8; // ACHTUNG: identisch halten mit update()!
-
-    // Spawn-Position anpassen:
-    let spawnPos = { x: 0, y: startY - (despawnSpeed * offset), z: 0.88 };
-
+    let spawnPos = { x: 0, y: spinnerController && spinnerController.spinnerRed ? spinnerController.spinnerRed.position.y - 1.5 : 15, z: 0.88 };
     const modelUrl = spiritData['Model URL'] || spiritData.modelUrl;
     const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
+
+    let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
+    let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
 
     const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
     spirit.clock.start();
