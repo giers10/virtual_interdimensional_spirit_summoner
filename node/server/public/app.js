@@ -586,11 +586,16 @@ renderer.domElement.addEventListener('pointerdown', onClick);
 // ---- Render-Loop ----
 function animate(now) {
     requestAnimationFrame(animate);
-    // FPS-Limitierung
-    if (now - lastAnim < 1000 / targetFps) return;
-    lastAnim = now;
 
-    // ... Rest wie gehabt ...
+    // Wenn noch nicht genug Zeit vergangen ist, skippen.
+    if (now - lastAnim < 1000 / targetFps) return;
+
+    // Fange kleine Zeitverluste auf, um "drift" zu vermeiden:
+    // lastAnim = now;    // Original (verliert mit der Zeit Frames)
+    while (now - lastAnim >= 1000 / targetFps) {
+        lastAnim += 1000 / targetFps;
+    }
+
     const dt = clock.getDelta(), t = clock.getElapsedTime();
     if (spinnerController) spinnerController.animate(dt, t);
     for (let i = activeSpirits.length - 1; i >= 0; i--) {
