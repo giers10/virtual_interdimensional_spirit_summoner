@@ -16,29 +16,25 @@
     html, body {
       width: 100vw;
       height: 100vh;
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       overflow: hidden;
       background: #000;
     }
     #viewer {
-      position: fixed; /* fills window, always on top */
+      position: fixed;
       inset: 0;
       width: 100vw;
       height: 100vh;
-      background: #000;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1;
+      background: #000;
     }
     canvas {
       display: block;
-      width: 100vw;  /* so that Three.js resizing works right */
-      height: 100vh;
-      max-width: none;
-      max-height: none;
-      pointer-events: auto;
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      /* width/height wird durch JS gesetzt */
     }
     /* Optional: Overlay z-index */
     #spirit-info {
