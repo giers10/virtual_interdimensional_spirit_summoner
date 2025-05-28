@@ -517,3 +517,10 @@ function animate() {
     composer.render(scene, camera);
     requestAnimationFrame(animate);
 }
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        let el = document.getElementById('spirit-info');
+        if (el) el.style.display = "none";
+    }
+});
