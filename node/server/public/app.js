@@ -361,28 +361,64 @@ ws.addEventListener('message', async (event) => {
 });
 
 async function showSpirit(spirit) {
+  // Vorherigen Spirit entfernen
   if (currentSpirit) {
     currentSpirit.dispose();
     currentSpirit = null;
     window.currentSpirit = null;
   }
   console.log("Lade Spirit", spirit.modelUrl);
+
+  // Modell laden
   const { scene: spiritObj } = await gltfLoader.loadAsync(spirit.modelUrl);
-  // TESTBLOCK
+
+  // --- MATERIAL / MESH-ANPASSUNGEN ---
   spiritObj.traverse(mesh => {
     if (mesh.isMesh) {
-      mesh.material.opacity = 1;
-      mesh.material.transparent = false;
-      mesh.material.color.set(0xffffff);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
+      mesh.userData.originalMaterial = mesh.material.clone();
+      mesh.material = mesh.material.clone();
+      mesh.material.color.set(0xffffcc);
+      mesh.material.opacity = 1.0;
+      mesh.material.transparent = true;
+      mesh.material.emissive?.set(0xffffcc);
+      mesh.material.emissiveIntensity = 2.0;
     }
   });
-  spiritObj.position.set(0, 0, 0); // GANZ vorne
-  scene.add(spiritObj);
-  const box = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshStandardMaterial({ color: 0xff0000 }));
-  scene.add(box);
-  window.lastSpiritObj = spiritObj; // Debug
+
+  // --- SPIRIT ALS GROUP, ROTATION, POSITION ---
+  // Exakte Platzierung wie im Original
+  const grp = new THREE.Group();
+  spiritObj.rotation.x = -Math.PI;
+  grp.add(spiritObj);
+
+  // Platziere das Group-Objekt wie im Originalcode:
+  // Annäherung: unterhalb von spinnerRed.position, etwas nach hinten (z=-0.6)
+  // (spinnerRed ist verfügbar)
+  let y = spinnerRed ? spinnerRed.position.y - 1.5 : 15;
+  grp.position.set(0, y, 0.88 - 0.6); // Z=spinnerRed.position.z - 0.6
+
+  scene.add(grp);
+
+  // Spirit als Instanz für update/dispose
+  currentSpirit = {
+    grp,
+    dispose() {
+      scene.remove(grp);
+      grp.traverse((mesh) => {
+        if (mesh.isMesh) {
+          mesh.geometry.dispose();
+          if (Array.isArray(mesh.material)) mesh.material.forEach((m) => m.dispose());
+          else mesh.material.dispose();
+        }
+      });
+    },
+    update() { return true; } // Dummy, falls du später noch fade/animation brauchst
+  };
+  window.currentSpirit = currentSpirit; // Debug
+
+  // Overlay mit Spirit-Name/Description
   updateSpiritOverlay(spirit);
 }
 
