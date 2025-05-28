@@ -181,7 +181,7 @@ class SpinnerController {
             T.targetEmission = 0.0;
             T.targetBobMult = 0.12;
             T.targetRotSpeed = 0.08;
-            T.targetLightIntensity = 1;
+            T.targetLightIntensity = 0;
         }
         // Lerp (sanft angleichen)
         const s = T.lerpSpeed * dt; // kleiner dt → smooth
