@@ -418,7 +418,7 @@ function updateSpiritOverlay(spirit) {
         el = document.createElement('div');
         el.id = 'spirit-info';
         el.style = `
-          position:absolute; right:20px; bottom:20px; color:white;
+          position:absolute; right:20px; bottom:40px; color:white;
           background:rgba(0,0,0,0.6); padding:10px 18px; border-radius:10px;
           font-family: sans-serif; z-index:10; max-width: 360px;
         `;
