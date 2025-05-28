@@ -121,9 +121,6 @@ const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(draco);
 
 
-// Virtuelles Interdimensionales Geisterteleportationsgerät
-// --- GLOBAL ---
-const activeSpirits = [];
 
 // Virtuelles Interdimensionales Geisterteleportationsgerät
 class SpinnerController {
