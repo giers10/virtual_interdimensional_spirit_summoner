@@ -307,8 +307,8 @@ class Spirit {
                 this.spiritMeshes.push(mesh);
             }
         });
-        this.scene.add(this.grp);
         this._setupPicking();
+        this.scene.add(this.grp);
     }
 
     update(dt) {
