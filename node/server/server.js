@@ -50,7 +50,7 @@ function pushSpiritToAllClients() {
       client.send(payload);
     }
   });
-  console.log(`Spirit "${spirit.name}" wurde an alle Clients gepusht.`);
+  console.log(`Spirit "${spirit.Name}" wurde an alle Clients gepusht.`);
 }
 
 // --- Timer: Alle 20 Sekunden neues Spirit ---
