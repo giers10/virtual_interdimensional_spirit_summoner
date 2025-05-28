@@ -97,118 +97,129 @@ draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(draco);
 
-// ---- Spinner Controller-Klasse ----
+// ---- SpinnerController ----
 class SpinnerController {
-    constructor(scene) {
-        this.scene = scene;
-        this.spinnerRed = null;
-        this.spinnerBlue = null;
-        this.lights = [];
-        this.counterLights = [];
-        this.center = new THREE.Vector3(0, 16.55, 1.5);
-        this.LIGHT_RADIUS = 1;
-        this.baseY = 16.55;
-        this.clock = new THREE.Clock();
-        this.ws = null;
-        this.reconnectDelay = 2000;
-        this.init();
+  constructor(scene) {
+    // Grundobjekte
+    this.scene = scene;
+    this.spinnerRed = null;
+    this.spinnerBlue = null;
+    this.rotatingLights = [];
+    this.counterRotatingLights = [];
+    this.LIGHT_RADIUS = 1;
+    this.baseY = 16.55;
+    this.connected = false;
+    this.connectionLostSince = null;
+
+    // Create Spinner, Lights etc.
+    this.init();
+    // Setup WebSocket (mit reconnect)
+    this.connect();
+  }
+
+  async init() {
+    // Spinner laden
+    this.spinnerRed = await loadSpinner(
+      'assets/models/spinner_red.glb', [0, this.baseY, 0.88], [90, 0, 0], "#ff3333", 0.2
+    );
+    this.spinnerBlue = await loadSpinner(
+      'assets/models/spinner_blue.glb', [0, this.baseY, 0.88], [90, 0, 0], "#3380ff", 0.2
+    );
+    // 6 Lichter
+    for (let i = 0; i < 3; i++) {
+      const L = new THREE.PointLight(0xFFA230, 5, 30);
+      L.castShadow = true;
+      this.rotatingLights.push(L);
+      scene.add(L);
+
+      const L2 = new THREE.PointLight(0xFFA230, 5, 30);
+      L2.castShadow = true;
+      this.counterRotatingLights.push(L2);
+      scene.add(L2);
     }
+  }
 
-    async init() {
-        // Lade beide Spinner
-        this.spinnerRed = await this.loadSpinner('assets/models/spinner_red.glb', [0, 16.55, 0.88], [90, 0, 0], "#ff3333", 0.2);
-        this.spinnerBlue = await this.loadSpinner('assets/models/spinner_blue.glb', [0, 16.55, 0.88], [90, 0, 0], "#3380ff", 0.2);
+  connect() {
+    if (this.ws) this.ws.close();
+    const ws = new WebSocket(`ws://${location.host}`);
+    this.ws = ws;
+    ws.onopen = () => {
+      this.connected = true;
+      this.connectionLostSince = null;
+      // Spinner wird wieder "schnell und hell"
+    };
+    ws.onclose = () => {
+      this.connected = false;
+      this.connectionLostSince = Date.now();
+      // Versuche nach 2 Sekunden erneut zu verbinden
+      setTimeout(() => this.connect(), 2000);
+    };
+    ws.onerror = () => {
+      ws.close();
+    };
+    ws.onmessage = async (event) => {
+      const msg = JSON.parse(event.data);
+      if (msg.type === 'spirit') {
+        spawnSpirit(msg.data); // neue Funktion, siehe unten!
+      }
+    };
+  }
 
-        // Init rotierende Lichter
-        for (let i = 0; i < 3; i++) {
-            const L = new THREE.PointLight(0xFFA230, 5, 30);
-            L.castShadow = true;
-            this.lights.push(L);
-            this.scene.add(L);
+  update(dt, t) {
+    // Werte je nach Connection
+    let bobFactor    = this.connected ? 0.5 : 0.13;
+    let spinSpeed    = this.connected ? 1.2 : 0.25;
+    let lightSpeed   = this.connected ? 0.8 : 0.18;
+    let lightInt     = this.connected ? 5   : 0.7;
+    let emissiveInt  = this.connected ? 3.0 : 0.15;
 
-            const L2 = new THREE.PointLight(0xFFA230, 5, 30);
-            L2.castShadow = true;
-            this.counterLights.push(L2);
-            this.scene.add(L2);
+    // Spinner Bobbing
+    const bob = Math.sin(t * 1.2) * bobFactor;
+    const yRed = this.baseY + bob + 0.8;
+    const yBlue = this.baseY + bob;
+
+    if (this.spinnerRed && this.spinnerBlue) {
+      this.spinnerRed.position.y = yRed;
+      this.spinnerBlue.position.y = yBlue;
+      this.spinnerRed.rotation.y  -= spinSpeed * dt;
+      this.spinnerBlue.rotation.y += spinSpeed * dt;
+      // Emissive dunkler/heller
+      this.spinnerRed.traverse(obj => {
+        if (obj.isMesh && obj.material && obj.material.isMeshStandardMaterial) {
+          obj.material.emissiveIntensity = emissiveInt;
         }
-
-        this.connectWebSocket();
-    }
-
-    async loadSpinner(path, pos, rotDeg, color, opacity) {
-        const { scene: obj } = await gltfLoader.loadAsync(path);
-        obj.position.set(...pos);
-        obj.rotation.set(
-            THREE.MathUtils.degToRad(rotDeg[0]),
-            THREE.MathUtils.degToRad(rotDeg[1]),
-            THREE.MathUtils.degToRad(rotDeg[2])
-        );
-        obj.traverse(c => {
-            c.visible = true;
-            if (c.isMesh && c.material && c.material.isMeshStandardMaterial) {
-                c.material.transparent = true;
-                c.material.opacity = opacity;
-                c.material.emissive = new THREE.Color(color);
-                c.material.emissiveIntensity = 3.0;
-                c.material.vertexColors = true;
-                c.castShadow = true;
-            }
-        });
-        this.scene.add(obj);
-        return obj;
-    }
-
-    animate(dt, t) {
-        // Spinner Animation
-        const bob = Math.sin(t * 1.2) * 0.5;
-        const baseY = this.baseY + bob;
-        if (this.spinnerRed && this.spinnerBlue) {
-            this.spinnerRed.position.y = baseY + 0.8;
-            this.spinnerBlue.position.y = baseY;
-            this.spinnerRed.rotation.y -= 1.2 * dt;
-            this.spinnerBlue.rotation.y += 1.2 * dt;
+      });
+      this.spinnerBlue.traverse(obj => {
+        if (obj.isMesh && obj.material && obj.material.isMeshStandardMaterial) {
+          obj.material.emissiveIntensity = emissiveInt;
         }
-        // Rotierende Lichter
-        for (let i = 0; i < this.lights.length; i++) {
-            const ang = t * 0.8 + i * 2 * Math.PI / 3;
-            this.lights[i].position.set(
-                this.center.x + Math.cos(ang) * this.LIGHT_RADIUS,
-                this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
-                this.center.z
-            );
-        }
-        for (let i = 0; i < this.counterLights.length; i++) {
-            const ang = -t * 0.8 + i * 2 * Math.PI / 3;
-            this.counterLights[i].position.set(
-                this.center.x + Math.cos(ang) * this.LIGHT_RADIUS,
-                this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
-                this.center.z
-            );
-        }
+      });
     }
 
-    connectWebSocket() {
-        let self = this;
-        if (self.ws) self.ws.close();
-        self.ws = new WebSocket(`ws://${location.host}`);
-        self.ws.addEventListener('open', () => {
-            console.log("WebSocket connected!");
-        });
-        self.ws.addEventListener('message', async (event) => {
-            const msg = JSON.parse(event.data);
-            if (msg.type === 'spirit') {
-                spawnSpirit(msg.data);
-            }
-        });
-        self.ws.addEventListener('close', () => {
-            console.warn("WebSocket closed. Reconnecting in " + this.reconnectDelay / 1000 + "s...");
-            setTimeout(() => self.connectWebSocket(), self.reconnectDelay);
-        });
-        self.ws.addEventListener('error', (e) => {
-            console.error("WebSocket error", e);
-            self.ws.close();
-        });
+    // Rotierende Lichter
+    const center = new THREE.Vector3(0, this.baseY, 1.5);
+    const lightZ = center.z;
+    for (let i = 0; i < this.rotatingLights.length; i++) {
+      const ang = t * lightSpeed + i * 2 * Math.PI / 3;
+      const L = this.rotatingLights[i];
+      L.intensity = lightInt;
+      L.position.set(
+        center.x + Math.cos(ang) * this.LIGHT_RADIUS,
+        center.y + Math.sin(ang) * this.LIGHT_RADIUS,
+        lightZ
+      );
     }
+    for (let i = 0; i < this.counterRotatingLights.length; i++) {
+      const ang = -t * lightSpeed + i * 2 * Math.PI / 3;
+      const L2 = this.counterRotatingLights[i];
+      L2.intensity = lightInt;
+      L2.position.set(
+        center.x + Math.cos(ang) * this.LIGHT_RADIUS,
+        center.y + Math.sin(ang) * this.LIGHT_RADIUS,
+        lightZ
+      );
+    }
+  }
 }
 
 // ---- Spirit-Klasse ----
