@@ -13,6 +13,7 @@ function isMobileDevice() {
     return /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|BlackBerry|webOS/i.test(navigator.userAgent);
 }
 const IS_MOBILE = isMobileDevice();
+const LOW_PERFORMANCE = IS_MOBILE; // ... später aus FPS ableitbar
 
 const container = document.getElementById('viewer');
 
