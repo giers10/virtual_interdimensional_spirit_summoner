@@ -97,12 +97,12 @@ function hasOpenClients() {
 wss.on('connection', (socket) => {
   console.log('[Server] Neuer Client verbunden');
 
-  // Zeit seit letztem Spirit-Spawn berechnen
+  // Zeit seit letztem Spirit-Spawn:
   const now = Date.now();
   const timeSinceSpawnMs = now - lastSpiritSpawn;
   const spirit = spirits[spiritPos];
 
-  // Sende Spirit + Zeit-Offset und Intervall NUR beim Verbindungsaufbau!
+  // Sende Spirit, Zeitdifferenz und Intervall an neuen Client
   socket.send(JSON.stringify({
     type: 'spirit',
     data: spirit,
@@ -110,10 +110,12 @@ wss.on('connection', (socket) => {
     spiritIntervalMs: SPIRIT_INTERVAL_MS
   }));
 
-  // --- KEIN nextSpirit()! ---
+  // KEIN nextSpirit() hier!
 
-  // Starte Timer falls das der erste Client ist
+  // Timer starten, falls es der erste Client ist:
   if (wss.clients.size === 1) {
+    // NICHT doppelt senden!
+    // NUR starten, nicht noch mal pushen!
     startSpiritTimer();
   }
 
@@ -126,6 +128,9 @@ wss.on('connection', (socket) => {
     }, 100);
   });
 });
+
+// --- Server Start, initialen Spirit pushen (optional, für "Demo" ohne Client)
+pushSpiritToAllClients();
 
 // --- Server Start ---
 const PORT = process.env.PORT || 3000;
