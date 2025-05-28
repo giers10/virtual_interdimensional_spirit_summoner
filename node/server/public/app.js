@@ -97,7 +97,8 @@ draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(draco);
 
-// ---- Spinner Controller-Klasse ----
+
+// Virtuelles Interdimensionales Geisterteleportationsgerät
 class SpinnerController {
     constructor(scene) {
         this.scene = scene;
@@ -111,15 +112,14 @@ class SpinnerController {
         this.clock = new THREE.Clock();
         this.ws = null;
         this.reconnectDelay = 2000;
+        this.connected = false; // Verbindungsstatus
         this.init();
     }
 
     async init() {
-        // Lade beide Spinner
         this.spinnerRed = await this.loadSpinner('assets/models/spinner_red.glb', [0, 16.55, 0.88], [90, 0, 0], "#ff3333", 0.2);
         this.spinnerBlue = await this.loadSpinner('assets/models/spinner_blue.glb', [0, 16.55, 0.88], [90, 0, 0], "#3380ff", 0.2);
 
-        // Init rotierende Lichter
         for (let i = 0; i < 3; i++) {
             const L = new THREE.PointLight(0xFFA230, 5, 30);
             L.castShadow = true;
@@ -158,15 +158,35 @@ class SpinnerController {
         return obj;
     }
 
+    // Hier die Anpassungen!
     animate(dt, t) {
-        // Spinner Animation
-        const bob = Math.sin(t * 1.2) * 0.5;
+        // Visuelle Parameter je nach Verbindungsstatus:
+        const connected = this.connected;
+
+        // Langsamer, weniger Bobbing, keine Emission falls disconnected
+        const bobMult = connected ? 0.5 : 0.12;
+        const rotSpeed = connected ? 1.2 : 0.08;
+        const emission = connected ? 3.0 : 0.0;
+
+        const bob = Math.sin(t * 1.2) * bobMult;
         const baseY = this.baseY + bob;
+
+        // Spinner
         if (this.spinnerRed && this.spinnerBlue) {
             this.spinnerRed.position.y = baseY + 0.8;
             this.spinnerBlue.position.y = baseY;
-            this.spinnerRed.rotation.y -= 1.2 * dt;
-            this.spinnerBlue.rotation.y += 1.2 * dt;
+            this.spinnerRed.rotation.y -= rotSpeed * dt;
+            this.spinnerBlue.rotation.y += rotSpeed * dt;
+
+            // Emission auf beide Spinner anwenden
+            this.spinnerRed.traverse(c => {
+                if (c.isMesh && c.material && c.material.isMeshStandardMaterial)
+                    c.material.emissiveIntensity = emission;
+            });
+            this.spinnerBlue.traverse(c => {
+                if (c.isMesh && c.material && c.material.isMeshStandardMaterial)
+                    c.material.emissiveIntensity = emission;
+            });
         }
         // Rotierende Lichter
         for (let i = 0; i < this.lights.length; i++) {
@@ -188,25 +208,27 @@ class SpinnerController {
     }
 
     connectWebSocket() {
-        let self = this;
-        if (self.ws) self.ws.close();
-        self.ws = new WebSocket(`ws://${location.host}`);
-        self.ws.addEventListener('open', () => {
+        if (this.ws) this.ws.close();
+        this.ws = new WebSocket(`ws://${location.host}`);
+        this.ws.addEventListener('open', () => {
+            this.connected = true;
             console.log("WebSocket connected!");
         });
-        self.ws.addEventListener('message', async (event) => {
+        this.ws.addEventListener('message', async (event) => {
             const msg = JSON.parse(event.data);
             if (msg.type === 'spirit') {
                 spawnSpirit(msg.data);
             }
         });
-        self.ws.addEventListener('close', () => {
+        this.ws.addEventListener('close', () => {
+            this.connected = false;
             console.warn("WebSocket closed. Reconnecting in " + this.reconnectDelay / 1000 + "s...");
-            setTimeout(() => self.connectWebSocket(), self.reconnectDelay);
+            setTimeout(() => this.connectWebSocket(), this.reconnectDelay);
         });
-        self.ws.addEventListener('error', (e) => {
+        this.ws.addEventListener('error', (e) => {
+            this.connected = false;
             console.error("WebSocket error", e);
-            self.ws.close();
+            this.ws.close();
         });
     }
 }
