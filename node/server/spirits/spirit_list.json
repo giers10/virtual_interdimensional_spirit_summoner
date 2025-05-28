@@ -1,12 +1,10 @@
 [
   {
-    "name": "Chibi Kitsune",
-    "desc": "Ein schelmischer kleiner Fuchsgeist.",
-    "modelUrl": "/models/chibi_kitsune.glb"
-  },
-  {
-    "name": "Oni Spirit",
-    "desc": "Ein brummiger, aber gutmütiger Oni.",
-    "modelUrl": "/models/oni_spirit.glb"
+    "type": "spirit",
+    "data": {
+      "modelUrl": "/assets/models/spirits/Yuki_Onna.glb",
+      "name": "Yuki Onna",
+      "desc": "Eine geheimnisvolle Schneefrau aus der japanischen Mythologie."
+    }
   }
 ]
