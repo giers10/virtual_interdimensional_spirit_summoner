@@ -71,7 +71,7 @@ def levenshtein(a, b):
     return v0[len(b)]
 
 def main():
-    with open("wesen.json", encoding="utf-8") as f:
+    with open("spirit_list.json", encoding="utf-8") as f:
         spirits = json.load(f)
     output = []
     for spirit in spirits:
