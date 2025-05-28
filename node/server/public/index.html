@@ -38,9 +38,74 @@
       /* width/height wird von JS gesetzt */
       /* Wichtig: Keine max-width/max-height */
     }
-    /* Optional: Overlay z-index */
+    /* Responsive Overlay */
     #spirit-info {
-      z-index: 10;
+      box-sizing: border-box !important;
+      position: fixed !important;
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      background: rgba(0,0,0,0.94) !important;
+      color: #fff !important;
+      border-radius: 18px !important;
+      font-family: 'Segoe UI', sans-serif !important;
+      box-shadow: 0 12px 64px #000a !important;
+      padding: 4vw 4vw 4vw 4vw !important;
+      width: 80vw !important;
+      max-width: 600px !important;
+      min-width: 0 !important;
+      max-height: 80vh !important;
+      overflow-y: auto !important;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Mobile: Bild oben, Text darunter, an allen Seiten 10% Abstand */
+    @media (max-width: 900px), (max-aspect-ratio: 4/5) {
+      #spirit-info {
+        flex-direction: column !important;
+        width: 80vw !important;
+        max-width: 98vw !important;
+        min-width: 0 !important;
+        max-height: 80vh !important;
+        padding: 10vw 4vw !important;
+        gap: 14px !important;
+      }
+      #spirit-info img {
+        display: block !important;
+        margin: 0 auto 18px auto !important;
+        max-width: 80vw !important;
+        max-height: 30vh !important;
+        border-radius: 12px !important;
+        background: #222 !important;
+      }
+    }
+
+    /* Desktop: Bild links, Text rechts */
+    @media (min-width: 901px) and (min-aspect-ratio: 4/5) {
+      #spirit-info {
+        flex-direction: row !important;
+        align-items: flex-start;
+        gap: 32px !important;
+        width: 80vw !important;
+        max-width: 900px !important;
+        max-height: 80vh !important;
+        padding: 4vw !important;
+      }
+      #spirit-info img {
+        display: block !important;
+        margin: 0 !important;
+        max-width: 320px !important;
+        max-height: 60vh !important;
+        border-radius: 12px !important;
+        background: #222 !important;
+      }
+      #spirit-info .spirit-info-content {
+        flex: 1 1 0;
+        min-width: 200px;
+        max-width: 500px;
+      }
     }
   </style>
 </head>
