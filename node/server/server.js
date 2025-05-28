@@ -1,3 +1,17 @@
+const express = require('express');
+const http = require('http');
+const ws = require('ws');
+const path = require('path');
+const fs = require('fs');
+
+// --- Server Setup ---
+const app = express();
+const server = http.createServer(app);
+const wss = new ws.Server({ server });
+
+// Statisches Hosting von /public
+app.use(express.static(path.join(__dirname, 'public')));
+
 // --- Spirits laden ---
 const SPIRITS_PATH = path.join(__dirname, '.', 'spirits', 'spirit_list.json');
 let spirits = [];
@@ -13,7 +27,6 @@ try {
 let spiritTimer = null;
 let currentSpiritIndex = Math.floor(Math.random() * spirits.length);
 
-
 function pushSpiritToAllClients() {
   const spirit = spirits[currentSpiritIndex];
   const payload = JSON.stringify({ type: 'spirit', data: spirit });
@@ -22,7 +35,7 @@ function pushSpiritToAllClients() {
       client.send(payload);
     }
   });
-  //console.log(`Spirit "${spirit.Name}" wurde an alle Clients gepusht.`);
+  console.log(`Spirit "${spirit.Name}" wurde an alle Clients gepusht.`);
 }
 
 // Timer starten, falls noch nicht läuft
@@ -32,7 +45,7 @@ function startSpiritTimer() {
       currentSpiritIndex = Math.floor(Math.random() * spirits.length);
       pushSpiritToAllClients();
     }, 20000);
-    //console.log('Spirit-Timer gestartet');
+    console.log('Spirit-Timer gestartet');
   }
 }
 
@@ -41,7 +54,7 @@ function stopSpiritTimer() {
   if (spiritTimer) {
     clearInterval(spiritTimer);
     spiritTimer = null;
-    //console.log('Spirit-Timer gestoppt');
+    console.log('Spirit-Timer gestoppt');
   }
 }
 
@@ -56,7 +69,7 @@ function hasOpenClients() {
 
 // --- WebSocket Logik ---
 wss.on('connection', (socket) => {
-  //console.log('Neuer Client verbunden');
+  console.log('Neuer Client verbunden');
 
   // Sende sofort einen Spirit an den neuen Client
   socket.send(JSON.stringify({ type: 'spirit', data: spirits[currentSpiritIndex] }));
@@ -79,5 +92,5 @@ wss.on('connection', (socket) => {
 // --- Server Start ---
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  //console.log(`Server läuft auf http://localhost:${PORT}`);
+  console.log(`Server läuft auf http://localhost:${PORT}`);
 });
