@@ -71,9 +71,6 @@ function hasOpenClients() {
 wss.on('connection', (socket) => {
   console.log('Neuer Client verbunden');
 
-  // Sende sofort einen Spirit an den neuen Client
-  socket.send(JSON.stringify({ type: 'spirit', data: spirits[currentSpiritIndex] }));
-
   // Starte Timer falls das der erste Client ist
   if (wss.clients.size === 1) {
     startSpiritTimer();
