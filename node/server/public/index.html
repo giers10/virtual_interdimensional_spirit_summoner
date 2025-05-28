@@ -75,10 +75,16 @@ canvas {
   margin: 0;
 }
 
-/* DESKTOP – immer: pointer: fine */
+/* === 1. Desktop immer: Bild links, Text rechts === */
 @media (pointer: fine) {
+  #spirit-info {
+    width: 600px;
+    max-width: calc(100vw - 48px);
+    min-width: 320px;
+    max-height: calc(100dvh - 48px);
+    padding: 40px 36px 32px 36px;
+  }
   .spirit-info-flex {
-    display: flex;
     flex-direction: row;
     align-items: flex-start;
     gap: 32px;
@@ -105,8 +111,8 @@ canvas {
   }
 }
 
-/* MOBILE – immer: pointer: coarse */
-@media (pointer: coarse) {
+/* === 2. Mobile Portrait: Bild oben, Text unten === */
+@media (pointer: coarse) and (orientation: portrait) {
   #spirit-info {
     width: 90vw;
     max-width: 98vw;
@@ -115,7 +121,6 @@ canvas {
     padding: 8vw 4vw 4vw 4vw;
   }
   .spirit-info-flex {
-    display: flex;
     flex-direction: column;
     gap: 16px;
   }
@@ -134,6 +139,42 @@ canvas {
     width: 100%;
     max-width: 100%;
     min-width: 0;
+    word-break: break-word;
+  }
+}
+
+/* === 3. Mobile Landscape: Bild links, Text rechts === */
+@media (pointer: coarse) and (orientation: landscape) {
+  #spirit-info {
+    width: 96vw;
+    max-width: 800px;
+    min-width: 0;
+    max-height: 82dvh;
+    padding: 4vw 4vw 4vw 4vw;
+  }
+  .spirit-info-flex {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  #spirit-info img {
+    max-width: 160px;
+    min-width: 80px;
+    width: 34vw;
+    max-height: 32vh;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    background: transparent;
+    flex-shrink: 0;
+    margin: 0;
+    display: block;
+  }
+  #spirit-info .spirit-info-content {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 450px;
+    overflow-wrap: break-word;
     word-break: break-word;
   }
 }
