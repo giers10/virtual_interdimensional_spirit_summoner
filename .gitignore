@@ -2,3 +2,5 @@ assets
 node/server/public/assets
 node/node_modules
 node/server/spirits/models
+node_modules
+package-lock.json
