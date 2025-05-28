@@ -47,22 +47,32 @@ composer.addPass(new ShaderPass(GammaCorrectionShader));
 function onResize() {
     const winW = window.innerWidth, winH = window.innerHeight;
     const aspect = 3/2;
+    let renderW, renderH, styleW, styleH;
 
-    let renderW, renderH;
     if (winW / winH > aspect) {
-        // Fenster ist breiter → passe an Breite an, Höhe reicht nicht aus → Höhe muss „überragen“
-        renderW = winW;
-        renderH = winW / aspect;
-    } else {
-        // Fenster ist höher/schmaler → passe an Höhe an, Breite reicht nicht aus → Breite muss „überragen“
+        // Querformat (breit) → CONTAIN
         renderH = winH;
         renderW = winH * aspect;
+        styleW = `${renderW}px`;
+        styleH = `${renderH}px`;
+    } else {
+        // Hochformat oder quadratisch → COVER
+        renderW = winW;
+        renderH = winW / aspect;
+        if (renderH < winH) {
+            // Ist nach Covern immer noch zu klein? Dann auf volle Höhe und rechts/links abschneiden
+            renderH = winH;
+            renderW = winH * aspect;
+        }
+        styleW = `${renderW}px`;
+        styleH = `${renderH}px`;
     }
+
     renderer.setSize(renderW, renderH, false);
     composer.setSize(renderW, renderH);
 
-    renderer.domElement.style.width = `${renderW}px`;
-    renderer.domElement.style.height = `${renderH}px`;
+    renderer.domElement.style.width = styleW;
+    renderer.domElement.style.height = styleH;
     renderer.domElement.style.left = '50%';
     renderer.domElement.style.top = '50%';
     renderer.domElement.style.transform = 'translate(-50%, -50%)';
