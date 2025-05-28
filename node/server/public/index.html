@@ -28,13 +28,15 @@
       height: 100vh;
       overflow: hidden;
       background: #000;
+      /* border-radius:15px; // Optional */
     }
     canvas {
       display: block;
       position: absolute;
       left: 50%; top: 50%;
       transform: translate(-50%, -50%);
-      /* width/height wird durch JS gesetzt */
+      /* width/height wird von JS gesetzt */
+      /* Wichtig: Keine max-width/max-height */
     }
     /* Optional: Overlay z-index */
     #spirit-info {
