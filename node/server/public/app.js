@@ -538,15 +538,15 @@ function showSpiritOverlay(spirit) {
         onmouseover="this.style.background='rgba(255,255,255,0.10)'"
         onmouseout="this.style.background='none'"
         >&times;</button>
-    ${spirit['Image URL'] ? `<img src="${spirit['Image URL']}" alt="Spirit Image">` : ''}
-        <div class="spirit-info-content">
-            <h2 style='padding:0; margin:0 0 8px 0; font-weight:700; letter-spacing:0.04em;'>${spirit.Name || 'Spirit'}</h2>
-            <b>${spirit.Kategorie || ''}</b><br><br>
-            <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
-            <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
-            <b>Charakter:</b> ${spirit.Charakter || ''}<br><br>
-            ${spirit.Herkunft ? '<i>' + spirit.Herkunft + '</i>' : ''}
-        </div>
+      ${spirit['Image URL'] ? `<img src="${spirit['Image URL']}" alt="Spirit Image">` : ''}
+      <div class="spirit-info-content">
+        <h2 style="margin:0 0 8px 0;">${spirit.Name || 'Spirit'}</h2>
+        <b>${spirit.Kategorie || ''}</b><br><br>
+        <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
+        <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
+        <b>Charakter:</b> ${spirit.Charakter || ''}<br><br>
+        ${spirit.Herkunft ? '<i>' + spirit.Herkunft + '</i>' : ''}
+      </div>
     `;
     el.style.display = "block";
     lastOverlaySpiritData = spirit;
