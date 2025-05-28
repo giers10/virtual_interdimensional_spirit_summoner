@@ -358,6 +358,15 @@ class Spirit {
             }
         });
     }
+
+    _setupPicking() {
+        // Hier ein einfacher Ansatz: Mesh mit Info-Objekt merken!
+        this.gltf.traverse(mesh => {
+            if (mesh.isMesh) {
+                mesh.userData._spiritInfo = this.info;
+            }
+        });
+    }
 }
 
 // ---- Szene initialisieren ----
