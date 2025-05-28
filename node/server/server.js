@@ -33,7 +33,7 @@ let spiritPos = 0;
 const SPIRIT_INTERVAL_MS = 20000; // 20 Sekunden
 let lastSpiritSpawn = Date.now();
 
-// --- Helper für die Rotation ---
+// --- Helper ---
 function nextSpirit() {
   spiritPos++;
   if (spiritPos >= spirits.length) {
@@ -43,17 +43,15 @@ function nextSpirit() {
   lastSpiritSpawn = Date.now();
 }
 
-// --- WebSocket Logik mit Timer-Steuerung ---
-let spiritTimer = null;
-
-// *** NEU: Timer-Spawn ohne Offset ***
+// --- WebSocket Logik ---
 function pushSpiritToAllClients() {
   const spirit = spirits[spiritPos];
   lastSpiritSpawn = Date.now();
   const payload = JSON.stringify({
     type: 'spirit',
-    data: spirit
-    // KEIN Offset, kein Interval notwendig
+    data: spirit,
+    timeSinceSpawnMs: 0,
+    spiritIntervalMs: SPIRIT_INTERVAL_MS
   });
   wss.clients.forEach(client => {
     if (client.readyState === ws.OPEN) {
@@ -61,15 +59,16 @@ function pushSpiritToAllClients() {
     }
   });
   console.log(`[Server] Spirit "${spirit.Name}" gesendet (${spiritPos + 1}/${spirits.length})`);
-  //nextSpirit();
+  // nextSpirit(); <-- NICHT HIER
 }
 
-// Timer starten, falls noch nicht läuft
+// --- Timer ---
 function startSpiritTimer() {
   if (!spiritTimer) {
     spiritTimer = setInterval(() => {
-      pushSpiritToAllClients();
+      // Vorher weiterzählen, DANN pushen!
       nextSpirit();
+      pushSpiritToAllClients();
     }, SPIRIT_INTERVAL_MS);
     console.log('[Server] Spirit-Timer gestartet');
   }
