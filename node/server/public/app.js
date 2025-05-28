@@ -286,7 +286,7 @@ class Spirit {
         this.spawnY = spawnPosition.y;
         this.clock = new THREE.Clock();
         this.isFading = true;
-        this.lifeTime = 20; // Sekunden
+        this.lifeTime = 30; // Sekunden
         this.spiritMeshes = [];
         this.grp.add(this.gltf);
         // exakt wie im Original: rotate, platzieren, leicht nach hinten
