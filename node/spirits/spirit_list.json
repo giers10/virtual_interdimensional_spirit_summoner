@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Chibi Kitsune",
+    "desc": "Ein schelmischer kleiner Fuchsgeist.",
+    "modelUrl": "/models/chibi_kitsune.glb"
+  },
+  {
+    "name": "Oni Spirit",
+    "desc": "Ein brummiger, aber gutmütiger Oni.",
+    "modelUrl": "/models/oni_spirit.glb"
+  }
+]
