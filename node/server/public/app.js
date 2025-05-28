@@ -65,43 +65,36 @@ composer.addPass(new ShaderPass(GammaCorrectionShader));
 
 // ---- Resize Handler ----
 function onResize() {
-    const winW = window.innerWidth, winH = window.innerHeight;
-    const aspect = 3/2;
-    let renderW, renderH, styleW, styleH;
+    const winW = window.innerWidth;
+    const winH = window.innerHeight;
+    const aspect = 3 / 2;
 
-    if (winW / winH > aspect) {
-        // Querformat (breit) → CONTAIN
+    // Berechne maximal mögliche Breite/Höhe im Fenster, die zum gewünschten Seitenverhältnis passt (CONTAIN)
+    let renderW = winW;
+    let renderH = winW / aspect;
+
+    if (renderH > winH) {
         renderH = winH;
         renderW = winH * aspect;
-        styleW = `${renderW}px`;
-        styleH = `${renderH}px`;
-    } else {
-        // Hochformat oder quadratisch → COVER
-        renderW = winW;
-        renderH = winW / aspect;
-        if (renderH < winH) {
-            // Ist nach Covern immer noch zu klein? Dann auf volle Höhe und rechts/links abschneiden
-            renderH = winH;
-            renderW = winH * aspect;
-        }
-        styleW = `${renderW}px`;
-        styleH = `${renderH}px`;
     }
 
     renderer.setSize(renderW, renderH, false);
     composer.setSize(renderW, renderH);
 
-    renderer.domElement.style.width = styleW;
-    renderer.domElement.style.height = styleH;
-    renderer.domElement.style.left = '50%';
-    renderer.domElement.style.top = '50%';
-    renderer.domElement.style.transform = 'translate(-50%, -50%)';
+    // Zentriere das Canvas im Viewport
+    renderer.domElement.style.position = "absolute";
+    renderer.domElement.style.left = "50%";
+    renderer.domElement.style.top = "50%";
+    renderer.domElement.style.width = `${renderW}px`;
+    renderer.domElement.style.height = `${renderH}px`;
+    renderer.domElement.style.transform = "translate(-50%, -50%)";
 
-    renderer.setScissorTest(false);
-
-    const dpr = window.devicePixelRatio || 1;
+    // DPR nicht vergessen!
+    const dpr = Math.min(window.devicePixelRatio || 1, IS_MOBILE ? 1.0 : 2.0);
     renderer.setPixelRatio(dpr);
     composer.setPixelRatio(dpr);
+
+    renderer.setScissorTest(false);
 
     camera.updateProjectionMatrix();
 }
