@@ -112,15 +112,29 @@ canvas {
   }
 }
 
-/* "Mobile Portrait" (Hochformat und schmal) */
-@media (max-width: 619px), (orientation: portrait) {
+/* Hochformat (Mobile) */
+@media (max-width: 619px) and (orientation: portrait) and (pointer: coarse) {
+  #spirit-info {
+    width: 90vw;
+    max-width: 98vw;
+    min-width: 0;
+    max-height: 82dvh;
+    padding: 8vw 4vw 4vw 4vw;
+  }
+}
+
+/* Hochformat (Desktop) */
+@media (max-width: 619px) and (orientation: landscape), (max-width: 619px) and (pointer: fine) {
   #spirit-info {
     width: 90vw;
     max-width: 400px;
     min-width: 0;
-    max-height: 700px; /* dynamic viewport height */
+    max-height: 700px;
     padding: 8vw 4vw 4vw 4vw;
   }
+
+/* Hochformat (Mobile / Desktop) */
+@media (max-width: 619px), (orientation: portrait) {
   .spirit-info-flex {
     flex-direction: column;
     gap: 16px;
