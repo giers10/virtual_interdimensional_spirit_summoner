@@ -36,24 +36,6 @@
     "Model URL": "/assets/models/spirits/Izanagi_No_Mikoto.glb"
   },
   {
-    "Name": "Izanagi (伊邪那岐命)",
-    "Kategorie": "Kami",
-    "Herkunft": "Shintō (Schöpfungsmythos)",
-    "Funktion/Rolle": "Urvater und Schöpfergott, formte die ersten Inseln und Götter",
-    "Charakter": "schöpferisch und paternal, aber furchtsam vor Unreinheit (Tod)",
-    "Mythos/Legende": "Zentrales Urgötterpaar mit Izanami; erschuf die Welt und viele Kami, floh jedoch aus der Unterwelt, als Izanami dort festgehalten wurde, und reinigte sich – dabei entstanden Amaterasu, Tsukuyomi und Susanoo.",
-    "Model URL": "/assets/models/spirits/Izanami_No_Mikoto.glb"
-  },
-  {
-    "Name": "Izanami (伊邪那美命)",
-    "Kategorie": "Kami",
-    "Herkunft": "Shintō (Schöpfungsmythos)",
-    "Funktion/Rolle": "Urmutter und Schöpfergöttin (Gebärerin vieler Kami)",
-    "Charakter": "lebenspendend, später (als Todesgöttin) rachsüchtig",
-    "Mythos/Legende": "Schuf mit Izanagi die japanischen Inseln; starb bei der Geburt des Feuergottes Kagutsuchi und wurde zur Herrscherin der Unterwelt Yomi. Verfolgte Izanagi aus Zorn und schwor, täglich 1000 Menschen zu töten, während Izanagi versprach, 1500 zu gebären.",
-    "Model URL": "/assets/models/spirits/Izanagi_No_Mikoto.glb"
-  },
-  {
     "Name": "Izanami (伊邪那美命)",
     "Kategorie": "Kami",
     "Herkunft": "Shintō (Schöpfungsmythos)",
@@ -97,15 +79,6 @@
     "Charakter": "furchteinflößend und wild, doch als Erntebringer verehrt",
     "Mythos/Legende": "Gilt zusammen mit Bruder Fujin als wichtigster Wettergott Japans. Wird als rotblauer Dämon auf Wolken mit Trommeln dargestellt. Sein Sturm (Kamikaze) soll Japan vor Invasoren bewahrt haben.",
     "Model URL": "/assets/models/spirits/Raijin.glb"
-  },
-  {
-    "Name": "Raijin (雷神)",
-    "Kategorie": "Kami",
-    "Herkunft": "Shintō (volksreligiös, buddh. Einflüsse)",
-    "Funktion/Rolle": "Donner- und Sturmgott (Wettergott)",
-    "Charakter": "furchteinflößend und wild, doch als Erntebringer verehrt",
-    "Mythos/Legende": "Gilt zusammen mit Bruder Fujin als wichtigster Wettergott Japans. Wird als rotblauer Dämon auf Wolken mit Trommeln dargestellt. Sein Sturm (Kamikaze) soll Japan vor Invasoren bewahrt haben.",
-    "Model URL": "/assets/models/spirits/Ryujin.glb"
   },
   {
     "Name": "Fūjin (風神)",
@@ -375,15 +348,6 @@
     "Funktion/Rolle": "rachsüchtiger Geist, der Rache an Lebenden nimmt",
     "Charakter": "verbittert, wütend, tödlich",
     "Mythos/Legende": "Von Hass getriebene Geister, die ihre Peiniger heimsuchen und auch Naturkatastrophen auslösen können.",
-    "Model URL": "/assets/models/spirits/Oni.glb"
-  },
-  {
-    "Name": "Onryō (怨霊)",
-    "Kategorie": "Yūrei",
-    "Herkunft": "Volksglaube (Heian-Zeit bis heute)",
-    "Funktion/Rolle": "rachsüchtiger Geist, der Rache an Lebenden nimmt",
-    "Charakter": "verbittert, wütend, tödlich",
-    "Mythos/Legende": "Von Hass getriebene Geister, die ihre Peiniger heimsuchen und auch Naturkatastrophen auslösen können.",
     "Model URL": "/assets/models/spirits/Onryo.glb"
   },
   {
@@ -412,24 +376,6 @@
     "Charakter": "traurig, fürsorglich, geisterhaft unheimlich",
     "Mythos/Legende": "Erscheint mit Baby in Armen, bittet um Hilfe, verschwindet dann und das Kind wird unheimlich schwer.",
     "Model URL": "/assets/models/spirits/Ubume.glb"
-  },
-  {
-    "Name": "Ryūjin (龍神)",
-    "Kategorie": "Ryū",
-    "Herkunft": "Shintō (Mythen, Ryūō-Legenden)",
-    "Funktion/Rolle": "Drachengott und Meereskönig",
-    "Charakter": "gewaltig, respekteinflößend, ambivalent",
-    "Mythos/Legende": "Herrscher des Meeresgrund-Palasts, beherrscht Ebbe und Flut mit Gezeiten-Juwelen.",
-    "Model URL": "/assets/models/spirits/Fujin.glb"
-  },
-  {
-    "Name": "Ryūjin (龍神)",
-    "Kategorie": "Ryū",
-    "Herkunft": "Shintō (Mythen, Ryūō-Legenden)",
-    "Funktion/Rolle": "Drachengott und Meereskönig",
-    "Charakter": "gewaltig, respekteinflößend, ambivalent",
-    "Mythos/Legende": "Herrscher des Meeresgrund-Palasts, beherrscht Ebbe und Flut mit Gezeiten-Juwelen.",
-    "Model URL": "/assets/models/spirits/Raijin.glb"
   },
   {
     "Name": "Ryūjin (龍神)",
@@ -583,15 +529,6 @@
     "Charakter": "gierig und unheilig",
     "Mythos/Legende": "Verdammte Seelen, die nach dem Tod Leichname schänden und fressen.",
     "Model URL": "/assets/models/spirits/Jikininki.glb"
-  },
-  {
-    "Name": "Mujina (狢)",
-    "Kategorie": "Yōkai",
-    "Herkunft": "Volksglaube",
-    "Funktion/Rolle": "Badger-Gestaltwandler",
-    "Charakter": "trickreich und schelmisch",
-    "Mythos/Legende": "Verwechselt Menschen mit Doppelgängern und treibt Streiche.",
-    "Model URL": "/assets/models/spirits/Fujin.glb"
   },
   {
     "Name": "Mujina (狢)",
@@ -765,15 +702,6 @@
     "Model URL": "/assets/models/spirits/Baku.glb"
   },
   {
-    "Name": "Baku (獏)",
-    "Kategorie": "Yōkai/Buddhismus",
-    "Herkunft": "Buddhistische Mythologie",
-    "Funktion/Rolle": "Traumfresser und Beschützer im Schlaf",
-    "Charakter": "ruhig und wohltuend",
-    "Mythos/Legende": "Verzehrt Albträume, damit Schläfer in Ruhe ruhen",
-    "Model URL": "/assets/models/spirits/Gaki.glb"
-  },
-  {
     "Name": "Amabie (アマビエ)",
     "Kategorie": "Yōkai",
     "Herkunft": "Volksglaube",
@@ -909,33 +837,6 @@
     "Model URL": "/assets/models/spirits/Abe_No_Seimei.glb"
   },
   {
-    "Name": "Abe no Seimei (安倍晴明)",
-    "Kategorie": "Legendäre Person/Shintō",
-    "Herkunft": "Onmyōdō (Heian-Hof)",
-    "Funktion/Rolle": "spiritueller Berater und Exorzist",
-    "Charakter": "klug, mächtig und geheimnisumwoben",
-    "Mythos/Legende": "Berater von Kaiser Ichijō; Sohn einer Kitsune und Begründer der Onmyōdō-Schule",
-    "Model URL": "/assets/models/spirits/Nue.glb"
-  },
-  {
-    "Name": "Abe no Seimei (安倍晴明)",
-    "Kategorie": "Legendäre Person/Shintō",
-    "Herkunft": "Onmyōdō (Heian-Hof)",
-    "Funktion/Rolle": "spiritueller Berater und Exorzist",
-    "Charakter": "klug, mächtig und geheimnisumwoben",
-    "Mythos/Legende": "Berater von Kaiser Ichijō; Sohn einer Kitsune und Begründer der Onmyōdō-Schule",
-    "Model URL": "/assets/models/spirits/Nurikabe.glb"
-  },
-  {
-    "Name": "Abe no Seimei (安倍晴明)",
-    "Kategorie": "Legendäre Person/Shintō",
-    "Herkunft": "Onmyōdō (Heian-Hof)",
-    "Funktion/Rolle": "spiritueller Berater und Exorzist",
-    "Charakter": "klug, mächtig und geheimnisumwoben",
-    "Mythos/Legende": "Berater von Kaiser Ichijō; Sohn einer Kitsune und Begründer der Onmyōdō-Schule",
-    "Model URL": "/assets/models/spirits/Nurikabe2.glb"
-  },
-  {
     "Name": "Abura-akago (油赤子)",
     "Kategorie": "Yōkai",
     "Herkunft": "Konjaku Gazu Zoku Hyakki (Sekien)",
@@ -999,15 +900,6 @@
     "Model URL": "/assets/models/spirits/Akuchu.glb"
   },
   {
-    "Name": "Akuchū (悪虫)",
-    "Kategorie": "Yōkai",
-    "Herkunft": "Volksglaube",
-    "Funktion/Rolle": "Fressendes Insektengeist",
-    "Charakter": "klein aber heimtückisch",
-    "Mythos/Legende": "Erscheint als leuchtender Käfer, der nachts Wunden anrichtet",
-    "Model URL": "/assets/models/spirits/Futakuchi_Onna.glb"
-  },
-  {
     "Name": "Hōkō (吽行)",
     "Kategorie": "Yōkai",
     "Herkunft": "Volksglaube",
@@ -1050,25 +942,7 @@
     "Funktion/Rolle": "Hungrige Geister",
     "Charakter": "endlos gierig",
     "Mythos/Legende": "Verkörpert die Schattenseite von Gier; verhungert ewig, trotz vollem Bauch",
-    "Model URL": "/assets/models/spirits/Baku.glb"
-  },
-  {
-    "Name": "Gaki (餓鬼)",
-    "Kategorie": "Buddhistische Geister",
-    "Herkunft": "Buddhismus",
-    "Funktion/Rolle": "Hungrige Geister",
-    "Charakter": "endlos gierig",
-    "Mythos/Legende": "Verkörpert die Schattenseite von Gier; verhungert ewig, trotz vollem Bauch",
     "Model URL": "/assets/models/spirits/Gaki.glb"
-  },
-  {
-    "Name": "Ashiarai yashiki (足洗邸)",
-    "Kategorie": "Yōkai",
-    "Herkunft": "Volksglaube",
-    "Funktion/Rolle": "Fußwascher im Haus",
-    "Charakter": "plötzlich und erschreckend",
-    "Mythos/Legende": "Wäscht nachts die Füße der Hausbewohner an der Eingangsschwelle",
-    "Model URL": "/assets/models/spirits/Azukiarai.glb"
   },
   {
     "Name": "Ashiarai yashiki (足洗邸)",
