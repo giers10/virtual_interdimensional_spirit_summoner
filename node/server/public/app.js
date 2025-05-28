@@ -99,7 +99,7 @@ function onResize() {
 
     renderer.setScissorTest(false);
 
-    const dpr = Math.min(window.devicePixelRatio || 1, IS_MOBILE ? 1.0 : 2.0);
+    const dpr = Math.min(window.devicePixelRatio || 1, IS_MOBILE ? 1 : 2);
     renderer.setPixelRatio(dpr);
     composer.setPixelRatio(dpr);
 
