@@ -56,7 +56,7 @@ function pushSpiritToAllClients() {
 setInterval(() => {
   currentSpiritIndex = Math.floor(Math.random() * spirits.length);
   pushSpiritToAllClients();
-}, 20000);
+}, 3000);
 
 // Beim Start: Ersten Spirit pushen
 setTimeout(pushSpiritToAllClients, 1500);
