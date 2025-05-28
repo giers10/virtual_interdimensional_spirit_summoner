@@ -271,6 +271,7 @@ ws.addEventListener('message', async (event) => {
   const msg = JSON.parse(event.data);
   if (msg.type === 'spirit') {
     await showSpirit(msg.data);
+    console.log(msg.data);
   }
 });
 
