@@ -107,7 +107,7 @@ wss.on('connection', (socket) => {
     spiritIntervalMs: SPIRIT_INTERVAL_MS
   }));
 
-  nextSpirit();
+  // --- WICHTIG: KEIN nextSpirit() hier! ---
 
   // Starte Timer falls das der erste Client ist
   if (wss.clients.size === 1) {
@@ -120,7 +120,7 @@ wss.on('connection', (socket) => {
       if (!hasOpenClients()) {
         stopSpiritTimer();
       }
-    }, 100); // etwas warten, falls kurzzeitig mehrere Clients disconnecten/reconnecten
+    }, 100);
   });
 });
 
