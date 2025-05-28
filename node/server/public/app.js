@@ -91,7 +91,7 @@ onResize();
 // ---- Environment ----
 const texLoader = new THREE.TextureLoader();
 const pmremGen = new THREE.PMREMGenerator(renderer);
-texLoader.load('assets/hdri/environment.jpg', tex => {
+texLoader.load('assets/images/hdri/environment.jpg', tex => {
     const envRT = pmremGen.fromEquirectangular(tex).texture;
     scene.environment = envRT;
     scene.background = envRT;
