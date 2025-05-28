@@ -6,7 +6,8 @@
     "Funktion/Rolle": "Sonnengöttin und Ahnherrin des Kaiserhauses",
     "Charakter": "wohlwollend und lebensspendend, zentrale höchste Gottheit",
     "Mythos/Legende": "Wurde aus dem Auge Izanagis geboren und personifiziert die Sonne; zog sich nach einem Streit mit ihrem Bruder Susanoo in eine Höhle zurück, wodurch die Welt in Finsternis fiel, bis sie mit einem Tanz hervorgelockt wurde.",
-    "Model URL": "/assets/models/spirits/Amaterasu.glb"
+    "Model URL": "/assets/models/spirits/Amaterasu.glb",
+    "Image URL": "/assets/images/spirits/amaterasu.webp"
   },
   {
     "Name": "Susanoo (素戔嗚尊)",
@@ -15,7 +16,8 @@
     "Funktion/Rolle": "Sturm- und Meeresgott, Bruder von Amaterasu und Tsukuyomi",
     "Charakter": "ungestüm, rebellisch und chaotisch, zugleich fähig zu Heldentaten",
     "Mythos/Legende": "Sohn Izanagis, wurde wegen seines wüsten Betragens aus dem Himmel verbannt; tötete auf Erden den achtköpfigen Drachen Yamata-no-Orochi und gewann dabei das Schwert Kusanagi.",
-    "Model URL": "/assets/models/spirits/Susanoo.glb"
+    "Model URL": "/assets/models/spirits/Susanoo.glb",
+    "Image URL": "/assets/images/spirits/susanoo.webp"
   },
   {
     "Name": "Tsukuyomi (月読命)",
@@ -24,7 +26,8 @@
     "Funktion/Rolle": "Mondgott und Herrscher der Nacht",
     "Charakter": "ruhig und distanziert; erscheint in Legenden selten",
     "Mythos/Legende": "Bruder von Amaterasu und Susanoo, geboren aus dem rechten Auge Izanagis; laut einer Überlieferung tötete er die Speisegöttin Uke-mochi, worauf Amaterasu nie wieder sein Angesicht sehen wollte.",
-    "Model URL": "/assets/models/spirits/Tsukuyomi_No_Mikoto.glb"
+    "Model URL": "/assets/models/spirits/Tsukuyomi_No_Mikoto.glb",
+    "Image URL": "/assets/images/spirits/tsukuyomi-no-mikoto.webp"
   },
   {
     "Name": "Izanagi (伊邪那岐命)",
@@ -33,7 +36,8 @@
     "Funktion/Rolle": "Urvater und Schöpfergott, formte die ersten Inseln und Götter",
     "Charakter": "schöpferisch und paternal, aber furchtsam vor Unreinheit (Tod)",
     "Mythos/Legende": "Zentrales Urgötterpaar mit Izanami; erschuf die Welt und viele Kami, floh jedoch aus der Unterwelt, als Izanami dort festgehalten wurde, und reinigte sich – dabei entstanden Amaterasu, Tsukuyomi und Susanoo.",
-    "Model URL": "/assets/models/spirits/Izanagi_No_Mikoto.glb"
+    "Model URL": "/assets/models/spirits/Izanagi_No_Mikoto.glb",
+    "Image URL": "/assets/images/spirits/izanagi-no-mikoto.webp"
   },
   {
     "Name": "Izanami (伊邪那美命)",
@@ -42,7 +46,8 @@
     "Funktion/Rolle": "Urmutter und Schöpfergöttin (Gebärerin vieler Kami)",
     "Charakter": "lebenspendend, später (als Todesgöttin) rachsüchtig",
     "Mythos/Legende": "Schuf mit Izanagi die japanischen Inseln; starb bei der Geburt des Feuergottes Kagutsuchi und wurde zur Herrscherin der Unterwelt Yomi. Verfolgte Izanagi aus Zorn und schwor, täglich 1000 Menschen zu töten, während Izanagi versprach, 1500 zu gebären.",
-    "Model URL": "/assets/models/spirits/Izanami_No_Mikoto.glb"
+    "Model URL": "/assets/models/spirits/Izanami_No_Mikoto.glb",
+    "Image URL": "/assets/images/spirits/izanami-no-mikoto.webp"
   },
   {
     "Name": "Inari (稲荷神)",
@@ -51,7 +56,8 @@
     "Funktion/Rolle": "Gott/Göttin des Reises, der Fruchtbarkeit und des Wohlstands",
     "Charakter": "vielgestaltig (männlich oder weiblich), schützend und segenspendend",
     "Mythos/Legende": "Weitverbreitete Gottheit mit über 30.000 Schreinen; Füchse gelten als heilige Boten Inaris. Ursprünglich Reisfeldgott, später Schutzpatron für Handel und Industrie.",
-    "Model URL": "/assets/models/spirits/Inari_Okami.glb"
+    "Model URL": "/assets/models/spirits/Inari_Okami.glb",
+    "Image URL": "/assets/images/spirits/inari-okami.webp"
   },
   {
     "Name": "Hachiman (八幡神)",
@@ -60,7 +66,8 @@
     "Funktion/Rolle": "Schutzgott der Krieger und des Kaiserhauses; auch Landwirtschaftsgott",
     "Charakter": "schützend, patriotisch verehrt; ursprünglich lokaler Bauerngott",
     "Mythos/Legende": "Wurde ursprünglich als einheimischer Gott Yahata von Bauern und Fischern verehrt und mit Kaiser Ōjin als irdische Manifestation identifiziert. Durch buddhistischen Einfluss zum Kriegsgott erhoben; als Patron der Samurai verehrt.",
-    "Model URL": "/assets/models/spirits/Hachiman.glb"
+    "Model URL": "/assets/models/spirits/Hachiman.glb",
+    "Image URL": "/assets/images/spirits/hachiman.webp"
   },
   {
     "Name": "Tenjin (天神)",
@@ -69,7 +76,8 @@
     "Funktion/Rolle": "Kami der Gelehrsamkeit und Dichtung",
     "Charakter": "anfangs rachsüchtiger Onryō-Geist, heute wohlwollender Patron der Schüler",
     "Mythos/Legende": "Deifizierter Geist des Gelehrten Sugawara no Michizane. Nach seinem unfairen Exil starb er verbittert; sein zorniger Geist brachte Katastrophen, bis er als Tenman-Tenjin verehrt wurde.",
-    "Model URL": "/assets/models/spirits/Tenjin.glb"
+    "Model URL": "/assets/models/spirits/Tenjin.glb",
+    "Image URL": "/assets/images/spirits/tenjin.webp"
   },
   {
     "Name": "Raijin (雷神)",
@@ -78,7 +86,8 @@
     "Funktion/Rolle": "Donner- und Sturmgott (Wettergott)",
     "Charakter": "furchteinflößend und wild, doch als Erntebringer verehrt",
     "Mythos/Legende": "Gilt zusammen mit Bruder Fujin als wichtigster Wettergott Japans. Wird als rotblauer Dämon auf Wolken mit Trommeln dargestellt. Sein Sturm (Kamikaze) soll Japan vor Invasoren bewahrt haben.",
-    "Model URL": "/assets/models/spirits/Raijin.glb"
+    "Model URL": "/assets/models/spirits/Raijin.glb",
+    "Image URL": "/assets/images/spirits/raijin.webp"
   },
   {
     "Name": "Fūjin (風神)",
@@ -87,7 +96,8 @@
     "Funktion/Rolle": "Windgott und Sturmbringer",
     "Charakter": "chaotisch und gewaltig, jedoch ebenfalls als Naturgewalt respektiert",
     "Mythos/Legende": "Wettergott mit großer Windtasche, Bruder von Raijin. Zusammen entfesselten sie den Sturm, der die mongolische Flotte versenkte.",
-    "Model URL": "/assets/models/spirits/Fujin.glb"
+    "Model URL": "/assets/models/spirits/Fujin.glb",
+    "Image URL": "/assets/images/spirits/fujin.webp"
   },
   {
     "Name": "Ōkuninushi (大国主)",
@@ -96,7 +106,8 @@
     "Funktion/Rolle": "Landesherr und Gott von Medizin und Ehestiftung",
     "Charakter": "gütig, listig und kulturbringend",
     "Mythos/Legende": "Hauptgott des Izumo-Zweiges der Mythologie. Rettete den weißen Hasen von Inaba und übergab das Land den Himmelsgöttern.",
-    "Model URL": "/assets/models/spirits/Okuninushi.glb"
+    "Model URL": "/assets/models/spirits/Okuninushi.glb",
+    "Image URL": "/assets/images/spirits/okuninushi.webp"
   },
   {
     "Name": "Ebisu (恵比寿)",
@@ -105,7 +116,8 @@
     "Funktion/Rolle": "Gott des Fischfangs, des Handels und des Glücks",
     "Charakter": "freundlich, jovial, bringer von Wohlstand",
     "Mythos/Legende": "Einziger der Sieben Glücksgötter mit rein japanischen Wurzeln.",
-    "Model URL": "/assets/models/spirits/Ebisu.glb"
+    "Model URL": "/assets/models/spirits/Ebisu.glb",
+    "Image URL": "/assets/images/spirits/ebisu.webp"
   },
   {
     "Name": "Daikokuten (大黒天)",
@@ -114,7 +126,8 @@
     "Funktion/Rolle": "Glücksgott des Reichtums, des Haushalts und der Küche",
     "Charakter": "fröhlich, großzügig und beschützend",
     "Mythos/Legende": "Ursprung aus dem hinduistischen Shiva (Mahākāla), in Japan mit Ōkuninushi verschmolzen.",
-    "Model URL": "/assets/models/spirits/Daikokuten+Text.glb"
+    "Model URL": "/assets/models/spirits/Daikokuten+Text.glb",
+    "Image URL": "/assets/images/spirits/daikokuten+text.webp"
   },
   {
     "Name": "Daikokuten (大黒天)",
@@ -123,7 +136,8 @@
     "Funktion/Rolle": "Glücksgott des Reichtums, des Haushalts und der Küche",
     "Charakter": "fröhlich, großzügig und beschützend",
     "Mythos/Legende": "Ursprung aus dem hinduistischen Shiva (Mahākāla), in Japan mit Ōkuninushi verschmolzen.",
-    "Model URL": "/assets/models/spirits/Daikokuten.glb"
+    "Model URL": "/assets/models/spirits/Daikokuten.glb",
+    "Image URL": "/assets/images/spirits/daikokuten.webp"
   },
   {
     "Name": "Bishamonten (毘沙門天)",
@@ -132,7 +146,8 @@
     "Funktion/Rolle": "Kriegsgott und Schutzpatron (Himmelskönig des Nordens)",
     "Charakter": "kriegerisch, gerecht, beschützend",
     "Mythos/Legende": "Japanische Form des Vaiśravaṇa; verteilt Reichtum und verteidigt den Glauben.",
-    "Model URL": "/assets/models/spirits/Bishamonten.glb"
+    "Model URL": "/assets/models/spirits/Bishamonten.glb",
+    "Image URL": "/assets/images/spirits/bishamonten.webp"
   },
   {
     "Name": "Benzaiten (弁才天)",
@@ -141,7 +156,8 @@
     "Funktion/Rolle": "Göttin der Musik, Künste, Worte und des Wassers",
     "Charakter": "inspirierend, schön, gnädig",
     "Mythos/Legende": "Einbringung aus Indien als Sarasvati; Schutzpatronin von Künstlern und Dichtern.",
-    "Model URL": "/assets/models/spirits/Benzaiten.glb"
+    "Model URL": "/assets/models/spirits/Benzaiten.glb",
+    "Image URL": "/assets/images/spirits/benzaiten.webp"
   },
   {
     "Name": "Oni (鬼)",
@@ -150,7 +166,8 @@
     "Funktion/Rolle": "Oger/Teufel; klassischer Dämon, der Unheil und Plagen bringt",
     "Charakter": "bösartig, gewalttätig, menschenfressend",
     "Mythos/Legende": "Riesenhafte, gehörnte Dämonen mit roter, blauer oder gelber Haut; symbolisieren Bestrafung und Unheil.",
-    "Model URL": "/assets/models/spirits/Oni.glb"
+    "Model URL": "/assets/models/spirits/Oni.glb",
+    "Image URL": "/assets/images/spirits/oni.webp"
   },
   {
     "Name": "Shuten-dōji (酒呑童子)",
@@ -159,7 +176,8 @@
     "Funktion/Rolle": "Oni-Anführer am Berg Ōe, menschenraubender Dämon",
     "Charakter": "grausam, riesig, trunksüchtig",
     "Mythos/Legende": "Fiel Yorimitsu zum Opfer, nachdem er vergifteten Sake trank.",
-    "Model URL": "/assets/models/spirits/Shuten_Doji.glb"
+    "Model URL": "/assets/models/spirits/Shuten_Doji.glb",
+    "Image URL": "/assets/images/spirits/shuten-doji.webp"
   },
   {
     "Name": "Nurarihyon (滑瓢)",
@@ -168,7 +186,8 @@
     "Funktion/Rolle": "mysteriöser Yōkai, oft als „General der Yokai“ bezeichnet",
     "Charakter": "trickreich, jedoch eher lästig als gefährlich",
     "Mythos/Legende": "Erscheint als älterer Herr mit kahlem Kopf und trinkt heimlich Tee wie ein Hausherr.",
-    "Model URL": "/assets/models/spirits/Nurarihyon.glb"
+    "Model URL": "/assets/models/spirits/Nurarihyon.glb",
+    "Image URL": "/assets/images/spirits/Nurarihyon.webp"
   },
   {
     "Name": "Rokurokubi (轆轤首)",
@@ -177,7 +196,8 @@
     "Funktion/Rolle": "Frau, deren Hals sich nachts extrem verlängert",
     "Charakter": "teils schelmisch erschreckend, teils gefährlich",
     "Mythos/Legende": "Streckt nachts meterweit ihren Kopf aus und erschreckt Schlafende.",
-    "Model URL": "/assets/models/spirits/Rokurokubi.glb"
+    "Model URL": "/assets/models/spirits/Rokurokubi.glb",
+    "Image URL": "/assets/images/spirits/rokurokubi.webp"
   },
   {
     "Name": "Yuki-onna (雪女)",
@@ -186,7 +206,8 @@
     "Funktion/Rolle": "Schneefrau; Geist oder Yōkai, der in Schneestürmen erscheint",
     "Charakter": "schön, kalt und tödlich",
     "Mythos/Legende": "Lässt Wanderer im Schnee erfrieren und erscheint in weißen Gewändern.",
-    "Model URL": "/assets/models/spirits/Yuki_Onna.glb"
+    "Model URL": "/assets/models/spirits/Yuki_Onna.glb",
+    "Image URL": "/assets/images/spirits/yuki-onna.webp"
   },
   {
     "Name": "Jorōgumo (絡新婦)",
@@ -195,7 +216,8 @@
     "Funktion/Rolle": "Spinnen-Yōkai, der sich in eine verführerische Frau verwandelt",
     "Charakter": "verführerisch, intelligent und menschenfressend",
     "Mythos/Legende": "Verwandelt sich in schöne Frau, lockt Männer und verschlingt sie als Spinne.",
-    "Model URL": "/assets/models/spirits/Jorogumo3.glb"
+    "Model URL": "/assets/models/spirits/Jorogumo3.glb",
+    "Image URL": "/assets/images/spirits/jorogumo3.webp"
   },
   {
     "Name": "Nurikabe (塗壁)",
@@ -204,7 +226,8 @@
     "Funktion/Rolle": "unsichtbare Wand, die nächtliche Wanderer in die Irre führt",
     "Charakter": "mild schelmisch, irritierend",
     "Mythos/Legende": "Baut sich plötzlich als unsichtbare Barriere auf und verschwindet wieder.",
-    "Model URL": "/assets/models/spirits/Nurikabe.glb"
+    "Model URL": "/assets/models/spirits/Nurikabe.glb",
+    "Image URL": "/assets/images/spirits/nurikabe.webp"
   },
   {
     "Name": "Nurikabe (塗壁)",
@@ -213,7 +236,8 @@
     "Funktion/Rolle": "unsichtbare Wand, die nächtliche Wanderer in die Irre führt",
     "Charakter": "mild schelmisch, irritierend",
     "Mythos/Legende": "Baut sich plötzlich als unsichtbare Barriere auf und verschwindet wieder.",
-    "Model URL": "/assets/models/spirits/Nurikabe2.glb"
+    "Model URL": "/assets/models/spirits/Nurikabe2.glb",
+    "Image URL": "/assets/images/spirits/nurikabe2.webp"
   },
   {
     "Name": "Noppera-bō (のっぺら坊)",
@@ -222,7 +246,8 @@
     "Funktion/Rolle": "Gesichtsloser Geist, der Menschen erschreckt",
     "Charakter": "harmlos, aber unheimlich",
     "Mythos/Legende": "Erscheint zuerst normal, wischt sich dann das Gesicht weg und hat keine Züge mehr.",
-    "Model URL": "/assets/models/spirits/Noppera_Bo.glb"
+    "Model URL": "/assets/models/spirits/Noppera_Bo.glb",
+    "Image URL": "/assets/images/spirits/noppera-bo.webp"
   },
   {
     "Name": "Akaname (垢嘗)",
@@ -231,7 +256,8 @@
     "Funktion/Rolle": "„Schmutzlecker“ – kleiner Bad-Yokai mit langer Zunge",
     "Charakter": "widerlich, aber nicht böse",
     "Mythos/Legende": "Leckt nachts in ungeputzten Bädern den Schmutz und Schimmel weg.",
-    "Model URL": "/assets/models/spirits/Akaname.glb"
+    "Model URL": "/assets/models/spirits/Akaname.glb",
+    "Image URL": "/assets/images/spirits/akaname.webp"
   },
   {
     "Name": "Kamaitachi (鎌鼬)",
@@ -240,7 +266,8 @@
     "Funktion/Rolle": "„Sichelwiesel“ – Yōkai, der mit dem Wind schneidet",
     "Charakter": "tückisch, aber nicht tödlich",
     "Mythos/Legende": "Reitet auf Wirbelwinden und schlägt mit klauenartigen Sichelpfoten Schnitte in Beine.",
-    "Model URL": "/assets/models/spirits/Kamaitachi.glb"
+    "Model URL": "/assets/models/spirits/Kamaitachi.glb",
+    "Image URL": "/assets/images/spirits/kamaitachi.webp"
   },
   {
     "Name": "Karakasa-obake (唐傘お化け)",
@@ -249,7 +276,8 @@
     "Funktion/Rolle": "zum Yokai gewordener Ölpapier-Regenschirm",
     "Charakter": "spaßig-schelmisch, erschreckt höchstens leicht",
     "Mythos/Legende": "Hüpft auf einem Bein umher, hat ein Auge und eine lange Zunge.",
-    "Model URL": "/assets/models/spirits/Karakasa_Obake.glb"
+    "Model URL": "/assets/models/spirits/Karakasa_Obake.glb",
+    "Image URL": "/assets/images/spirits/karakasa-obake.webp"
   },
   {
     "Name": "Karakasa-obake (唐傘お化け)",
@@ -258,7 +286,8 @@
     "Funktion/Rolle": "zum Yokai gewordener Ölpapier-Regenschirm",
     "Charakter": "spaßig-schelmisch, erschreckt höchstens leicht",
     "Mythos/Legende": "Hüpft auf einem Bein umher, hat ein Auge und eine lange Zunge.",
-    "Model URL": "/assets/models/spirits/Karakasa_Obake2.glb"
+    "Model URL": "/assets/models/spirits/Karakasa_Obake2.glb",
+    "Image URL": "/assets/images/spirits/karakasa-obake2.webp"
   },
   {
     "Name": "Chōchin-obake (提灯お化け)",
@@ -267,7 +296,8 @@
     "Funktion/Rolle": "zum Yokai gewordene Papierlaterne",
     "Charakter": "überraschend, neckisch",
     "Mythos/Legende": "Schwebt durch die Dunkelheit, zeigt plötzlich ein Gesicht und erschreckt Vorbeigehende.",
-    "Model URL": "/assets/models/spirits/Chochin_Obake.glb"
+    "Model URL": "/assets/models/spirits/Chochin_Obake.glb",
+    "Image URL": "/assets/images/spirits/chochin-obake.webp"
   },
   {
     "Name": "Bakezōri (化け草履)",
@@ -276,7 +306,8 @@
     "Funktion/Rolle": "Geist vernachlässigter Strohsandalen",
     "Charakter": "harmlos, schelmisch",
     "Mythos/Legende": "Rennende Sandalen mit Auge und Gliedmaßen rufen „Kararin, kororin...“.",
-    "Model URL": "/assets/models/spirits/Bakezori.glb"
+    "Model URL": "/assets/models/spirits/Bakezori.glb",
+    "Image URL": "/assets/images/spirits/bakezori.webp"
   },
   {
     "Name": "Mokumokuren (目目連)",
@@ -285,7 +316,8 @@
     "Funktion/Rolle": "Geisteraugen in zerrissenen Shoji-Papierwänden",
     "Charakter": "eher passiv, aber unheimlich beobachtend",
     "Mythos/Legende": "Öffnet zahlreiche Augen in zerrissenen Wänden, die heimlich beobachten.",
-    "Model URL": "/assets/models/spirits/Mokumokuren.glb"
+    "Model URL": "/assets/models/spirits/Mokumokuren.glb",
+    "Image URL": "/assets/images/spirits/mokumokuren.webp"
   },
   {
     "Name": "Ittan-momen (一反木綿)",
@@ -294,7 +326,8 @@
     "Funktion/Rolle": "fliegender Streifen Baumwollstoff als Yōkai",
     "Charakter": "bösartig, angriffslustig",
     "Mythos/Legende": "Ein etwa 10 Meter langer, weißer Stoffstreifen, der nachts durch die Lüfte jagt. Er stürzt sich auf Menschen und wickelt sich um Gesicht oder Hals, um sie zu ersticken.",
-    "Model URL": "/assets/models/spirits/Ittan_Momen2.glb"
+    "Model URL": "/assets/models/spirits/Ittan_Momen2.glb",
+    "Image URL": "/assets/images/spirits/ittan-momen2.webp"
   },
   {
     "Name": "Biwa-bokuboku (琵琶牧々)",
@@ -303,7 +336,8 @@
     "Funktion/Rolle": "spukende Laute (Biwa), die in Mönchsgestalt erscheint",
     "Charakter": "melancholisch, sanft spukend",
     "Mythos/Legende": "Ein hochwertiges Saiteninstrument (Biwa), das 100 Jahre nicht gespielt wurde, manifestiert sich als wandelnder blinder Mönch und spielt nachts traurige Melodien.",
-    "Model URL": "/assets/models/spirits/Biwa_Bokuboku.glb"
+    "Model URL": "/assets/models/spirits/Biwa_Bokuboku.glb",
+    "Image URL": "/assets/images/spirits/biwa-bokuboku.webp"
   },
   {
     "Name": "Tengu (天狗)",
@@ -312,7 +346,8 @@
     "Funktion/Rolle": "Bergkobold; Mischwesen aus Mensch und Raubvogel",
     "Charakter": "stolz, launisch, mächtig, gleichzeitig wissend",
     "Mythos/Legende": "Frühe Tengu galten als Unheilsbringer, später als Wächter der Berge und Meister der Kampfkünste; sie lehren Demut und bestrafen Übermut.",
-    "Model URL": "/assets/models/spirits/Tengu.glb"
+    "Model URL": "/assets/models/spirits/Tengu.glb",
+    "Image URL": "/assets/images/spirits/tengu.webp"
   },
   {
     "Name": "Sōjōbō (僧正坊)",
@@ -321,7 +356,8 @@
     "Funktion/Rolle": "König der Tengu am Berg Kurama",
     "Charakter": "außergewöhnlich mächtig, stolz, als Lehrer aber wohlwollend",
     "Mythos/Legende": "Herr aller Tengu auf Kurama, Lehrmeister von Minamoto no Yoshitsune in Schwertkunst und Magie.",
-    "Model URL": "/assets/models/spirits/Sojobo.glb"
+    "Model URL": "/assets/models/spirits/Sojobo.glb",
+    "Image URL": "/assets/images/spirits/sojobo.webp"
   },
   {
     "Name": "Sōjōbō (僧正坊)",
@@ -330,7 +366,8 @@
     "Funktion/Rolle": "König der Tengu am Berg Kurama",
     "Charakter": "außergewöhnlich mächtig, stolz, als Lehrer aber wohlwollend",
     "Mythos/Legende": "Herr aller Tengu auf Kurama, Lehrmeister von Minamoto no Yoshitsune in Schwertkunst und Magie.",
-    "Model URL": "/assets/models/spirits/Sojobo2.glb"
+    "Model URL": "/assets/models/spirits/Sojobo2.glb",
+    "Image URL": "/assets/images/spirits/sojobo2.webp"
   },
   {
     "Name": "Yūrei (幽霊)",
@@ -339,7 +376,8 @@
     "Funktion/Rolle": "Geist eines Verstorbenen (allgemeiner Begriff „Gespenst“)",
     "Charakter": "ruhelos, von starken Emotionen getrieben",
     "Mythos/Legende": "Seelen Verstorbener mit unerfüllten Wünschen, oft in weißer Tracht dargestellt, spuken bis zur Erlösung.",
-    "Model URL": "/assets/models/spirits/Yurei.glb"
+    "Model URL": "/assets/models/spirits/Yurei.glb",
+    "Image URL": "/assets/images/spirits/Yurei.webp"
   },
   {
     "Name": "Onryō (怨霊)",
@@ -348,7 +386,8 @@
     "Funktion/Rolle": "rachsüchtiger Geist, der Rache an Lebenden nimmt",
     "Charakter": "verbittert, wütend, tödlich",
     "Mythos/Legende": "Von Hass getriebene Geister, die ihre Peiniger heimsuchen und auch Naturkatastrophen auslösen können.",
-    "Model URL": "/assets/models/spirits/Onryo.glb"
+    "Model URL": "/assets/models/spirits/Onryo.glb",
+    "Image URL": "/assets/images/spirits/onryo.webp"
   },
   {
     "Name": "Oiwa (お岩)",
@@ -357,7 +396,8 @@
     "Funktion/Rolle": "Geist der Oiwa (berühmter weiblicher Rachegeist)",
     "Charakter": "verbittert, qualvoll, unerbittlich",
     "Mythos/Legende": "Durch Gift entstellte Frau, deren Geist ihren Ehemann mit Visionen ihrer zerstörten Gestalt in den Wahnsinn treibt.",
-    "Model URL": "/assets/models/spirits/Oiwa.glb"
+    "Model URL": "/assets/models/spirits/Oiwa.glb",
+    "Image URL": "/assets/images/spirits/oiwa.webp"
   },
   {
     "Name": "Okiku (お菊)",
@@ -366,7 +406,8 @@
     "Funktion/Rolle": "Geist eines zu Unrecht getöteten Dienstmädchens",
     "Charakter": "traurig klagend oder rachsüchtig",
     "Mythos/Legende": "Zählt nachts neun Schüsseln in einem Brunnen, klagt die fehlende zehnte an und stößt einen markerschütternden Schrei aus.",
-    "Model URL": "/assets/models/spirits/Okiku.glb"
+    "Model URL": "/assets/models/spirits/Okiku.glb",
+    "Image URL": "/assets/images/spirits/okiku.webp"
   },
   {
     "Name": "Ubume (産女)",
@@ -375,7 +416,8 @@
     "Funktion/Rolle": "Geist einer Frau, die bei der Geburt starb",
     "Charakter": "traurig, fürsorglich, geisterhaft unheimlich",
     "Mythos/Legende": "Erscheint mit Baby in Armen, bittet um Hilfe, verschwindet dann und das Kind wird unheimlich schwer.",
-    "Model URL": "/assets/models/spirits/Ubume.glb"
+    "Model URL": "/assets/models/spirits/Ubume.glb",
+    "Image URL": "/assets/images/spirits/ubume.webp"
   },
   {
     "Name": "Ryūjin (龍神)",
@@ -384,7 +426,8 @@
     "Funktion/Rolle": "Drachengott und Meereskönig",
     "Charakter": "gewaltig, respekteinflößend, ambivalent",
     "Mythos/Legende": "Herrscher des Meeresgrund-Palasts, beherrscht Ebbe und Flut mit Gezeiten-Juwelen.",
-    "Model URL": "/assets/models/spirits/Ryujin.glb"
+    "Model URL": "/assets/models/spirits/Ryujin.glb",
+    "Image URL": "/assets/images/spirits/ryujin.webp"
   },
   {
     "Name": "Yamata-no-Orochi (八岐大蛇)",
@@ -393,7 +436,8 @@
     "Funktion/Rolle": "achtköpfige Riesenschlange/-drache",
     "Charakter": "verwüstend, gefräßig",
     "Mythos/Legende": "Monster, dem jährlich Jungfrauen geopfert wurden; von Susanoo betäubt und enthauptet, dabei fand man das Schwert Kusanagi.",
-    "Model URL": "/assets/models/spirits/Yamata_No_Orichi.glb"
+    "Model URL": "/assets/models/spirits/Yamata_No_Orichi.glb",
+    "Image URL": "/assets/images/spirits/yamata-no-orichi.webp"
   },
   {
     "Name": "Mizuchi (蛟)",
@@ -402,7 +446,8 @@
     "Funktion/Rolle": "Wasserdrache/-schlange in Flüssen",
     "Charakter": "giftig, gefährlich, durch Rituale bezwingbar",
     "Mythos/Legende": "Giftige Flussschlange, die von Agatamori mit Kürbissen herausgefordert und erschlagen wurde.",
-    "Model URL": "/assets/models/spirits/Mizushi.glb"
+    "Model URL": "/assets/models/spirits/Mizushi.glb",
+    "Image URL": "/assets/images/spirits/mizushi.webp"
   },
   {
     "Name": "Kappa (河童)",
@@ -411,7 +456,8 @@
     "Funktion/Rolle": "Wasserkobold (flusslebendes Fabelwesen)",
     "Charakter": "mischfreudig, launisch, kann freundlich oder bösartig sein",
     "Mythos/Legende": "Wassergeist mit Schildkrötenpanzer und Wasserschale auf dem Kopf; liebt Gurken, lehrt Technik, trickst man es mit einer Verbeugung aus.",
-    "Model URL": "/assets/models/spirits/Kappa.glb"
+    "Model URL": "/assets/models/spirits/Kappa.glb",
+    "Image URL": "/assets/images/spirits/kappa.webp"
   },
   {
     "Name": "Kitsune (狐)",
@@ -420,7 +466,8 @@
     "Funktion/Rolle": "Fuchsgeist (Gestaltwandler und Zauberer)",
     "Charakter": "schlau, trickreich, wohlwollend oder bösartig",
     "Mythos/Legende": "Entwickeln mit Alter bis zu neun Schwänze, können Illusionen erzeugen und dienen Inari als Boten.",
-    "Model URL": "/assets/models/spirits/Kitsune.glb"
+    "Model URL": "/assets/models/spirits/Kitsune.glb",
+    "Image URL": "/assets/images/spirits/kitsune.webp"
   },
   {
     "Name": "Tanuki (狸)",
@@ -429,7 +476,8 @@
     "Funktion/Rolle": "Marderhund-Yōkai, Verwandlungskünstler und Trickster",
     "Charakter": "mischief-liebend, gutmütig, humorvoll",
     "Mythos/Legende": "Meister der Verwandlung, nutzt übergroßen Bauch und Hoden zu Streichen, belohnt nette Menschen.",
-    "Model URL": "/assets/models/spirits/Tanuki.glb"
+    "Model URL": "/assets/models/spirits/Tanuki.glb",
+    "Image URL": "/assets/images/spirits/tanuki.webp"
   },
   {
     "Name": "Nekomata (猫又)",
@@ -438,7 +486,8 @@
     "Funktion/Rolle": "Zwei-Schwanz-Katzendämon",
     "Charakter": "nachtragend, oft menschenfeindlich",
     "Mythos/Legende": "Hauskatze, die mit gespaltenem Schwanz zu übernatürlicher Macht gelangt und schwarze Magie wirkt.",
-    "Model URL": "/assets/models/spirits/Nekomata.glb"
+    "Model URL": "/assets/models/spirits/Nekomata.glb",
+    "Image URL": "/assets/images/spirits/nekomata.webp"
   },
   {
     "Name": "Ame-no-Uzume (天宇受売命)",
@@ -447,7 +496,8 @@
     "Funktion/Rolle": "Jungfräuliche Tanz- und Fruchtbarkeitsgöttin",
     "Charakter": "lebhaft und lebensbejahend",
     "Mythos/Legende": "Lockte Amaterasu mit ausgelassenem Tanz aus der Himmels-Höhle, um Licht zurückzubringen.",
-    "Model URL": "/assets/models/spirits/Ame_No_Uzume.001.glb"
+    "Model URL": "/assets/models/spirits/Ame_No_Uzume.001.glb",
+    "Image URL": "/assets/images/spirits/ame-no-uzume.webp"
   },
   {
     "Name": "Shinigami (死神)",
@@ -456,7 +506,8 @@
     "Funktion/Rolle": "führt die Seelen Verstorbener ins Jenseits",
     "Charakter": "ernst und unerbittlich",
     "Mythos/Legende": "Im Volksglauben verantwortlich für Tod und Sterbebegleitung.",
-    "Model URL": "/assets/models/spirits/Shinigami.001.glb"
+    "Model URL": "/assets/models/spirits/Shinigami.001.glb",
+    "Image URL": "/assets/images/spirits/shinigami.webp"
   },
   {
     "Name": "Kodama (木霊)",
@@ -465,7 +516,8 @@
     "Funktion/Rolle": "Baumgeister und Echoursache",
     "Charakter": "ruhig und beschützend",
     "Mythos/Legende": "Bewohnen heilige Bäume und erzeugen in Bergtälern Echo-Effekte.",
-    "Model URL": "/assets/models/spirits/Kodama.glb"
+    "Model URL": "/assets/models/spirits/Kodama.glb",
+    "Image URL": "/assets/images/spirits/kodama.webp"
   },
   {
     "Name": "Futakuchi-onna (二口女)",
@@ -474,7 +526,8 @@
     "Funktion/Rolle": "Frau mit zweitem Mund am Hinterkopf",
     "Charakter": "einschüchternd und hungrig",
     "Mythos/Legende": "Verbirgt einen zweiten, versteckten Mund, der heimlich Nahrung verzehrt.",
-    "Model URL": "/assets/models/spirits/Futakuchi_Onna.glb"
+    "Model URL": "/assets/models/spirits/Futakuchi_Onna.glb",
+    "Image URL": "/assets/images/spirits/futakuchi-onna.webp"
   },
   {
     "Name": "Gashadokuro (餓者髑髏)",
@@ -483,7 +536,8 @@
     "Funktion/Rolle": "riesiges Skelettmonster",
     "Charakter": "beängstigend und rachsüchtig",
     "Mythos/Legende": "Entstand aus den Knochen verhungerter Kriegsopfer und verschlang nachts Wanderer.",
-    "Model URL": "/assets/models/spirits/Gashadokuro.glb"
+    "Model URL": "/assets/models/spirits/Gashadokuro.glb",
+    "Image URL": "/assets/images/spirits/gashadokuro.webp"
   },
   {
     "Name": "Tsurube-otoshi (釣瓶落とし)",
@@ -492,7 +546,8 @@
     "Funktion/Rolle": "spukender, fallender Eimer unterm Baum",
     "Charakter": "unheimlich und furchteinflößend",
     "Mythos/Legende": "Erzeugt das Geräusch eines herabfallenden Eimers ohne sichtbare Ursache.",
-    "Model URL": "/assets/models/spirits/Tsurube_Otoshi.glb"
+    "Model URL": "/assets/models/spirits/Tsurube_Otoshi.glb",
+    "Image URL": "/assets/images/spirits/Tsurube-otoshi.webp"
   },
   {
     "Name": "Tsurube-otoshi (釣瓶落とし)",
@@ -501,7 +556,8 @@
     "Funktion/Rolle": "spukender, fallender Eimer unterm Baum",
     "Charakter": "unheimlich und furchteinflößend",
     "Mythos/Legende": "Erzeugt das Geräusch eines herabfallenden Eimers ohne sichtbare Ursache.",
-    "Model URL": "/assets/models/spirits/Tsurube_Otoshi2.glb"
+    "Model URL": "/assets/models/spirits/Tsurube_Otoshi2.glb",
+    "Image URL": "/assets/images/spirits/Tsurube-otoshi2.webp"
   },
   {
     "Name": "Tsurube-otoshi (釣瓶落とし)",
@@ -510,7 +566,8 @@
     "Funktion/Rolle": "spukender, fallender Eimer unterm Baum",
     "Charakter": "unheimlich und furchteinflößend",
     "Mythos/Legende": "Erzeugt das Geräusch eines herabfallenden Eimers ohne sichtbare Ursache.",
-    "Model URL": "/assets/models/spirits/Tsurube_Otoshi3.glb"
+    "Model URL": "/assets/models/spirits/Tsurube_Otoshi3.glb",
+    "Image URL": "/assets/images/spirits/Tsurube-otoshi3.webp"
   },
   {
     "Name": "Tsurube-otoshi (釣瓶落とし)",
@@ -519,7 +576,8 @@
     "Funktion/Rolle": "spukender, fallender Eimer unterm Baum",
     "Charakter": "unheimlich und furchteinflößend",
     "Mythos/Legende": "Erzeugt das Geräusch eines herabfallenden Eimers ohne sichtbare Ursache.",
-    "Model URL": "/assets/models/spirits/Tsurube_Otoshi4.glb"
+    "Model URL": "/assets/models/spirits/Tsurube_Otoshi4.glb",
+    "Image URL": "/assets/images/spirits/Tsurube-otoshi4.webp"
   },
   {
     "Name": "Jikininki (食人鬼)",
@@ -528,7 +586,8 @@
     "Funktion/Rolle": "verzehrt menschliche Leichen",
     "Charakter": "gierig und unheilig",
     "Mythos/Legende": "Verdammte Seelen, die nach dem Tod Leichname schänden und fressen.",
-    "Model URL": "/assets/models/spirits/Jikininki.glb"
+    "Model URL": "/assets/models/spirits/Jikininki.glb",
+    "Image URL": "/assets/images/spirits/jikininki.webp"
   },
   {
     "Name": "Mujina (狢)",
@@ -537,7 +596,8 @@
     "Funktion/Rolle": "Badger-Gestaltwandler",
     "Charakter": "trickreich und schelmisch",
     "Mythos/Legende": "Verwechselt Menschen mit Doppelgängern und treibt Streiche.",
-    "Model URL": "/assets/models/spirits/Mujina.glb"
+    "Model URL": "/assets/models/spirits/Mujina.glb",
+    "Image URL": "/assets/images/spirits/Mujina.webp"
   },
   {
     "Name": "Nure-onna (濡女)",
@@ -546,7 +606,8 @@
     "Funktion/Rolle": "Schlangenfrau am Wasser",
     "Charakter": "verführerisch und tödlich",
     "Mythos/Legende": "Verführt einsame Reisende am Ufer und ertränkt sie.",
-    "Model URL": "/assets/models/spirits/Nure_Onna.glb"
+    "Model URL": "/assets/models/spirits/Nure_Onna.glb",
+    "Image URL": "/assets/images/spirits/nure-onna.webp"
   },
   {
     "Name": "Kamikiri (髪切り)",
@@ -555,7 +616,8 @@
     "Funktion/Rolle": "Haarraubgeist",
     "Charakter": "heimtückisch und abrupt",
     "Mythos/Legende": "Schneidet nachts heimlich das Haar schlafender Menschen.",
-    "Model URL": "/assets/models/spirits/Kamikiri.glb"
+    "Model URL": "/assets/models/spirits/Kamikiri.glb",
+    "Image URL": "/assets/images/spirits/Kamikiri.webp"
   },
   {
     "Name": "Bake-kujira (化け鯨)",
@@ -564,7 +626,8 @@
     "Funktion/Rolle": "Geisterwal",
     "Charakter": "gespenstisch und traurig",
     "Mythos/Legende": "Erscheint als riesiges Walskelett an Küsten und kündigt Unheil an.",
-    "Model URL": "/assets/models/spirits/Bake_Kujira.glb"
+    "Model URL": "/assets/models/spirits/Bake_Kujira.glb",
+    "Image URL": "/assets/images/spirits/Bake-kujira.webp"
   },
   {
     "Name": "Bake-kujira (化け鯨)",
@@ -573,7 +636,8 @@
     "Funktion/Rolle": "Geisterwal",
     "Charakter": "gespenstisch und traurig",
     "Mythos/Legende": "Erscheint als riesiges Walskelett an Küsten und kündigt Unheil an.",
-    "Model URL": "/assets/models/spirits/Bake_Kujira2.glb"
+    "Model URL": "/assets/models/spirits/Bake_Kujira2.glb",
+    "Image URL": "/assets/images/spirits/Bake-kujira2.webp"
   },
   {
     "Name": "Bake-kujira (化け鯨)",
@@ -582,7 +646,8 @@
     "Funktion/Rolle": "Geisterwal",
     "Charakter": "gespenstisch und traurig",
     "Mythos/Legende": "Erscheint als riesiges Walskelett an Küsten und kündigt Unheil an.",
-    "Model URL": "/assets/models/spirits/Bake_Kujira3.glb"
+    "Model URL": "/assets/models/spirits/Bake_Kujira3.glb",
+    "Image URL": "/assets/images/spirits/Bake-kujira3.webp"
   },
   {
     "Name": "Nuppeppo (ぬっぺっぽう)",
@@ -591,7 +656,8 @@
     "Funktion/Rolle": "menschenförmige schleimige Gestalt",
     "Charakter": "ekelerregend und harmlos",
     "Mythos/Legende": "Schleimklumpen-Wesen, das in verlassenen Tempeln erwacht.",
-    "Model URL": "/assets/models/spirits/Nuppeppo2.glb"
+    "Model URL": "/assets/models/spirits/Nuppeppo2.glb",
+    "Image URL": "/assets/images/spirits/Nuppeppo2.webp"
   },
   {
     "Name": "Yama-uba (山姥)",
@@ -600,7 +666,8 @@
     "Funktion/Rolle": "Berghexe",
     "Charakter": "unheimlich und listig",
     "Mythos/Legende": "Lebt in den Bergen, kann Wanderer fressen oder mit weiser Ratschlägen stärken.",
-    "Model URL": "/assets/models/spirits/Yama_Uba.glb"
+    "Model URL": "/assets/models/spirits/Yama_Uba.glb",
+    "Image URL": "/assets/images/spirits/yama-uba.webp"
   },
   {
     "Name": "Yama-uba (山姥)",
@@ -609,7 +676,8 @@
     "Funktion/Rolle": "Berghexe",
     "Charakter": "unheimlich und listig",
     "Mythos/Legende": "Lebt in den Bergen, kann Wanderer fressen oder mit weiser Ratschlägen stärken.",
-    "Model URL": "/assets/models/spirits/Yama_Uba2.glb"
+    "Model URL": "/assets/models/spirits/Yama_Uba2.glb",
+    "Image URL": "/assets/images/spirits/yama-uba2.webp"
   },
   {
     "Name": "Yamawaro (山童)",
@@ -618,7 +686,8 @@
     "Funktion/Rolle": "Bergkobold",
     "Charakter": "scheu aber neugierig",
     "Mythos/Legende": "Verwandt mit Kodama, lebt tief in Wäldern und spielt Streiche.",
-    "Model URL": "/assets/models/spirits/Yamawaro.glb"
+    "Model URL": "/assets/models/spirits/Yamawaro.glb",
+    "Image URL": "/assets/images/spirits/yamawaro.webp"
   },
   {
     "Name": "Hiderigami (干狩神)",
@@ -627,7 +696,8 @@
     "Funktion/Rolle": "Dürregottheit",
     "Charakter": "unberechenbar und geizig",
     "Mythos/Legende": "Verursacht Dürren, wenn kein Regenritual abgehalten wird.",
-    "Model URL": "/assets/models/spirits/Hiderigami.001.glb"
+    "Model URL": "/assets/models/spirits/Hiderigami.001.glb",
+    "Image URL": "/assets/images/spirits/Hiderigami.webp"
   },
   {
     "Name": "Amenominakanushi (天御中主神)",
@@ -636,7 +706,8 @@
     "Funktion/Rolle": "Ursprungs-Kami am Anfang der Schöpfung",
     "Charakter": "neutral und allgegenwärtig",
     "Mythos/Legende": "Primordialer Schöpfungsgott, aus dem das Universum entstand.",
-    "Model URL": "/assets/models/spirits/Amenominakanushi.glb"
+    "Model URL": "/assets/models/spirits/Amenominakanushi.glb",
+    "Image URL": "/assets/images/spirits/Amenominakanushi.webp"
   },
   {
     "Name": "Sarutahiko Ōkami (猿田彦大神)",
@@ -645,7 +716,8 @@
     "Funktion/Rolle": "Wegweiser der Himmelsgötter zu Ninigi",
     "Charakter": "bodenständig und kraftvoll",
     "Mythos/Legende": "Führte Ninigi-no-Mikoto bei seiner Himmelsabstammung, Schutzpatron von Straßen und Kreuzungen.",
-    "Model URL": "/assets/models/spirits/Sarutahiko_Okami.glb"
+    "Model URL": "/assets/models/spirits/Sarutahiko_Okami.glb",
+    "Image URL": "/assets/images/spirits/Sarutahiko Okami.webp"
   },
   {
     "Name": "Takeminakata (建御名方神)",
@@ -654,7 +726,8 @@
     "Funktion/Rolle": "Gott des Windes und des Kampfes",
     "Charakter": "streitlustig und stolz",
     "Mythos/Legende": "Besiegte Takemikazuchi in Izumo, wurde am Suwa-See verehrt",
-    "Model URL": "/assets/models/spirits/Takeminakata.glb"
+    "Model URL": "/assets/models/spirits/Takeminakata.glb",
+    "Image URL": "/assets/images/spirits/takeminakata.webp"
   },
   {
     "Name": "Takeminakata (建御名方神)",
@@ -663,7 +736,8 @@
     "Funktion/Rolle": "Gott des Windes und des Kampfes",
     "Charakter": "streitlustig und stolz",
     "Mythos/Legende": "Besiegte Takemikazuchi in Izumo, wurde am Suwa-See verehrt",
-    "Model URL": "/assets/models/spirits/Takeminakata2.001.glb"
+    "Model URL": "/assets/models/spirits/Takeminakata2.001.glb",
+    "Image URL": "/assets/images/spirits/takeminakata2.webp"
   },
   {
     "Name": "Ōyamatsumi (大山祇神)",
@@ -672,7 +746,8 @@
     "Funktion/Rolle": "Berg- und Meeresgott",
     "Charakter": "gewaltig und schützend",
     "Mythos/Legende": "Vater von Ninigi-no-Mikoto und vielen Natur-Kami, Herr der Berge und Meere",
-    "Model URL": "/assets/models/spirits/Oyamatsumi.001.glb"
+    "Model URL": "/assets/models/spirits/Oyamatsumi.001.glb",
+    "Image URL": "/assets/images/spirits/oyamatsumi.webp"
   },
   {
     "Name": "Yatagarasu (八咫烏)",
@@ -681,7 +756,8 @@
     "Funktion/Rolle": "Dreibeinige Krähe, Bote Amaterasus",
     "Charakter": "geleitet und weise",
     "Mythos/Legende": "Amtierte als göttlicher Führer Kaisers Jimmus Wanderung nach Yamato",
-    "Model URL": "/assets/models/spirits/Yatagarasu2.glb"
+    "Model URL": "/assets/models/spirits/Yatagarasu2.glb",
+    "Image URL": "/assets/images/spirits/yatagarasu2.webp"
   },
   {
     "Name": "Kudan (件)",
@@ -690,7 +766,8 @@
     "Funktion/Rolle": "Prophetischer Mischling aus Mensch und Kalb",
     "Charakter": "warnend und rätselhaft",
     "Mythos/Legende": "Erscheint als menschliches Kalb, kündigt Unglück oder Pest an",
-    "Model URL": "/assets/models/spirits/Kudan.glb"
+    "Model URL": "/assets/models/spirits/Kudan.glb",
+    "Image URL": "/assets/images/spirits/kudan.webp"
   },
   {
     "Name": "Baku (獏)",
@@ -699,7 +776,8 @@
     "Funktion/Rolle": "Traumfresser und Beschützer im Schlaf",
     "Charakter": "ruhig und wohltuend",
     "Mythos/Legende": "Verzehrt Albträume, damit Schläfer in Ruhe ruhen",
-    "Model URL": "/assets/models/spirits/Baku.glb"
+    "Model URL": "/assets/models/spirits/Baku.glb",
+    "Image URL": "/assets/images/spirits/baku.webp"
   },
   {
     "Name": "Amabie (アマビエ)",
@@ -708,7 +786,8 @@
     "Funktion/Rolle": "Erscheinung als Fisch-Mensch-Orakel",
     "Charakter": "heilbringend und prophetisch",
     "Mythos/Legende": "Sagte Epidemien voraus und empfahl, ihr Bild zu zeichnen, um Krankheitswellen zu stoppen",
-    "Model URL": "/assets/models/spirits/Amabie2.glb"
+    "Model URL": "/assets/models/spirits/Amabie2.glb",
+    "Image URL": "/assets/images/spirits/amabie2.webp"
   },
   {
     "Name": "Amanojaku (天邪鬼)",
@@ -717,7 +796,8 @@
     "Funktion/Rolle": "Teuflischer kleiner Dämon, der Widerspruch liebt",
     "Charakter": "tückisch und frech",
     "Mythos/Legende": "Lockt Menschen zu schlechten Taten durch List und Widerspruch",
-    "Model URL": "/assets/models/spirits/Amanojaku.glb"
+    "Model URL": "/assets/models/spirits/Amanojaku.glb",
+    "Image URL": "/assets/images/spirits/amanojaku.webp"
   },
   {
     "Name": "Aoandon (青行燈)",
@@ -726,7 +806,8 @@
     "Funktion/Rolle": "Blaues Laternengeistwesen",
     "Charakter": "spellverlesend und unheimlich",
     "Mythos/Legende": "Entsteht beim Vorlesen von Geistergeschichten (Hyakki Yagyō), während die Lampe blau leuchtet",
-    "Model URL": "/assets/models/spirits/Aoandon.001.glb"
+    "Model URL": "/assets/models/spirits/Aoandon.001.glb",
+    "Image URL": "/assets/images/spirits/aoandon.webp"
   },
   {
     "Name": "Aoandon (青行燈)",
@@ -735,7 +816,8 @@
     "Funktion/Rolle": "Blaues Laternengeistwesen",
     "Charakter": "spellverlesend und unheimlich",
     "Mythos/Legende": "Entsteht beim Vorlesen von Geistergeschichten (Hyakki Yagyō), während die Lampe blau leuchtet",
-    "Model URL": "/assets/models/spirits/Aoandon2.001.glb"
+    "Model URL": "/assets/models/spirits/Aoandon2.001.glb",
+    "Image URL": "/assets/images/spirits/aoandon2.webp"
   },
   {
     "Name": "Azukiarai (小豆洗い)",
@@ -744,7 +826,8 @@
     "Funktion/Rolle": "Bohnen-Waschgeräusch-Geist",
     "Charakter": "schelmisch und nächtlich",
     "Mythos/Legende": "Erzeugt das ominöse Geräusch von Bohnenwaschen an Flussufern",
-    "Model URL": "/assets/models/spirits/Azukiarai.glb"
+    "Model URL": "/assets/models/spirits/Azukiarai.glb",
+    "Image URL": "/assets/images/spirits/azukiarai.webp"
   },
   {
     "Name": "Azukibabaa (小豆婆)",
@@ -753,7 +836,8 @@
     "Funktion/Rolle": "Bohnen-waschende Alte",
     "Charakter": "hagere und mahnend",
     "Mythos/Legende": "Warnt Nachtschwärmer mit Bohnenrasseln im Rahmen des Azukiarai-Phänomens",
-    "Model URL": "/assets/models/spirits/Azukibabaa.glb"
+    "Model URL": "/assets/models/spirits/Azukibabaa.glb",
+    "Image URL": "/assets/images/spirits/azukibabaa.webp"
   },
   {
     "Name": "Azukihakari (小豆挟み)",
@@ -762,7 +846,8 @@
     "Funktion/Rolle": "Bohnen-Zählerin",
     "Charakter": "ruhig aber bedrohlich",
     "Mythos/Legende": "Zählt heimlich Bohnen an Reisefahrern und erschreckt sie",
-    "Model URL": "/assets/models/spirits/Azukihakari.glb"
+    "Model URL": "/assets/models/spirits/Azukihakari.glb",
+    "Image URL": "/assets/images/spirits/azukihakari.webp"
   },
   {
     "Name": "Basan (婆山)",
@@ -771,7 +856,8 @@
     "Funktion/Rolle": "Feuervogel wie Glühbirne",
     "Charakter": "leise und gespenstisch",
     "Mythos/Legende": "Erscheint in nächtlichen Hügeln mit lautlosem Feuerleuchten",
-    "Model URL": "/assets/models/spirits/Basan.glb"
+    "Model URL": "/assets/models/spirits/Basan.glb",
+    "Image URL": "/assets/images/spirits/basan.webp"
   },
   {
     "Name": "Betobeto-san (べとべとさん)",
@@ -780,7 +866,8 @@
     "Funktion/Rolle": "Unsichtbarer Begleiter",
     "Charakter": "nachts folgend und klackend",
     "Mythos/Legende": "Verfolgt Wanderer, tritt laut neben ihnen, bis diese an Felsen warten und beten",
-    "Model URL": "/assets/models/spirits/Betobeto_San.glb"
+    "Model URL": "/assets/models/spirits/Betobeto_San.glb",
+    "Image URL": "/assets/images/spirits/betobeto-san.webp"
   },
   {
     "Name": "Dodomeki (百々目鬼)",
@@ -789,7 +876,8 @@
     "Funktion/Rolle": "Frau mit Vogelaugen-Armen",
     "Charakter": "unheimlich und strafend",
     "Mythos/Legende": "Arme und Hände von tausenden Vogelaugen bedeckt, straft Habgier",
-    "Model URL": "/assets/models/spirits/Okomeki.001.glb"
+    "Model URL": "/assets/models/spirits/Okomeki.001.glb",
+    "Image URL": "/assets/images/spirits/okomeki.webp"
   },
   {
     "Name": "Enenra (煙々羅)",
@@ -798,7 +886,8 @@
     "Funktion/Rolle": "Buddhistischer Rauchgeist",
     "Charakter": "flüchtig und undurchsichtig",
     "Mythos/Legende": "Entsteht aus reinem Rauch, kann menschliche Form annehmen und durchs Feuer gleiten",
-    "Model URL": "/assets/models/spirits/Enenra.glb"
+    "Model URL": "/assets/models/spirits/Enenra.glb",
+    "Image URL": "/assets/images/spirits/enenra.webp"
   },
   {
     "Name": "Enenra (煙々羅)",
@@ -807,7 +896,8 @@
     "Funktion/Rolle": "Buddhistischer Rauchgeist",
     "Charakter": "flüchtig und undurchsichtig",
     "Mythos/Legende": "Entsteht aus reinem Rauch, kann menschliche Form annehmen und durchs Feuer gleiten",
-    "Model URL": "/assets/models/spirits/Enenra2.glb"
+    "Model URL": "/assets/models/spirits/Enenra2.glb",
+    "Image URL": "/assets/images/spirits/enenra2.webp"
   },
   {
     "Name": "Ashinagatenaga (脚長手長)",
@@ -816,7 +906,8 @@
     "Funktion/Rolle": "Riese mit extrem langen Gliedmaßen",
     "Charakter": "neugierig und scheu",
     "Mythos/Legende": "Beobachtet Menschen in der Ferne und spielt Streiche",
-    "Model URL": "/assets/models/spirits/Ashinaga_Tenaga2.glb"
+    "Model URL": "/assets/models/spirits/Ashinaga_Tenaga2.glb",
+    "Image URL": "/assets/images/spirits/ashinaga_tenaga2.webp"
   },
   {
     "Name": "Furaribi (ふらり火)",
@@ -825,7 +916,8 @@
     "Funktion/Rolle": "Wanderndes Gespensterfeuer",
     "Charakter": "geisterhaft und flüchtig",
     "Mythos/Legende": "Tanzt über verlassenen Feldern und Friedhöfen ähnlich den Irrlichtern",
-    "Model URL": "/assets/models/spirits/Furaribi.glb"
+    "Model URL": "/assets/models/spirits/Furaribi.glb",
+    "Image URL": "/assets/images/spirits/furaribi.webp"
   },
   {
     "Name": "Abe no Seimei (安倍晴明)",
@@ -834,7 +926,8 @@
     "Funktion/Rolle": "spiritueller Berater und Exorzist",
     "Charakter": "klug, mächtig und geheimnisumwoben",
     "Mythos/Legende": "Berater von Kaiser Ichijō; Sohn einer Kitsune und Begründer der Onmyōdō-Schule",
-    "Model URL": "/assets/models/spirits/Abe_No_Seimei.glb"
+    "Model URL": "/assets/models/spirits/Abe_No_Seimei.glb",
+    "Image URL": "/assets/images/spirits/Abe no Seimei.webp"
   },
   {
     "Name": "Abura-akago (油赤子)",
@@ -843,7 +936,8 @@
     "Funktion/Rolle": "Öl-leckender Babygeist",
     "Charakter": "widerlich und gespenstisch",
     "Mythos/Legende": "Schlürft nachts Lampenöl aus Andon-Laternen",
-    "Model URL": "/assets/models/spirits/Abura_Akago.glb"
+    "Model URL": "/assets/models/spirits/Abura_Akago.glb",
+    "Image URL": "/assets/images/spirits/abura-akago.webp"
   },
   {
     "Name": "Abura-sumashi (油すまし)",
@@ -852,7 +946,8 @@
     "Funktion/Rolle": "Berggeist mit großem Kopf",
     "Charakter": "ruhig und ortsgebunden",
     "Mythos/Legende": "Erscheint in Bergpässen als Reinkarnation eines Öldiebs",
-    "Model URL": "/assets/models/spirits/Abura_Sumashi.glb"
+    "Model URL": "/assets/models/spirits/Abura_Sumashi.glb",
+    "Image URL": "/assets/images/spirits/abura-sumashi.webp"
   },
   {
     "Name": "Abura-sumashi (油すまし)",
@@ -861,7 +956,8 @@
     "Funktion/Rolle": "Berggeist mit großem Kopf",
     "Charakter": "ruhig und ortsgebunden",
     "Mythos/Legende": "Erscheint in Bergpässen als Reinkarnation eines Öldiebs",
-    "Model URL": "/assets/models/spirits/Abura_Sumashi2.glb"
+    "Model URL": "/assets/models/spirits/Abura_Sumashi2.glb",
+    "Image URL": "/assets/images/spirits/abura-sumashi2.webp"
   },
   {
     "Name": "Aka-mantō (赤マント)",
@@ -870,7 +966,8 @@
     "Funktion/Rolle": "Fragegeist in Klostermantel",
     "Charakter": "nervtötend tückisch",
     "Mythos/Legende": "Stellt Nutzern die Wahl zwischen rotem oder blauem Papier – beides führt zum Tod",
-    "Model URL": "/assets/models/spirits/Aka_Manto.glb"
+    "Model URL": "/assets/models/spirits/Aka_Manto.glb",
+    "Image URL": "/assets/images/spirits/Aka-manto.webp"
   },
   {
     "Name": "Akateko (赤手子)",
@@ -879,7 +976,8 @@
     "Funktion/Rolle": "Rotes Kinderhändchen",
     "Charakter": "spukend und spielerisch",
     "Mythos/Legende": "Ragt nachts ohne Körper aus Fenstern und fasst Vorbeigehende an",
-    "Model URL": "/assets/models/spirits/Akateko2.glb"
+    "Model URL": "/assets/models/spirits/Akateko2.glb",
+    "Image URL": "/assets/images/spirits/akateko2.webp"
   },
   {
     "Name": "Akkorokamui (アッコロカムイ)",
@@ -888,7 +986,8 @@
     "Funktion/Rolle": "Riesenkrake im Wasser",
     "Charakter": "gewaltig und furchterregend",
     "Mythos/Legende": "Tentakelmonster der Rebun-Insel, soll Schiffe versenken",
-    "Model URL": "/assets/models/spirits/Akkorokamui.glb"
+    "Model URL": "/assets/models/spirits/Akkorokamui.glb",
+    "Image URL": "/assets/images/spirits/Akkorokamui.webp"
   },
   {
     "Name": "Akuchū (悪虫)",
@@ -897,7 +996,8 @@
     "Funktion/Rolle": "Fressendes Insektengeist",
     "Charakter": "klein aber heimtückisch",
     "Mythos/Legende": "Erscheint als leuchtender Käfer, der nachts Wunden anrichtet",
-    "Model URL": "/assets/models/spirits/Akuchu.glb"
+    "Model URL": "/assets/models/spirits/Akuchu.glb",
+    "Image URL": "/assets/images/spirits/akuchu.webp"
   },
   {
     "Name": "Hōkō (吽行)",
@@ -906,7 +1006,8 @@
     "Funktion/Rolle": "Geisterhafte Botenflamme",
     "Charakter": "flüchtig und rätselhaft",
     "Mythos/Legende": "Taucht als wanderndes Feuer in Tempeln und Friedhöfen auf",
-    "Model URL": "/assets/models/spirits/Hoko.glb"
+    "Model URL": "/assets/models/spirits/Hoko.glb",
+    "Image URL": "/assets/images/spirits/hoko.webp"
   },
   {
     "Name": "Hitotsume-kozō (一つ目小僧)",
@@ -915,7 +1016,8 @@
     "Funktion/Rolle": "Einäugiger Junge",
     "Charakter": "verspielt und schelmisch",
     "Mythos/Legende": "Erscheint als Kind mit nur einem Auge und klaut Süßigkeiten",
-    "Model URL": "/assets/models/spirits/Hitotsume_Kozo.glb"
+    "Model URL": "/assets/models/spirits/Hitotsume_Kozo.glb",
+    "Image URL": "/assets/images/spirits/Hitotsume-kozo.webp"
   },
   {
     "Name": "Nue (鵺)",
@@ -924,7 +1026,8 @@
     "Funktion/Rolle": "Monster aus Tierteilen",
     "Charakter": "unheimlich und unheilbringend",
     "Mythos/Legende": "Kopf eines Affen, Körper eines Tiger-Hundes; sein Ruf kündigt Katastrophen an",
-    "Model URL": "/assets/models/spirits/Nue.glb"
+    "Model URL": "/assets/models/spirits/Nue.glb",
+    "Image URL": "/assets/images/spirits/nue.webp"
   },
   {
     "Name": "Oboroguruma (朧車)",
@@ -933,7 +1036,8 @@
     "Funktion/Rolle": "Geisterkarosse",
     "Charakter": "geisterhaft und langsam",
     "Mythos/Legende": "Verzauberter Oxcart, dessen Räder nachts von selbst rollen",
-    "Model URL": "/assets/models/spirits/Oboroguruma.glb"
+    "Model URL": "/assets/models/spirits/Oboroguruma.glb",
+    "Image URL": "/assets/images/spirits/oboroguruma.webp"
   },
   {
     "Name": "Gaki (餓鬼)",
@@ -942,7 +1046,8 @@
     "Funktion/Rolle": "Hungrige Geister",
     "Charakter": "endlos gierig",
     "Mythos/Legende": "Verkörpert die Schattenseite von Gier; verhungert ewig, trotz vollem Bauch",
-    "Model URL": "/assets/models/spirits/Gaki.glb"
+    "Model URL": "/assets/models/spirits/Gaki.glb",
+    "Image URL": "/assets/images/spirits/gaki.webp"
   },
   {
     "Name": "Ashiarai yashiki (足洗邸)",
@@ -951,7 +1056,8 @@
     "Funktion/Rolle": "Fußwascher im Haus",
     "Charakter": "plötzlich und erschreckend",
     "Mythos/Legende": "Wäscht nachts die Füße der Hausbewohner an der Eingangsschwelle",
-    "Model URL": "/assets/models/spirits/Ashiari_Yashiki.glb"
+    "Model URL": "/assets/models/spirits/Ashiari_Yashiki.glb",
+    "Image URL": "/assets/images/spirits/ashiari_yashiki.webp"
   },
   {
     "Name": "Daidarabotchi (大太法師)",
@@ -960,7 +1066,8 @@
     "Funktion/Rolle": "Hügelsetzender Riese",
     "Charakter": "herausragend und langsam",
     "Mythos/Legende": "Formte durch seine Schritte Berge und Seen",
-    "Model URL": "/assets/models/spirits/Daidarabotchi.glb"
+    "Model URL": "/assets/models/spirits/Daidarabotchi.glb",
+    "Image URL": "/assets/images/spirits/Daidarabotchi.webp"
   },
   {
     "Name": "Funayūrei (船幽霊)",
@@ -969,6 +1076,7 @@
     "Funktion/Rolle": "Ertrunkener Geist",
     "Charakter": "ruhelos und klagend",
     "Mythos/Legende": "Spukt auf Booten, um Rache für ertrunkene Seelen zu üben",
-    "Model URL": "/assets/models/spirits/Funayurei.glb"
+    "Model URL": "/assets/models/spirits/Funayurei.glb",
+    "Image URL": "/assets/images/spirits/funayurei.webp"
   }
 ]
