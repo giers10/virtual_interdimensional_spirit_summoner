@@ -45,21 +45,38 @@ composer.addPass(new ShaderPass(GammaCorrectionShader));
 
 // ---- Resize Handler ----
 function onResize() {
-    const W = container.clientWidth, H = container.clientHeight, winA = W / H;
-    let vw, vh, vx, vy;
-    if (winA > ASPECT) { vh = H; vw = H * ASPECT; vx = (W - vw) / 2; vy = 0; }
-    else { vw = W; vh = W / ASPECT; vx = 0; vy = (H - vh) / 2; }
-    renderer.setSize(W, H);
-    renderer.setViewport(vx, vy, vw, vh);
-    renderer.setScissor(vx, vy, vw, vh);
-    renderer.setScissorTest(true);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    composer.setSize(W, H);
+    const winW = window.innerWidth, winH = window.innerHeight;
+    const aspect = 3/2;
+    let renderW, renderH;
+
+    if (winW / winH > aspect) {
+        // Fenster ist breiter als 3:2 → fülle in Höhe, überstehende Breite
+        renderH = winH;
+        renderW = winH * aspect;
+    } else {
+        // Fenster ist schmaler als 3:2 → fülle in Breite, überstehende Höhe
+        renderW = winW;
+        renderH = winW / aspect;
+    }
+    // Setze die Größe des Renderers und Canvas
+    renderer.setSize(renderW, renderH, false); // "false": ändert nicht das Canvas-Element selbst!
+    composer.setSize(renderW, renderH);
+
+    // Platziere das Canvas absolut zentriert, setze style.width/height so dass es "überragt"
+    renderer.domElement.style.width = `${renderW}px`;
+    renderer.domElement.style.height = `${renderH}px`;
+    renderer.domElement.style.left = '50%';
+    renderer.domElement.style.top = '50%';
+    renderer.domElement.style.transform = 'translate(-50%, -50%)';
+
+    // Scissor/Viewport: Zeige die ganze Fläche, kein „Clipping“ nötig
+    renderer.setScissorTest(false);
+
+    // Pixel Ratio
     const dpr = window.devicePixelRatio || 1;
     renderer.setPixelRatio(dpr);
     composer.setPixelRatio(dpr);
+
     camera.updateProjectionMatrix();
 }
 window.addEventListener('resize', onResize);
