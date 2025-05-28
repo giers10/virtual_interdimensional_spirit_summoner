@@ -270,7 +270,8 @@ class SpinnerController {
         this.ws.addEventListener('message', async (event) => {
             const msg = JSON.parse(event.data);
             if (msg.type === 'spirit') {
-                spawnSpirit(msg.data);
+                // Beachte: Neues Handling mit Lebenszeit-Offset!
+                spawnSpiritWithOffset(msg.data, msg.timeSinceSpawnMs, msg.spiritIntervalMs);
             }
         });
         this.ws.addEventListener('close', () => {
@@ -285,6 +286,7 @@ class SpinnerController {
         });
     }
 }
+
 
 // ---- Spirit-Klasse ----
 class Spirit {
@@ -429,6 +431,29 @@ async function spawnSpirit(spiritData) {
     const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
     activeSpirits.push(spirit);
     //updateSpiritOverlay(spiritData);
+}
+
+async function spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
+    let spawnPos = { x: 0, y: spinnerController && spinnerController.spinnerRed ? spinnerController.spinnerRed.position.y - 1.5 : 15, z: 0.88 };
+    const modelUrl = spiritData['Model URL'] || spiritData.modelUrl; // Fallback!
+    const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
+
+    // Berechne Lebenszeit-Offset
+    let offset = 0;
+    if (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) {
+        offset = timeSinceSpawnMs / 1000;
+    }
+    // Die gesamte Lebenszeit des Spirits (z.B. 20s) - das Offset
+    let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
+
+    // Bei Offset: Spirit kürzer anzeigen
+    const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
+    spirit.clock.start();
+    if (offset > 0 && offset < lifeTime) {
+        spirit.clock.elapsedTime = offset; // <<---
+    }
+    spirit.lifeTime = lifeTime;
+    activeSpirits.push(spirit);
 }
 
 // ---- Overlay-Logik ----
