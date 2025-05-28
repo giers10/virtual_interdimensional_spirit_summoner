@@ -326,7 +326,7 @@ class Spirit {
         this._setupPicking();
         this.scene.add(this.grp);
     }
-    
+
     update(dt) {
         const t = this.clock.getElapsedTime();
         const despawnSpeed = 0.8;
@@ -358,6 +358,7 @@ class Spirit {
         }
         if (t > this.lifeTime) {
             this.dispose();
+            return false;
         }
         return true;
     }
