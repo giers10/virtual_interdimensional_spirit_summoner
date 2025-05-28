@@ -66,15 +66,14 @@
     flex-direction: column;
     gap: 18px;
   }
-   #spirit-info .spirit-info-content h2 {
-    font-size: 1.6em;
-    font-weight: 700;
+  #spirit-info h2 {
     margin: 0 0 8px 0;
-    letter-spacing: 0.03em;
-    line-height: 1.18;
-    word-break: break-word;
-    overflow-wrap: anywhere;
-    line-break: anywhere;   /* <- für Kanji/CJK optimiert */
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    font-size: 1.6em;
+    white-space: normal;
+    word-break: keep-all;      /* <- Bricht NUR bei Leerzeichen */
+    overflow-wrap: normal;
   }
 
   @media (min-width: 620px) {
