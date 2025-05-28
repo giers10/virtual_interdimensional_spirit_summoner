@@ -307,6 +307,7 @@ class Spirit {
                 this.spiritMeshes.push(mesh);
             }
         });
+        this._setupPicking();
         this.scene.add(this.grp);
     }
 
@@ -354,6 +355,15 @@ class Spirit {
                 } else {
                     mesh.material.dispose();
                 }
+            }
+        });
+    }
+
+    _setupPicking() {
+        // Hier ein einfacher Ansatz: Mesh mit Info-Objekt merken!
+        this.gltf.traverse(mesh => {
+            if (mesh.isMesh) {
+                mesh.userData._spiritInfo = this.info;
             }
         });
     }
@@ -408,32 +418,88 @@ async function spawnSpirit(spiritData) {
     const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
     const spirit = new Spirit(scene, gltfScene, spiritData, spawnPos);
     activeSpirits.push(spirit);
-    updateSpiritOverlay(spiritData);
+    //updateSpiritOverlay(spiritData);
 }
 
-// ---- Overlay für Spirit-Infos ----
-function updateSpiritOverlay(spirit) {
+// ---- Overlay-Logik ----
+let lastOverlaySpiritData = null;
+
+// Overlay zentriert in der Mitte mit Schließen-X
+function showSpiritOverlay(spirit) {
     let el = document.getElementById('spirit-info');
     if (!el) {
         el = document.createElement('div');
         el.id = 'spirit-info';
         el.style = `
-          position:absolute; right:40px; bottom:40px; color:white;
-          background:rgba(0,0,0,0.6); padding:10px 18px; border-radius:10px;
-          font-family: sans-serif; z-index:10; max-width: 360px;
+            position: fixed;
+            left: 50%; top: 50%;
+            transform: translate(-50%,-50%);
+            color: white;
+            background: rgba(0,0,0,0.87);
+            padding: 24px 32px 20px 32px;
+            border-radius: 16px;
+            font-family: 'Segoe UI', sans-serif;
+            z-index: 9999;
+            max-width: 540px;
+            min-width: 300px;
+            box-shadow: 0 6px 48px #000a;
+            text-align: left;
         `;
         document.body.appendChild(el);
     }
     el.innerHTML = `
-      <h2 style='padding:0; margin:0;'>${spirit.Name || 'Spirit'}</h2>
-      <b>${spirit.Kategorie || ''}</b><br><br>
-      <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
-      <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
-      <b>Charakter:</b> ${spirit.Charakter || ''}<br><br>
-      ${spirit.Herkunft ? ' <i>' + spirit.Herkunft : ''}</i>
-
+        <button id="spirit-overlay-close" style="
+            position:absolute; right:12px; top:12px; border:none; background:none;
+            color:#fff; font-size:1.5em; cursor:pointer; padding:0; line-height:1;
+        " title="Schließen">&times;</button>
+        <h2 style='padding:0; margin:0 0 8px 0; font-weight:700; letter-spacing:0.04em;'>${spirit.Name || 'Spirit'}</h2>
+        <b>${spirit.Kategorie || ''}</b><br><br>
+        <b>Mythos:</b> ${spirit["Mythos/Legende"] || ''}<br><br>
+        <b>Rolle:</b> ${spirit["Funktion/Rolle"] || ''}<br>
+        <b>Charakter:</b> ${spirit.Charakter || ''}<br><br>
+        ${spirit.Herkunft ? '<i>' + spirit.Herkunft + '</i>' : ''}
     `;
+    el.style.display = "block";
+    lastOverlaySpiritData = spirit;
+
+    // Close-Button Event
+    el.querySelector("#spirit-overlay-close").onclick = () => {
+        el.style.display = "none";
+    };
 }
+
+// Mouse-Picking (zentral)
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function onClick(e) {
+    // Normierte Koordinaten im WebGL-Fenster:
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    // Sammle alle Meshes aus allen aktiven Spirits
+    let allMeshes = [];
+    for (const spirit of activeSpirits) {
+        spirit.gltf.traverse(mesh => {
+            if (mesh.isMesh) allMeshes.push(mesh);
+        });
+    }
+    const intersects = raycaster.intersectObjects(allMeshes, false);
+    if (intersects.length > 0) {
+        const mesh = intersects[0].object;
+        if (mesh.userData._spiritInfo) {
+            showSpiritOverlay(mesh.userData._spiritInfo);
+        }
+    }
+}
+
+// Fügt das Event hinzu:
+renderer.domElement.addEventListener('pointerdown', onClick);
+
+// Kein automatisches Update mehr! Nicht von spawnSpirit aufrufen!
+// (aber Option: „verstecke Overlay“ falls Spirit verschwindet, kann man so machen...)
 
 // ---- Render-Loop ----
 function animate() {
@@ -451,3 +517,10 @@ function animate() {
     composer.render(scene, camera);
     requestAnimationFrame(animate);
 }
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        let el = document.getElementById('spirit-info');
+        if (el) el.style.display = "none";
+    }
+});
