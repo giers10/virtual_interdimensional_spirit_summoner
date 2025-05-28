@@ -37,6 +37,22 @@ canvas {
   transform: translate(-50%, -50%);
 }
 
+#spirit-info h2 {
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: 1.6em;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.spirit-info-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 #spirit-info {
   box-sizing: border-box;
   position: fixed;
@@ -52,40 +68,17 @@ canvas {
   width: 600px;
   max-width: calc(100vw - 48px);
   min-width: 320px;
-  height: auto;
-  max-height: calc(100dvh - 48px); /* Besser: dynamic viewport height */
+  max-height: calc(100dvh - 48px);
   overflow-y: auto;
   padding: 40px 36px 32px 36px;
   z-index: 9999;
   margin: 0;
 }
 
-.spirit-info-flex {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-#spirit-info h2 {
-  margin: 0 0 8px 0;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  font-size: 1.6em;
-  white-space: normal;
-  word-break: keep-all;
-  overflow-wrap: normal;
-}
-
-/* "Desktop" und Mobile-Landscape (breit genug) */
-@media (min-width: 620px) and (orientation: landscape) {
-  #spirit-info {
-    width: 600px;
-    max-width: calc(100vw - 64px);
-    min-width: 320px;
-    max-height: calc(100dvh - 64px);
-    padding: 40px 40px 36px 40px;
-  }
+/* DESKTOP – immer: pointer: fine */
+@media (pointer: fine) {
   .spirit-info-flex {
+    display: flex;
     flex-direction: row;
     align-items: flex-start;
     gap: 32px;
@@ -112,8 +105,8 @@ canvas {
   }
 }
 
-/* Hochformat (Mobile) */
-@media (max-width: 619px) and (orientation: portrait) and (pointer: coarse) {
+/* MOBILE – immer: pointer: coarse */
+@media (pointer: coarse) {
   #spirit-info {
     width: 90vw;
     max-width: 98vw;
@@ -121,21 +114,8 @@ canvas {
     max-height: 82dvh;
     padding: 8vw 4vw 4vw 4vw;
   }
-}
-
-/* Hochformat (Desktop) */
-@media (max-width: 619px) and (pointer: fine) {
-  #spirit-info {
-    width: 90vw;
-    max-width: 400px;
-    min-width: 0;
-    max-height: 700px;
-    padding: 8vw 4vw 4vw 4vw;
-  }
-
-/* Hochformat (Mobile / Desktop) */
-@media (max-width: 619px), (orientation: portrait) {
   .spirit-info-flex {
+    display: flex;
     flex-direction: column;
     gap: 16px;
   }
