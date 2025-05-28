@@ -135,15 +135,16 @@ class SpinnerController {
         this.clock = new THREE.Clock();
         this.ws = null;
         this.reconnectDelay = 2000;
-        this.connected = false;
+        this.connected = false; // Verbindungsstatus
+
+        // Werte für sanften Übergang
         this.transition = {
             emission: 3.0, targetEmission: 3.0,
             bobMult: 0.5, targetBobMult: 0.5,
             rotSpeed: 1.2, targetRotSpeed: 1.2,
             lightIntensity: 5, targetLightIntensity: 5,
-            lerpSpeed: 1/3
+            lerpSpeed: 1/3  // 1/x Sekunden bis Ziel (hier: ca. 3s)
         };
-        this.activeSpirits = []; // <--- Array wandert in die Klasse!
 
         this.init();
     }
@@ -190,8 +191,74 @@ class SpinnerController {
         return obj;
     }
 
-    smoothTransition(dt) { /* ...wie gehabt... */ }
-    animate(dt, t) { /* ...wie gehabt... */ }
+    // --- Werte sanft angleichen ---
+    smoothTransition(dt) {
+        let T = this.transition;
+        // Zielwerte setzen
+        if (this.connected) {
+            T.targetEmission = 3.0;
+            T.targetBobMult = 0.5;
+            T.targetRotSpeed = 1.2;
+            T.targetLightIntensity = 5;
+        } else {
+            T.targetEmission = 0.0;
+            T.targetBobMult = 0.12;
+            T.targetRotSpeed = 0.08;
+            T.targetLightIntensity = 0;
+        }
+        // Lerp (sanft angleichen)
+        const s = T.lerpSpeed * dt; // kleiner dt → smooth
+        T.emission += (T.targetEmission - T.emission) * s;
+        T.bobMult += (T.targetBobMult - T.bobMult) * s;
+        T.rotSpeed += (T.targetRotSpeed - T.rotSpeed) * s;
+        T.lightIntensity += (T.targetLightIntensity - T.lightIntensity) * s;
+    }
+
+    animate(dt, t) {
+        this.smoothTransition(dt);
+
+        const T = this.transition;
+        const bob = Math.sin(t * 1.2) * T.bobMult;
+        const baseY = this.baseY + bob;
+
+        // Spinner
+        if (this.spinnerRed && this.spinnerBlue) {
+            this.spinnerRed.position.y = baseY + 0.8;
+            this.spinnerBlue.position.y = baseY;
+            this.spinnerRed.rotation.y -= T.rotSpeed * dt;
+            this.spinnerBlue.rotation.y += T.rotSpeed * dt;
+
+            // Emission auf beide Spinner anwenden
+            this.spinnerRed.traverse(c => {
+                if (c.isMesh && c.material && c.material.isMeshStandardMaterial)
+                    c.material.emissiveIntensity = T.emission;
+            });
+            this.spinnerBlue.traverse(c => {
+                if (c.isMesh && c.material && c.material.isMeshStandardMaterial)
+                    c.material.emissiveIntensity = T.emission;
+            });
+        }
+
+        // Rotierende Lichter (jetzt mit smooth intensity und Speed)
+        for (let i = 0; i < this.lights.length; i++) {
+            const ang = t * 0.8 + i * 2 * Math.PI / 3;
+            this.lights[i].position.set(
+                this.center.x + Math.cos(ang) * this.LIGHT_RADIUS,
+                this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
+                this.center.z
+            );
+            this.lights[i].intensity = T.lightIntensity;
+        }
+        for (let i = 0; i < this.counterLights.length; i++) {
+            const ang = -t * 0.8 + i * 2 * Math.PI / 3;
+            this.counterLights[i].position.set(
+                this.center.x + Math.cos(ang) * this.LIGHT_RADIUS,
+                this.center.y + Math.sin(ang) * this.LIGHT_RADIUS,
+                this.center.z
+            );
+            this.counterLights[i].intensity = T.lightIntensity;
+        }
+    }
 
     connectWebSocket() {
         if (this.ws) this.ws.close();
@@ -205,10 +272,10 @@ class SpinnerController {
             if (msg.type === 'spirit') {
                 if (typeof msg.timeSinceSpawnMs === "number" && msg.timeSinceSpawnMs > 0) {
                     // Initiale Verbindung: Mit Offset
-                    await this.spawnSpiritWithOffset(msg.data, msg.timeSinceSpawnMs, msg.spiritIntervalMs);
+                    spawnSpiritWithOffset(msg.data, msg.timeSinceSpawnMs, msg.spiritIntervalMs);
                 } else {
                     // Normales Timer-Event
-                    await this.spawnSpirit(msg.data);
+                    spawnSpirit(msg.data);
                 }
             }
         });
@@ -222,42 +289,6 @@ class SpinnerController {
             console.error("WebSocket error", e);
             this.ws.close();
         });
-    }
-
-    // ---- NEU: SPIRIT-SPAWNER ALS METHODEN ----
-
-    async spawnSpirit(spiritData) {
-        let spawnPos = { 
-            x: 0, 
-            y: this.spinnerRed ? this.spinnerRed.position.y - 1.5 : 15, 
-            z: 0.88 
-        };
-        const modelUrl = spiritData['Model URL'] || spiritData.modelUrl;
-        const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
-        const spirit = new Spirit(this.scene, gltfScene, spiritData, spawnPos);
-        spirit.clock.start();
-        this.activeSpirits.push(spirit);
-    }
-
-    async spawnSpiritWithOffset(spiritData, timeSinceSpawnMs = 0, spiritIntervalMs = 20000) {
-        let spawnPos = { 
-            x: 0, 
-            y: this.spinnerRed ? this.spinnerRed.position.y - 1.5 : 15, 
-            z: 0.88 
-        };
-        const modelUrl = spiritData['Model URL'] || spiritData.modelUrl;
-        const { scene: gltfScene } = await gltfLoader.loadAsync(modelUrl);
-
-        let offset = (typeof timeSinceSpawnMs === 'number' && timeSinceSpawnMs > 0) ? timeSinceSpawnMs / 1000 : 0;
-        let lifeTime = (spiritIntervalMs ? spiritIntervalMs : 20000) / 1000;
-
-        const spirit = new Spirit(this.scene, gltfScene, spiritData, spawnPos);
-        spirit.clock.start();
-        if (offset > 0 && offset < lifeTime) {
-            spirit.clock.elapsedTime = offset;
-        }
-        spirit.lifeTime = lifeTime;
-        this.activeSpirits.push(spirit);
     }
 }
 
