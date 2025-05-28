@@ -308,6 +308,7 @@ class Spirit {
             }
         });
         this.scene.add(this.grp);
+        this._setupPicking();
     }
 
     update(dt) {
