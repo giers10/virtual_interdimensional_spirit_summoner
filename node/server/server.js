@@ -15,7 +15,7 @@ const wss = new ws.Server({ server });
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Spirits laden ---
-const SPIRITS_PATH = path.join(__dirname, '..', 'spirits', 'spirit_list.json');
+const SPIRITS_PATH = path.join(__dirname, '.', 'spirits', 'spirit_list.json');
 let spirits = [];
 try {
   spirits = JSON.parse(fs.readFileSync(SPIRITS_PATH, 'utf8'));
