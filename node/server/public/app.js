@@ -301,9 +301,7 @@ class SpinnerController {
 
         const spirit = new Spirit(this.scene, gltfScene, spiritData, spawnPos);
         spirit.clock.start();
-        if (offset > 0 && offset < lifeTime) {
-            spirit.clock.elapsedTime = offset;
-        }
+        spirit.clock.elapsedTime = offset;
         spirit.lifeTime = lifeTime;
         activeSpirits.push(spirit);
     }
