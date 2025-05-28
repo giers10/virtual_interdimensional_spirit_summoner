@@ -34,7 +34,7 @@ const renderer = new THREE.WebGLRenderer({ antialias: !IS_MOBILE });
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.shadowMap.enabled = !IS_MOBILE;
 renderer.shadowMap.type = IS_MOBILE ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
-const dpr = Math.min(window.devicePixelRatio, IS_MOBILE ? 1.0 : 2.0);
+const dpr = Math.min(window.devicePixelRatio || 1, IS_MOBILE ? 1 : 2);
 renderer.setPixelRatio(dpr);
 container.appendChild(renderer.domElement);
 
