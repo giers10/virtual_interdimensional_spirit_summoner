@@ -271,7 +271,6 @@ ws.addEventListener('message', async (event) => {
   const msg = JSON.parse(event.data);
   if (msg.type === 'spirit') {
     await showSpirit(msg.data);
-    console.log(msg.data);
   }
 });
 
@@ -282,6 +281,7 @@ async function showSpirit(spirit) {
     // Optional: Materialien etc. dispose() aufrufen
     currentSpiritGroup = null;
   }
+  console.log("Lade Spirit", spirit.modelUrl);
   // Modell laden
   const { scene: spiritObj } = await gltfLoader.loadAsync(spirit.modelUrl);
   spiritObj.traverse(mesh => {
@@ -291,6 +291,7 @@ async function showSpirit(spirit) {
       // weitere Material-Anpassungen...
     }
   });
+  console.log("Spirit wurde der Szene hinzugefügt!", spiritObj);
   // Positionierung, z.B. am Boden leicht nach hinten
   spiritObj.position.set(0, 0, 0);
   scene.add(spiritObj);
