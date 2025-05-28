@@ -59,7 +59,7 @@ function pushSpiritToAllClients() {
       client.send(payload);
     }
   });
-  console.log(`[Server] Spirit "${spirit.Name}" gesendet (${spiritPos + 1}/${spirits.length})`);
+  //console.log(`[Server] Spirit "${spirit.Name}" gesendet (${spiritPos + 1}/${spirits.length})`);
 }
 
 // --- Timer ---
@@ -70,7 +70,7 @@ function startSpiritTimer() {
       nextSpirit();
       pushSpiritToAllClients();
     }, SPIRIT_INTERVAL_MS);
-    console.log('[Server] Spirit-Timer gestartet');
+    //console.log('[Server] Spirit-Timer gestartet');
   }
 }
 
@@ -79,7 +79,7 @@ function stopSpiritTimer() {
   if (spiritTimer) {
     clearInterval(spiritTimer);
     spiritTimer = null;
-    console.log('[Server] Spirit-Timer gestoppt');
+    //console.log('[Server] Spirit-Timer gestoppt');
     nextSpirit(); // Rotiert für Singleuser wie gewünscht
   }
 }
@@ -95,7 +95,7 @@ function hasOpenClients() {
 
 // --- WebSocket Logik ---
 wss.on('connection', (socket) => {
-  console.log('[Server] Neuer Client verbunden');
+  //console.log('[Server] Neuer Client verbunden');
 
   // Zeit seit letztem Spirit-Spawn:
   const now = Date.now();
