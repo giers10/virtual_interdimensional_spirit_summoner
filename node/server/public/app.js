@@ -371,6 +371,8 @@ function retryConnect() {
 
 // Initial verbinden
 connectWebSocket();
+
+
 async function spawnSpirit(spirit) {
   console.log("Lade Spirit", spirit.modelUrl);
 
